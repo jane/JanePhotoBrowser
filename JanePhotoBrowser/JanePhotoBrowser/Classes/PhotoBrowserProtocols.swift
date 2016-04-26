@@ -13,6 +13,6 @@ protocol PhotoBrowserDataSource:class {
 }
 
 protocol PhotoBrowserDelegate:class {
-    func photoBrowser(photoBrowser:PhotoBrowserView, photoTappedAtIndex index:Int)
+    func photoBrowser(photoBrowser:PhotoBrowserView, photoTappedAtIndex indexPath:NSIndexPath)
     func closeButtonTapped()
 }
