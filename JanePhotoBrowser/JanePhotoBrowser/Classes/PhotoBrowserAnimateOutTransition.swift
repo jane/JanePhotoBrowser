@@ -16,10 +16,12 @@ class PhotoBrowserAnimateOutTransition: NSObject, UIViewControllerAnimatedTransi
     }
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        guard let destinationViewController:UIViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey),
+        guard let originViewController:PhotoBrowserViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) as? PhotoBrowserViewController,
+            let destinationViewController:UIViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey),
             let containerView:UIView = transitionContext.containerView(),
             let image = self.imageView,
-            let photoView = self.destinationPhotoView?.selectedImageView else { return }
+            let photoView = self.destinationPhotoView,
+            let photoViewImage = photoView.selectedImageView else { return }
         
         let snapShot = UIImageView()
         snapShot.image = image.image
@@ -29,10 +31,13 @@ class PhotoBrowserAnimateOutTransition: NSObject, UIViewControllerAnimatedTransi
         
         destinationViewController.view.frame = transitionContext.finalFrameForViewController(destinationViewController)
         destinationViewController.view.alpha = 0
-        photoView.hidden = true
+        photoViewImage.hidden = true
         
         containerView.addSubview(destinationViewController.view)
         containerView.addSubview(snapShot)
+        
+        let selectedIndex:Int = originViewController.photoView?.selectedIndex?.row ?? 0
+        photoView.scrollToPhoto(atIndex: selectedIndex, animated: false)
         
         UIView.animateWithDuration(0.4, animations: {
             destinationViewController.view.alpha = 1.0
@@ -40,7 +45,7 @@ class PhotoBrowserAnimateOutTransition: NSObject, UIViewControllerAnimatedTransi
                 snapShot.frame = frame
             }
         }) { (finished) in
-            photoView.hidden = false
+            photoViewImage.hidden = false
             image.hidden = false
             snapShot.removeFromSuperview()
             

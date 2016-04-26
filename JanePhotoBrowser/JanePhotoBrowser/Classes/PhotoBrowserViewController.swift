@@ -42,31 +42,3 @@ extension PhotoBrowserViewController:PhotoBrowserDelegate {
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
 }
-
-//extension PhotoBrowserViewController: UINavigationControllerDelegate {
-//    func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        guard let toVC = toVC as? PhotoBrowserDelegate,
-//            let photoView = self.photoView where fromVC == self else { return nil }
-//        
-//        let transition = PhotoBrowserAnimateOutTransition()
-//        
-//        transition.imageView = photoView.selectedImageView
-//        transition.destinationPhotoView = toVC.photoView
-//        
-//        return transition
-//    }
-//}
-//
-//extension PhotoBrowserViewController:UIViewControllerTransitioningDelegate {
-//    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        guard let toVC = presenting as? PhotoBrowserDelegate,
-//            let photoView = self.photoView where source == self else { return nil }
-//        
-//        let transition = PhotoBrowserAnimateOutTransition()
-//        
-//        transition.imageView = photoView.selectedImageView
-//        transition.destinationPhotoView = toVC.photoView
-//        
-//        return transition
-//    }
-//}

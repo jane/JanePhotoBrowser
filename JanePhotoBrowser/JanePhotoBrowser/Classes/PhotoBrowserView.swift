@@ -80,7 +80,7 @@ class PhotoBrowserView:UIView {
     //MARK: - PhotoBrowser Methods
     func scrollToPhoto(atIndex index:Int, animated:Bool) {
         let indexPath:NSIndexPath = NSIndexPath(forRow: index, inSection: 0)
-        self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Left, animated: animated)
+        self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: [.CenteredVertically, .CenteredHorizontally], animated: animated)
     }
     
     func closeTapped(sender:UIButton) {
@@ -105,6 +105,7 @@ extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate,
         
         cell.tapped = {
             self.selectedImageView = cell.imageView
+            self.selectedIndex = indexPath
             self.delegate?.photoBrowser(self, photoTappedAtIndex: indexPath)
         }
         
@@ -120,6 +121,8 @@ extension PhotoBrowserView:UIViewControllerTransitioningDelegate {
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         let transition = PhotoBrowserAnimateInTransition()
         transition.imageView = self.selectedImageView
+        transition.selectedIndexPath = self.selectedIndex
+        
         return transition
     }
     func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
