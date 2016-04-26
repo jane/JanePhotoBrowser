@@ -9,7 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
     //MARK: - IBOutlets
-    @IBOutlet weak var photoBrowser: PhotoBrowserView!
+    @IBOutlet weak var photoView: PhotoBrowserView?
     
     //MARK: - Private Variables
     private var images:[UIImage] = []
@@ -18,8 +18,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         //Set up data source and delegates
-        self.photoBrowser.dataSource = self
-        self.photoBrowser.delegate = self
+        self.photoView?.dataSource = self
+        self.photoView?.delegate = self
         
         //Get an array of images
         guard let photo1 = UIImage(named: "photoBrowser1"),

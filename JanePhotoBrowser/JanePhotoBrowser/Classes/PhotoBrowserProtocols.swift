@@ -13,6 +13,7 @@ protocol PhotoBrowserDataSource:class {
 }
 
 protocol PhotoBrowserDelegate:class {
+    var photoView:PhotoBrowserView? { get set }
     func photoBrowser(photoBrowser:PhotoBrowserView, photoTappedAtIndex indexPath:NSIndexPath)
     func closeButtonTapped()
 }
@@ -21,12 +22,16 @@ protocol PhotoBrowserDelegate:class {
 extension PhotoBrowserDelegate where Self: UIViewController {
     func photoBrowser(photoBrowser:PhotoBrowserView, photoTappedAtIndex indexPath:NSIndexPath) {
         let photoBrowserViewController:PhotoBrowserViewController = PhotoBrowserViewController(nibName: nil, bundle: nil)
-        photoBrowserViewController.photoView.dataSource = photoBrowser.dataSource
-        photoBrowserViewController.photoView.backgroundColor = UIColor.whiteColor()
+        photoBrowserViewController.photoView!.dataSource = photoBrowser.dataSource
+        photoBrowserViewController.photoView!.backgroundColor = UIColor.whiteColor()
+        photoBrowserViewController.transitioningDelegate = photoBrowser
         
         self.presentViewController(photoBrowserViewController, animated: true, completion: nil)
     }
     func closeButtonTapped() {
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    func transition() -> PhotoBrowserAnimateInTransition {
+        return PhotoBrowserAnimateInTransition()
     }
 }

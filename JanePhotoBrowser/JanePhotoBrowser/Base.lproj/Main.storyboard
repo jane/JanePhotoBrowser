@@ -34,7 +34,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="photoBrowser" destination="Lbv-d5-lmX" id="MMW-hT-R9H"/>
+                        <outlet property="photoView" destination="Lbv-d5-lmX" id="9w7-8Y-Ubf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

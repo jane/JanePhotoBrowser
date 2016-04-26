@@ -9,12 +9,13 @@ import UIKit
 
 class PhotoBrowserView:UIView {
     //MARK: - Private Variables
-    let collectionView:UICollectionView
+    private let collectionView:UICollectionView
     
     //MARK: - Variables
     weak var dataSource:PhotoBrowserDataSource?
     weak var delegate:PhotoBrowserDelegate?
     var selectedIndex : NSIndexPath?
+    var selectedImageView:UIImageView?
     
     //MARK: - IBInspectable
     @IBInspectable var canZoom:Bool = false {
@@ -103,6 +104,7 @@ extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate,
         cell.canZoom = self.canZoom
         
         cell.tapped = {
+            self.selectedImageView = cell.imageView
             self.delegate?.photoBrowser(self, photoTappedAtIndex: indexPath)
         }
         
@@ -111,5 +113,23 @@ extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate,
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return self.frame.size
+    }
+}
+
+extension PhotoBrowserView:UIViewControllerTransitioningDelegate {
+    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        let transition = PhotoBrowserAnimateInTransition()
+        transition.imageView = self.selectedImageView
+        return transition
+    }
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard let photoImageViewController = dismissed as? PhotoBrowserViewController else { return nil }
+        
+        let transition = PhotoBrowserAnimateOutTransition()
+        
+        transition.imageView = photoImageViewController.photoView?.selectedImageView
+        transition.destinationPhotoView = self
+        
+        return transition
     }
 }
