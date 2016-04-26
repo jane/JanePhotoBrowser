@@ -14,6 +14,10 @@
 		B3054A3B1CCEE1C200A36054 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3054A391CCEE1C200A36054 /* LaunchScreen.storyboard */; };
 		B3054A461CCEE1C200A36054 /* JanePhotoBrowserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3054A451CCEE1C200A36054 /* JanePhotoBrowserTests.swift */; };
 		B3054A511CCEE1C200A36054 /* JanePhotoBrowserUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3054A501CCEE1C200A36054 /* JanePhotoBrowserUITests.swift */; };
+		B3054A641CCFC93300A36054 /* PhotoBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3054A631CCFC93300A36054 /* PhotoBrowserView.swift */; };
+		B3054A661CCFC9FE00A36054 /* PhotoBrowserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3054A651CCFC9FE00A36054 /* PhotoBrowserCell.swift */; };
+		B3054A681CCFCA2800A36054 /* PhotoBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3054A671CCFCA2800A36054 /* PhotoBrowserViewController.swift */; };
+		B3054A6A1CCFCA5700A36054 /* PhotoBrowserProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3054A691CCFCA5700A36054 /* PhotoBrowserProtocols.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +51,10 @@
 		B3054A4C1CCEE1C200A36054 /* JanePhotoBrowserUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JanePhotoBrowserUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3054A501CCEE1C200A36054 /* JanePhotoBrowserUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JanePhotoBrowserUITests.swift; sourceTree = "<group>"; };
 		B3054A521CCEE1C200A36054 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B3054A631CCFC93300A36054 /* PhotoBrowserView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoBrowserView.swift; path = Classes/PhotoBrowserView.swift; sourceTree = "<group>"; };
+		B3054A651CCFC9FE00A36054 /* PhotoBrowserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoBrowserCell.swift; path = Classes/PhotoBrowserCell.swift; sourceTree = "<group>"; };
+		B3054A671CCFCA2800A36054 /* PhotoBrowserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoBrowserViewController.swift; path = Classes/PhotoBrowserViewController.swift; sourceTree = "<group>"; };
+		B3054A691CCFCA5700A36054 /* PhotoBrowserProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoBrowserProtocols.swift; path = Classes/PhotoBrowserProtocols.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +169,10 @@
 		B3054A621CCEE21100A36054 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				B3054A631CCFC93300A36054 /* PhotoBrowserView.swift */,
+				B3054A651CCFC9FE00A36054 /* PhotoBrowserCell.swift */,
+				B3054A671CCFCA2800A36054 /* PhotoBrowserViewController.swift */,
+				B3054A691CCFCA5700A36054 /* PhotoBrowserProtocols.swift */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -296,8 +308,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3054A641CCFC93300A36054 /* PhotoBrowserView.swift in Sources */,
 				B3054A331CCEE1C200A36054 /* ViewController.swift in Sources */,
 				B3054A311CCEE1C200A36054 /* AppDelegate.swift in Sources */,
+				B3054A6A1CCFCA5700A36054 /* PhotoBrowserProtocols.swift in Sources */,
+				B3054A661CCFC9FE00A36054 /* PhotoBrowserCell.swift in Sources */,
+				B3054A681CCFCA2800A36054 /* PhotoBrowserViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -442,6 +458,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = JanePhotoBrowser/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jane.JanePhotoBrowser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -453,6 +470,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = JanePhotoBrowser/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jane.JanePhotoBrowser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
