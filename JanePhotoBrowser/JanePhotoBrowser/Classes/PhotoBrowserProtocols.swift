@@ -20,7 +20,10 @@ protocol PhotoBrowserDelegate:class {
 //Provide default implementation for UIViewController delegates
 extension PhotoBrowserDelegate where Self: UIViewController {
     func photoBrowser(photoBrowser:PhotoBrowserView, photoTappedAtIndex indexPath:NSIndexPath) {
-        let photoBrowserViewController:PhotoBrowserViewController = PhotoBrowserViewController()
+        let photoBrowserViewController:PhotoBrowserViewController = PhotoBrowserViewController(nibName: nil, bundle: nil)
+        photoBrowserViewController.photoView.dataSource = photoBrowser.dataSource
+        photoBrowserViewController.photoView.backgroundColor = UIColor.whiteColor()
+        
         self.presentViewController(photoBrowserViewController, animated: true, completion: nil)
     }
     func closeButtonTapped() {

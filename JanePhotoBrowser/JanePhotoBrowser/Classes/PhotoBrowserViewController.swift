@@ -10,17 +10,17 @@ import UIKit
 class PhotoBrowserViewController: UIViewController {
     var initialIndexPath : NSIndexPath?
     
-    var PhotoView:PhotoBrowserView = PhotoBrowserView()
+    var photoView:PhotoBrowserView = PhotoBrowserView()
     
     override func viewDidLoad() {
-        self.view.addSubview(self.PhotoView)
-        self.PhotoView.canZoom = true
-        self.PhotoView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(self.photoView)
+        self.photoView.canZoom = true
+        self.photoView.translatesAutoresizingMaskIntoConstraints = false
         
-        self.PhotoView.delegate = self
+        self.photoView.delegate = self
         
-        let vConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: [], metrics: nil, views: ["view":self.PhotoView])
-        let hConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: [], metrics: nil, views: ["view":self.PhotoView])
+        let vConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: [], metrics: nil, views: ["view":self.photoView])
+        let hConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: [], metrics: nil, views: ["view":self.photoView])
         self.view.addConstraints(vConstraints)
         self.view.addConstraints(hConstraints)
     }
@@ -28,7 +28,7 @@ class PhotoBrowserViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         guard let indexPath = self.initialIndexPath else { return }
-        self.PhotoView.scrollToPhoto(atIndex: indexPath.item, animated: false)
+        self.photoView.scrollToPhoto(atIndex: indexPath.item, animated: false)
     }
 }
 
