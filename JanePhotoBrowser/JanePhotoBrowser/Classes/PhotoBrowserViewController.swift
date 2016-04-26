@@ -36,7 +36,4 @@ extension PhotoBrowserViewController:PhotoBrowserDelegate {
     func photoBrowser(photoBrowser: PhotoBrowserView, photoTappedAtIndex indexPath: NSIndexPath) {
         
     }
-    func closeButtonTapped() {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
 }

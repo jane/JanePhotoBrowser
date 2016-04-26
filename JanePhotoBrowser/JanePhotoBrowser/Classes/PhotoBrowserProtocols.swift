@@ -16,3 +16,13 @@ protocol PhotoBrowserDelegate:class {
     func photoBrowser(photoBrowser:PhotoBrowserView, photoTappedAtIndex indexPath:NSIndexPath)
     func closeButtonTapped()
 }
+
+//Provide default implementation for UIViewController delegates
+extension PhotoBrowserDelegate where Self: UIViewController {
+    func photoBrowser(photoBrowser:PhotoBrowserView, photoTappedAtIndex indexPath:NSIndexPath) {
+        
+    }
+    func closeButtonTapped() {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+}
