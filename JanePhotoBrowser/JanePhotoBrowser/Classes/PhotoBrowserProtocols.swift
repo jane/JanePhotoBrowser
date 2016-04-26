@@ -31,7 +31,4 @@ extension PhotoBrowserDelegate where Self: UIViewController {
     func closeButtonTapped() {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    func transition() -> PhotoBrowserAnimateInTransition {
-        return PhotoBrowserAnimateInTransition()
-    }
 }
