@@ -49,7 +49,7 @@ class PhotoBrowserAnimateOutTransition: NSObject, UIViewControllerAnimatedTransi
             image.hidden = false
             snapShot.removeFromSuperview()
             
-            transitionContext.completeTransition(true)
+            transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
         }
     }
 }
