@@ -80,7 +80,6 @@ class PhotoBrowserView:UIView {
     //MARK: - PhotoBrowser Methods
     func scrollToPhoto(atIndex index:Int, animated:Bool) {
         let indexPath:NSIndexPath = NSIndexPath(forRow: index, inSection: 0)
-//        self.selectedImageView = self.collectionView.
         self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: [.CenteredVertically, .CenteredHorizontally], animated: animated)
     }
     
