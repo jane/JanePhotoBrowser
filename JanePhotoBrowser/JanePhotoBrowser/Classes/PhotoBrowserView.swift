@@ -87,6 +87,18 @@ class PhotoBrowserView:UIView {
         guard let photoDelegate = self.delegate else { return }
         photoDelegate.closeButtonTapped()
     }
+    
+    func visibleImageView() -> UIImageView? {
+        guard let cell = self.collectionView.visibleCells().first as? PhotoBrowserCell else { return nil }
+        return cell.imageView
+    }
+    func visibleIndexPath() -> NSIndexPath? {
+        return self.collectionView.indexPathsForVisibleItems().first
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        self.selectedIndex = self.visibleIndexPath()
+    }
 }
 
 extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -114,25 +126,5 @@ extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate,
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return self.frame.size
-    }
-}
-
-extension PhotoBrowserView:UIViewControllerTransitioningDelegate {
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        let transition = PhotoBrowserAnimateInTransition()
-        transition.imageView = self.selectedImageView
-        transition.selectedIndexPath = self.selectedIndex
-        
-        return transition
-    }
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        guard let photoImageViewController = dismissed as? PhotoBrowserViewController else { return nil }
-        
-        let transition = PhotoBrowserAnimateOutTransition()
-        
-        transition.imageView = photoImageViewController.photoView?.selectedImageView
-        transition.destinationPhotoView = self
-        
-        return transition
     }
 }

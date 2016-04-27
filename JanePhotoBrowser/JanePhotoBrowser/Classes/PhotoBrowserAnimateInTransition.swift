@@ -9,7 +9,6 @@ import UIKit
 
 class PhotoBrowserAnimateInTransition: NSObject, UIViewControllerAnimatedTransitioning {
     var imageView:UIImageView?
-    var selectedIndexPath:NSIndexPath?
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.4
@@ -37,8 +36,6 @@ class PhotoBrowserAnimateInTransition: NSObject, UIViewControllerAnimatedTransit
         
         containerView.addSubview(destinationViewController.view)
         containerView.addSubview(snapShot)
-        
-        destinationViewController.initialIndexPath = self.selectedIndexPath
         
         UIView.animateWithDuration(0.4, animations: {
             destinationViewController.view.alpha = 1.0
