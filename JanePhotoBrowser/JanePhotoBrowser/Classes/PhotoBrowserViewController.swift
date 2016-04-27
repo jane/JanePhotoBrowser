@@ -38,12 +38,17 @@ class PhotoBrowserViewController: UIViewController {
         photoView.addGestureRecognizer(pan)
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         guard let indexPath = self.initialIndexPath, let photoView = self.photoView else { return }
         photoView.scrollToPhoto(atIndex: indexPath.item, animated: false)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        guard let photoView = self.photoView else { return }
         if photoView.viewIsAnimating {
-            self.photoView?.visibleImageView()?.hidden = true
+            photoView.visibleImageView()?.hidden = true
         }
     }
     
