@@ -25,7 +25,7 @@ extension PhotoBrowserDelegate where Self: UIViewController {
         photoBrowserViewController.photoView!.dataSource = photoBrowser.dataSource
         photoBrowserViewController.photoView!.backgroundColor = UIColor.whiteColor()
         photoBrowserViewController.transitioningDelegate = photoBrowserViewController
-        photoBrowserViewController.initialIndexPath = photoBrowser.selectedIndex
+        photoBrowserViewController.initialIndexPath = photoBrowser.visibleIndexPath()
         photoBrowserViewController.originPhotoView = photoBrowser
         
         self.presentViewController(photoBrowserViewController, animated: true, completion: nil)

@@ -21,7 +21,7 @@ class PhotoBrowserAnimateOutTransition: NSObject, UIViewControllerAnimatedTransi
             let containerView:UIView = transitionContext.containerView(),
             let image = self.imageView,
             let photoView = self.destinationPhotoView,
-            let photoViewImage = photoView.selectedImageView else { return }
+            let photoViewImage = photoView.visibleImageView() else { return }
         
         let snapShot = UIImageView()
         snapShot.image = image.image
@@ -36,7 +36,7 @@ class PhotoBrowserAnimateOutTransition: NSObject, UIViewControllerAnimatedTransi
         containerView.addSubview(destinationViewController.view)
         containerView.addSubview(snapShot)
         
-        let selectedIndex:Int = originViewController.photoView?.selectedIndex?.row ?? 0
+        let selectedIndex:Int = originViewController.photoView?.visibleIndexPath()?.row ?? 0
         photoView.scrollToPhoto(atIndex: selectedIndex, animated: false)
         
         UIView.animateWithDuration(0.4, animations: {

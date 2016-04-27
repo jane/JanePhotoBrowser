@@ -74,7 +74,7 @@ extension PhotoBrowserViewController:PhotoBrowserDelegate {
 
 extension PhotoBrowserViewController:UIViewControllerTransitioningDelegate {
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        guard let originImageView = self.originPhotoView?.selectedImageView else { return nil }
+        guard let originImageView = self.originPhotoView?.visibleImageView() else { return nil }
         let transition = PhotoBrowserAnimateInTransition()
         transition.imageView = originImageView
         

@@ -14,8 +14,6 @@ class PhotoBrowserView:UIView {
     //MARK: - Variables
     weak var dataSource:PhotoBrowserDataSource?
     weak var delegate:PhotoBrowserDelegate?
-    var selectedIndex : NSIndexPath?
-    var selectedImageView:UIImageView?
     
     //MARK: - IBInspectable
     @IBInspectable var canZoom:Bool = false {
@@ -75,6 +73,8 @@ class PhotoBrowserView:UIView {
         let hConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: [], metrics: nil, views: ["view":self.collectionView])
         self.addConstraints(vConstraints)
         self.addConstraints(hConstraints)
+        
+        let numberView:UIView = UIView()
     }
     
     //MARK: - PhotoBrowser Methods
@@ -97,7 +97,7 @@ class PhotoBrowserView:UIView {
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        self.selectedIndex = self.visibleIndexPath()
+//        self.selectedIndex = self.visibleIndexPath()
     }
 }
 
@@ -116,8 +116,6 @@ extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate,
         cell.canZoom = self.canZoom
         
         cell.tapped = {
-            self.selectedImageView = cell.imageView
-            self.selectedIndex = indexPath
             self.delegate?.photoBrowser(self, photoTappedAtIndex: indexPath)
         }
         
