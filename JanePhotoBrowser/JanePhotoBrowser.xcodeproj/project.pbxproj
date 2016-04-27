@@ -18,8 +18,7 @@
 		B3054A661CCFC9FE00A36054 /* PhotoBrowserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3054A651CCFC9FE00A36054 /* PhotoBrowserCell.swift */; };
 		B3054A681CCFCA2800A36054 /* PhotoBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3054A671CCFCA2800A36054 /* PhotoBrowserViewController.swift */; };
 		B3054A6A1CCFCA5700A36054 /* PhotoBrowserProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3054A691CCFCA5700A36054 /* PhotoBrowserProtocols.swift */; };
-		B3054A6C1CCFF9DE00A36054 /* PhotoBrowserAnimateInTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3054A6B1CCFF9DE00A36054 /* PhotoBrowserAnimateInTransition.swift */; };
-		B3054A6E1CD00E5400A36054 /* PhotoBrowserAnimateOutTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3054A6D1CD00E5400A36054 /* PhotoBrowserAnimateOutTransition.swift */; };
+		B3054A6E1CD00E5400A36054 /* PhotoBrowserTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3054A6D1CD00E5400A36054 /* PhotoBrowserTransition.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,8 +56,7 @@
 		B3054A651CCFC9FE00A36054 /* PhotoBrowserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoBrowserCell.swift; path = Classes/PhotoBrowserCell.swift; sourceTree = "<group>"; };
 		B3054A671CCFCA2800A36054 /* PhotoBrowserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoBrowserViewController.swift; path = Classes/PhotoBrowserViewController.swift; sourceTree = "<group>"; };
 		B3054A691CCFCA5700A36054 /* PhotoBrowserProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoBrowserProtocols.swift; path = Classes/PhotoBrowserProtocols.swift; sourceTree = "<group>"; };
-		B3054A6B1CCFF9DE00A36054 /* PhotoBrowserAnimateInTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoBrowserAnimateInTransition.swift; path = Classes/PhotoBrowserAnimateInTransition.swift; sourceTree = "<group>"; };
-		B3054A6D1CD00E5400A36054 /* PhotoBrowserAnimateOutTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoBrowserAnimateOutTransition.swift; path = Classes/PhotoBrowserAnimateOutTransition.swift; sourceTree = "<group>"; };
+		B3054A6D1CD00E5400A36054 /* PhotoBrowserTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoBrowserTransition.swift; path = Classes/PhotoBrowserTransition.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,8 +175,7 @@
 				B3054A651CCFC9FE00A36054 /* PhotoBrowserCell.swift */,
 				B3054A671CCFCA2800A36054 /* PhotoBrowserViewController.swift */,
 				B3054A691CCFCA5700A36054 /* PhotoBrowserProtocols.swift */,
-				B3054A6B1CCFF9DE00A36054 /* PhotoBrowserAnimateInTransition.swift */,
-				B3054A6D1CD00E5400A36054 /* PhotoBrowserAnimateOutTransition.swift */,
+				B3054A6D1CD00E5400A36054 /* PhotoBrowserTransition.swift */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -315,9 +312,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				B3054A641CCFC93300A36054 /* PhotoBrowserView.swift in Sources */,
-				B3054A6E1CD00E5400A36054 /* PhotoBrowserAnimateOutTransition.swift in Sources */,
+				B3054A6E1CD00E5400A36054 /* PhotoBrowserTransition.swift in Sources */,
 				B3054A331CCEE1C200A36054 /* ViewController.swift in Sources */,
-				B3054A6C1CCFF9DE00A36054 /* PhotoBrowserAnimateInTransition.swift in Sources */,
 				B3054A311CCEE1C200A36054 /* AppDelegate.swift in Sources */,
 				B3054A6A1CCFCA5700A36054 /* PhotoBrowserProtocols.swift in Sources */,
 				B3054A661CCFC9FE00A36054 /* PhotoBrowserCell.swift in Sources */,

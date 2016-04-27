@@ -9,11 +9,12 @@ import UIKit
 
 class PhotoBrowserView:UIView {
     //MARK: - Private Variables
-    private let collectionView:UICollectionView
+    private let collectionView:UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: PhotoBrowserView.layout())
     
     //MARK: - Variables
     weak var dataSource:PhotoBrowserDataSource?
     weak var delegate:PhotoBrowserDelegate?
+    var viewIsAnimating:Bool = false
     
     //MARK: - IBInspectable
     @IBInspectable var canZoom:Bool = false {
@@ -24,28 +25,21 @@ class PhotoBrowserView:UIView {
     
     //MARK: - UIView
     override init(frame: CGRect) {
-        self.collectionView = PhotoBrowserView.photoCollectionView()
         super.init(frame: frame)
         self.setupPhotoView()
     }
     
     required init?(coder aDecoder: NSCoder) {
-        self.collectionView = PhotoBrowserView.photoCollectionView()
         super.init(coder: aDecoder)
         self.setupPhotoView()
     }
     
     init() {
-        self.collectionView = PhotoBrowserView.photoCollectionView()
         super.init(frame:CGRect.zero)
         self.setupPhotoView()
     }
     
     //MARK: - Private PhotoBrowser Methods
-    private class func photoCollectionView() -> UICollectionView {
-        return UICollectionView(frame: CGRect.zero, collectionViewLayout: PhotoBrowserView.layout())
-    }
-    
     private class func layout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .Horizontal
@@ -68,13 +62,16 @@ class PhotoBrowserView:UIView {
         
         //Setup collectionview layout constraints
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
-        
         let vConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: [], metrics: nil, views: ["view":self.collectionView])
         let hConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: [], metrics: nil, views: ["view":self.collectionView])
         self.addConstraints(vConstraints)
         self.addConstraints(hConstraints)
         
+        //Setup Number Label
         let numberView:UIView = UIView()
+        
+        //Setup Close Button
+        
     }
     
     //MARK: - PhotoBrowser Methods
@@ -97,10 +94,11 @@ class PhotoBrowserView:UIView {
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-//        self.selectedIndex = self.visibleIndexPath()
+        
     }
 }
 
+//MARK: - UICollectionViewDelegate/DataSource/Layouts
 extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.dataSource?.numberOfPhotos(self) ?? 0
@@ -111,9 +109,8 @@ extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate,
         
         if let image = self.dataSource?.photoBrowser(self, photoAtIndex: indexPath.row) {
             cell.imageView.image = image
+            cell.canZoom = self.canZoom
         }
-        
-        cell.canZoom = self.canZoom
         
         cell.tapped = {
             self.delegate?.photoBrowser(self, photoTappedAtIndex: indexPath)
