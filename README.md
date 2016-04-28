@@ -3,6 +3,8 @@
 ##Overview
 The JanePhotoBrowser is a scrolling photo gallary.  The API to interface with the photo browser is similar to the APIs used in UITableViews and UICollectionViews and should have a familiar feel.
 
+![PhotoBrowser](JanePhotoBrowser.gif)
+
 ##Setup
 To get started, install the JanePhotoBrowser either using [Cocoapods]() or by adding the files in the `Class` folder into your project.
 
