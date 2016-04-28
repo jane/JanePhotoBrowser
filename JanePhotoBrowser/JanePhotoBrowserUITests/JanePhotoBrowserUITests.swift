@@ -28,9 +28,15 @@ class JanePhotoBrowserUITests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testSelectingImage() {
+        
+        let app = XCUIApplication()
+        app.collectionViews.images["photoBrowser1"].tap()
+        app.childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.tap()
+    }
+    
+    func testScrolling() {
+        
     }
     
 }
