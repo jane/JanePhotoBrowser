@@ -7,6 +7,6 @@ Pod::Spec.new do |s|
   s.author        = { "Jane" => "barlow@jane.com" }
   s.platform      = :ios, "8.0"
   s.source        = { :git => "https://github.com/jane/JanePhotoBrowser.git", :tag => "0.0.1" }
-  s.source_files  = "Classes", "Classes/**/*.swift"
-  s.exclude_files = "Classes/Exclude"
+  s.source_files  = "JanePhotoBrowser/JanePhotoBrowser/Classes/*.swift"
+  s.exclude_files = "JanePhotoBrowser/JanePhotoBrowser/Classes/Exclude"
 end
