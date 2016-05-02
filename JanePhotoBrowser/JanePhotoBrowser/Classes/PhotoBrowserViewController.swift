@@ -7,17 +7,17 @@
 
 import UIKit
 
-class PhotoBrowserViewController: UIViewController {
+public class PhotoBrowserViewController: UIViewController {
     //MARK: - Private Variables
     private var interactiveAnimation: UIPercentDrivenInteractiveTransition?
     
     //MARK: - Variables
     var initialIndexPath : NSIndexPath?
     weak var originPhotoView: PhotoBrowserView?
-    var photoView:PhotoBrowserView? = PhotoBrowserView()
+    public var photoView:PhotoBrowserView? = PhotoBrowserView()
     
     //MARK: - UIViewController
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         
         guard let photoView = self.photoView else { return }
@@ -38,13 +38,13 @@ class PhotoBrowserViewController: UIViewController {
         photoView.addGestureRecognizer(pan)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override public func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         guard let indexPath = self.initialIndexPath, let photoView = self.photoView else { return }
         photoView.scrollToPhoto(atIndex: indexPath.item, animated: false)
     }
     
-    override func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         guard let photoView = self.photoView else { return }
         if photoView.viewIsAnimating {
@@ -83,7 +83,7 @@ class PhotoBrowserViewController: UIViewController {
 
 //MARK: - PhotoBrowserDelegate
 extension PhotoBrowserViewController:PhotoBrowserDelegate {
-    func photoBrowser(photoBrowser: PhotoBrowserView, photoTappedAtIndex indexPath: NSIndexPath) {
+    public func photoBrowser(photoBrowser: PhotoBrowserView, photoTappedAtIndex indexPath: NSIndexPath) {
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
         self.interactiveAnimation?.finishInteractiveTransition()
     }
@@ -91,7 +91,7 @@ extension PhotoBrowserViewController:PhotoBrowserDelegate {
 
 //MARK: - UIViewControllerTransistioningDelegate
 extension PhotoBrowserViewController:UIViewControllerTransitioningDelegate {
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         guard let originImageView = self.originPhotoView?.visibleImageView() else { return nil }
         let transition = PhotoBrowserTransition()
         transition.imageView = originImageView
@@ -99,7 +99,7 @@ extension PhotoBrowserViewController:UIViewControllerTransitioningDelegate {
         
         return transition
     }
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         guard let photoImageViewController = dismissed as? PhotoBrowserViewController,
             let originPhotoView = self.originPhotoView else { return nil }
         
@@ -112,7 +112,7 @@ extension PhotoBrowserViewController:UIViewControllerTransitioningDelegate {
         return transition
     }
     
-    func interactionControllerForDismissal(animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+    public func interactionControllerForDismissal(animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         guard let _ = animator as? PhotoBrowserTransition else { return nil }
         return self.interactiveAnimation
     }

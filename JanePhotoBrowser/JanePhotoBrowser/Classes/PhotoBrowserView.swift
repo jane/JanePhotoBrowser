@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PhotoBrowserView:UIView {
+public class PhotoBrowserView:UIView {
     //MARK: - Private Variables
     private let collectionView:UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: PhotoBrowserView.layout())
     private var imageLabel:UILabel = UILabel()
@@ -41,7 +41,7 @@ class PhotoBrowserView:UIView {
         self.setupPhotoView()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.setupPhotoView()
     }
@@ -51,7 +51,7 @@ class PhotoBrowserView:UIView {
         self.setupPhotoView()
     }
     
-    override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         self.updateLabelView()
     }
@@ -136,18 +136,18 @@ class PhotoBrowserView:UIView {
         return indexPaths.first
     }
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         self.updateLabelView()
     }
 }
 
 //MARK: - UICollectionViewDelegate/DataSource/Layouts
 extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.dataSource?.numberOfPhotos(self) ?? 0
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell:PhotoBrowserCell = collectionView.dequeueReusableCellWithReuseIdentifier("PhotoCell", forIndexPath: indexPath) as! PhotoBrowserCell
         
         if let image = self.dataSource?.photoBrowser(self, photoAtIndex: indexPath.row) {
@@ -162,7 +162,7 @@ extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate,
         return cell
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return self.frame.size
     }
 }

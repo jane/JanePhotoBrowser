@@ -7,12 +7,12 @@
 
 import UIKit
 
-protocol PhotoBrowserDataSource:class {
+public protocol PhotoBrowserDataSource:class {
     func photoBrowser(photoBrowser:PhotoBrowserView, photoAtIndex index: Int) -> UIImage
     func numberOfPhotos(photoBrowser:PhotoBrowserView) -> Int
 }
 
-protocol PhotoBrowserDelegate:class {
+public protocol PhotoBrowserDelegate:class {
     var photoView:PhotoBrowserView? { get set }
     func photoBrowser(photoBrowser:PhotoBrowserView, photoTappedAtIndex indexPath:NSIndexPath)
     func closeButtonTapped()
