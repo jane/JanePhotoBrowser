@@ -30,7 +30,7 @@ extension PhotoBrowserDelegate where Self: UIViewController {
         
         self.presentViewController(photoBrowserViewController, animated: true, completion: nil)
     }
-    func closeButtonTapped() {
+    public func closeButtonTapped() {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 }
