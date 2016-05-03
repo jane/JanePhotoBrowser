@@ -13,30 +13,30 @@ public class PhotoBrowserView:UIView {
     private var imageLabel:UILabel = UILabel()
     
     //MARK: - Variables
-    weak var dataSource:PhotoBrowserDataSource? {
+    public weak var dataSource:PhotoBrowserDataSource? {
         didSet {
             self.collectionView.reloadData()
             self.updateLabelView()
         }
     }
-    weak var delegate:PhotoBrowserDelegate?
+    public weak var delegate:PhotoBrowserDelegate?
     var viewIsAnimating:Bool = false
     
     //MARK: - IBInspectable
-    @IBInspectable var canZoom:Bool = false {
+    @IBInspectable public var canZoom:Bool = false {
         didSet {
             self.collectionView.reloadData()
         }
     }
     
-    @IBInspectable var labelFont:UIFont = UIFont.systemFontOfSize(10) {
+    @IBInspectable public var labelFont:UIFont = UIFont.systemFontOfSize(10) {
         didSet {
             self.imageLabel.font = labelFont
         }
     }
     
     //MARK: - UIView
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         self.setupPhotoView()
     }
@@ -46,7 +46,7 @@ public class PhotoBrowserView:UIView {
         self.setupPhotoView()
     }
     
-    init() {
+    public init() {
         super.init(frame:CGRect.zero)
         self.setupPhotoView()
     }
@@ -115,22 +115,22 @@ public class PhotoBrowserView:UIView {
     }
     
     //MARK: - PhotoBrowser Methods
-    func scrollToPhoto(atIndex index:Int, animated:Bool) {
+    public func scrollToPhoto(atIndex index:Int, animated:Bool) {
         let indexPath:NSIndexPath = NSIndexPath(forRow: index, inSection: 0)
         self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: [.CenteredVertically, .CenteredHorizontally], animated: animated)
         self.updateLabelView()
     }
     
-    func closeTapped(sender:UIButton) {
+    public func closeTapped(sender:UIButton) {
         guard let photoDelegate = self.delegate else { return }
         photoDelegate.closeButtonTapped()
     }
     
-    func visibleImageView() -> UIImageView? {
+    public func visibleImageView() -> UIImageView? {
         guard let cell = self.collectionView.visibleCells().first as? PhotoBrowserCell else { return nil }
         return cell.imageView
     }
-    func visibleIndexPath() -> NSIndexPath? {
+    public func visibleIndexPath() -> NSIndexPath? {
         let indexPaths = self.collectionView.indexPathsForVisibleItems()
         print(indexPaths)
         return indexPaths.first
@@ -138,6 +138,14 @@ public class PhotoBrowserView:UIView {
     
     public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         self.updateLabelView()
+    }
+    
+    public func reloadPhotos() {
+        self.collectionView.reloadData()
+    }
+    
+    public func reloadImage(atIndexPath indexPath:NSIndexPath) {
+        self.collectionView.reloadItemsAtIndexPaths([indexPath])
     }
 }
 
@@ -150,7 +158,7 @@ extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate,
     public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell:PhotoBrowserCell = collectionView.dequeueReusableCellWithReuseIdentifier("PhotoCell", forIndexPath: indexPath) as! PhotoBrowserCell
         
-        if let image = self.dataSource?.photoBrowser(self, photoAtIndex: indexPath.row) {
+        if let image = self.dataSource?.photoBrowser(self, photoAtIndex: indexPath.row, forCell:cell) {
             cell.imageView.image = image
             cell.canZoom = self.canZoom
         }

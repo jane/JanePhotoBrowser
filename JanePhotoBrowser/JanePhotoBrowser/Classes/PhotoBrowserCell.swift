@@ -7,7 +7,11 @@
 
 import UIKit
 
-class PhotoBrowserCell:UICollectionViewCell {
+public protocol PhotoBrowserViewCell {
+    var imageView:UIImageView { get set }
+}
+
+class PhotoBrowserCell:UICollectionViewCell, PhotoBrowserViewCell {
     //MARK: - Private Variables
     private var scrollView:UIScrollView = UIScrollView()
     

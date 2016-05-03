@@ -40,7 +40,7 @@ extension ViewController:PhotoBrowserDataSource, PhotoBrowserDelegate {
         return self.images.count
     }
     
-    func photoBrowser(photoBrowser: PhotoBrowserView, photoAtIndex index: Int) -> UIImage {
+    func photoBrowser(photoBrowser: PhotoBrowserView, photoAtIndex index: Int, forCell cell:PhotoBrowserViewCell) -> UIImage {
         return self.images[index]
     }
 }

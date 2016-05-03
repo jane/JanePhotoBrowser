@@ -8,7 +8,7 @@
 import UIKit
 
 public protocol PhotoBrowserDataSource:class {
-    func photoBrowser(photoBrowser:PhotoBrowserView, photoAtIndex index: Int) -> UIImage
+    func photoBrowser(photoBrowser:PhotoBrowserView, photoAtIndex index: Int, forCell cell:PhotoBrowserViewCell) -> UIImage
     func numberOfPhotos(photoBrowser:PhotoBrowserView) -> Int
 }
 
@@ -20,7 +20,7 @@ public protocol PhotoBrowserDelegate:class {
 
 //Provide default implementation for UIViewController delegates
 extension PhotoBrowserDelegate where Self: UIViewController {
-    func photoBrowser(photoBrowser:PhotoBrowserView, photoTappedAtIndex indexPath:NSIndexPath) {
+    public func photoBrowser(photoBrowser:PhotoBrowserView, photoTappedAtIndex indexPath:NSIndexPath) {
         let photoBrowserViewController:PhotoBrowserViewController = PhotoBrowserViewController(nibName: nil, bundle: nil)
         photoBrowserViewController.photoView!.dataSource = photoBrowser.dataSource
         photoBrowserViewController.photoView!.backgroundColor = UIColor.whiteColor()
