@@ -26,6 +26,7 @@ public class PhotoBrowserViewController: UIViewController {
         photoView.canZoom = true
         photoView.translatesAutoresizingMaskIntoConstraints = false
         photoView.delegate = self
+        photoView.shouldDisplayCloseButton = true
         
         //Setup Layout for PhotoView
         let vConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: [], metrics: nil, views: ["view":photoView])

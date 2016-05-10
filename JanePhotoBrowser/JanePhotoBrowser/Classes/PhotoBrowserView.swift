@@ -11,6 +11,7 @@ public class PhotoBrowserView:UIView {
     //MARK: - Private Variables
     private let collectionView:UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: PhotoBrowserView.layout())
     private var imageLabel:UILabel = UILabel()
+    private let closeButton:UIButton = UIButton()
     
     //MARK: - Variables
     public weak var dataSource:PhotoBrowserDataSource? {
@@ -32,6 +33,12 @@ public class PhotoBrowserView:UIView {
     @IBInspectable public var labelFont:UIFont = UIFont.systemFontOfSize(10) {
         didSet {
             self.imageLabel.font = labelFont
+        }
+    }
+    
+    @IBInspectable public var shouldDisplayCloseButton:Bool = false {
+        didSet {
+            self.closeButton.hidden = !shouldDisplayCloseButton
         }
     }
     
@@ -73,8 +80,35 @@ public class PhotoBrowserView:UIView {
         self.imageLabel.text = "\(row) of \(self.dataSource?.numberOfPhotos(self) ?? 0)"
     }
     
+    private func addVisualConstraints(vertical:String, horizontal:String, view:UIView) {
+        let veritcalConstraints = NSLayoutConstraint.constraintsWithVisualFormat(vertical, options: [], metrics: nil, views: ["view":view])
+        let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat(horizontal, options: [], metrics: nil, views: ["view":view])
+        self.addConstraints(veritcalConstraints)
+        self.addConstraints(horizontalConstraints)
+    }
+    
+    private func setupCloseButton() {
+        self.closeButton.backgroundColor = UIColor(white: 0.8, alpha: 0.7)
+        self.closeButton.setTitle("X", forState: .Normal)
+        self.closeButton.addTarget(self, action: #selector(self.closeTapped(_:)), forControlEvents: .TouchUpInside)
+        self.closeButton.layer.cornerRadius = 5
+        self.closeButton.layer.masksToBounds = true
+        
+        if #available(iOS 8.2, *) {
+            self.closeButton.titleLabel?.font = UIFont.systemFontOfSize(30, weight: UIFontWeightThin)
+        } else {
+            self.closeButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Thin", size: 30)
+        }
+        
+        self.addVisualConstraints("V:|-30-[view(35)]", horizontal: "H:[view(35)]-20-|", view: self.closeButton)
+    }
+    
     private func setupPhotoView() {
         let numberView:UIView = UIView()
+        numberView.layer.cornerRadius = 5
+        numberView.layer.masksToBounds = true
+        
+        self.closeButton.hidden = !self.shouldDisplayCloseButton
         
         self.collectionView.backgroundColor = self.backgroundColor
         self.collectionView.registerClass(PhotoBrowserCell.self, forCellWithReuseIdentifier: "PhotoCell")
@@ -83,26 +117,23 @@ public class PhotoBrowserView:UIView {
         numberView.translatesAutoresizingMaskIntoConstraints = false
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
         self.imageLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.closeButton.translatesAutoresizingMaskIntoConstraints = false
         
+        //Add all the subviews before applying layout constraints
         self.addSubview(self.collectionView)
         self.addSubview(numberView)
+        self.addSubview(self.closeButton)
         
         //Setup CollectionView datasource and delegate
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         
         //Setup collectionview layout constraints
-        let vConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: [], metrics: nil, views: ["view":self.collectionView])
-        let hConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: [], metrics: nil, views: ["view":self.collectionView])
-        self.addConstraints(vConstraints)
-        self.addConstraints(hConstraints)
+        self.addVisualConstraints("V:|[view]|", horizontal: "H:|[view]|", view: self.collectionView)
         
         //Setup Number Label
         numberView.backgroundColor = UIColor(white: 0.8, alpha: 0.8)
-        let vNumberViewConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:[view(30)]-10-|", options: [], metrics: nil, views: ["view":numberView])
-        let hNumberViewConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:[view(70)]-10-|", options: [], metrics: nil, views: ["view":numberView])
-        self.addConstraints(vNumberViewConstraints)
-        self.addConstraints(hNumberViewConstraints)
+        self.addVisualConstraints("V:[view(30)]-10-|", horizontal: "H:[view(70)]-10-|", view: numberView)
         
         numberView.addSubview(self.imageLabel)
         self.imageLabel.font = self.labelFont
@@ -111,7 +142,7 @@ public class PhotoBrowserView:UIView {
         numberView.addConstraint(NSLayoutConstraint(item: self.imageLabel, attribute: .CenterY, relatedBy: .Equal, toItem: numberView, attribute: .CenterY, multiplier: 1.0, constant: 0.0))
         
         //Setup Close Button
-        
+        self.setupCloseButton()
     }
     
     //MARK: - PhotoBrowser Methods
