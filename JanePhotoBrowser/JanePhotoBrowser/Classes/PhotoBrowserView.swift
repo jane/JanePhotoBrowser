@@ -88,14 +88,15 @@ public class PhotoBrowserView:UIView {
     }
     
     private func setupCloseButton() {
-        self.closeButton.backgroundColor = UIColor(white: 0.8, alpha: 0.7)
+        self.closeButton.backgroundColor = UIColor(white: 1.0, alpha: 0.8)
+        self.closeButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
         self.closeButton.setTitle("X", forState: .Normal)
         self.closeButton.addTarget(self, action: #selector(self.closeTapped(_:)), forControlEvents: .TouchUpInside)
         self.closeButton.layer.cornerRadius = 5
         self.closeButton.layer.masksToBounds = true
         
         if #available(iOS 8.2, *) {
-            self.closeButton.titleLabel?.font = UIFont.systemFontOfSize(30, weight: UIFontWeightThin)
+            self.closeButton.titleLabel?.font = UIFont.systemFontOfSize(26, weight: UIFontWeightThin)
         } else {
             self.closeButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Thin", size: 30)
         }
@@ -132,7 +133,7 @@ public class PhotoBrowserView:UIView {
         self.addVisualConstraints("V:|[view]|", horizontal: "H:|[view]|", view: self.collectionView)
         
         //Setup Number Label
-        numberView.backgroundColor = UIColor(white: 0.8, alpha: 0.8)
+        numberView.backgroundColor = UIColor(white: 1.0, alpha: 0.8)
         self.addVisualConstraints("V:[view(30)]-10-|", horizontal: "H:[view(70)]-10-|", view: numberView)
         
         numberView.addSubview(self.imageLabel)
