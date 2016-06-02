@@ -36,6 +36,7 @@ class PhotoBrowserCell:UICollectionViewCell, PhotoBrowserViewCell {
     }
     
     override func prepareForReuse() {
+        super.prepareForReuse()
         self.scrollView.zoomScale = 1.0
     }
     
