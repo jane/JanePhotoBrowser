@@ -19,6 +19,7 @@
 		B3054A681CCFCA2800A36054 /* PhotoBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3054A671CCFCA2800A36054 /* PhotoBrowserViewController.swift */; };
 		B3054A6A1CCFCA5700A36054 /* PhotoBrowserProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3054A691CCFCA5700A36054 /* PhotoBrowserProtocols.swift */; };
 		B3054A6E1CD00E5400A36054 /* PhotoBrowserTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3054A6D1CD00E5400A36054 /* PhotoBrowserTransition.swift */; };
+		F82E51E41D00A31100A0F041 /* PhotoBrowserStyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82E51E31D00A31100A0F041 /* PhotoBrowserStyleKit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		B3054A671CCFCA2800A36054 /* PhotoBrowserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoBrowserViewController.swift; path = Classes/PhotoBrowserViewController.swift; sourceTree = "<group>"; };
 		B3054A691CCFCA5700A36054 /* PhotoBrowserProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoBrowserProtocols.swift; path = Classes/PhotoBrowserProtocols.swift; sourceTree = "<group>"; };
 		B3054A6D1CD00E5400A36054 /* PhotoBrowserTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoBrowserTransition.swift; path = Classes/PhotoBrowserTransition.swift; sourceTree = "<group>"; };
+		F82E51E31D00A31100A0F041 /* PhotoBrowserStyleKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoBrowserStyleKit.swift; path = Classes/PhotoBrowserStyleKit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +178,7 @@
 				B3054A671CCFCA2800A36054 /* PhotoBrowserViewController.swift */,
 				B3054A691CCFCA5700A36054 /* PhotoBrowserProtocols.swift */,
 				B3054A6D1CD00E5400A36054 /* PhotoBrowserTransition.swift */,
+				F82E51E31D00A31100A0F041 /* PhotoBrowserStyleKit.swift */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -315,6 +318,7 @@
 				B3054A6E1CD00E5400A36054 /* PhotoBrowserTransition.swift in Sources */,
 				B3054A331CCEE1C200A36054 /* ViewController.swift in Sources */,
 				B3054A311CCEE1C200A36054 /* AppDelegate.swift in Sources */,
+				F82E51E41D00A31100A0F041 /* PhotoBrowserStyleKit.swift in Sources */,
 				B3054A6A1CCFCA5700A36054 /* PhotoBrowserProtocols.swift in Sources */,
 				B3054A661CCFC9FE00A36054 /* PhotoBrowserCell.swift in Sources */,
 				B3054A681CCFCA2800A36054 /* PhotoBrowserViewController.swift in Sources */,
@@ -546,6 +550,7 @@
 				B3054A571CCEE1C200A36054 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B3054A581CCEE1C200A36054 /* Build configuration list for PBXNativeTarget "JanePhotoBrowserTests" */ = {
 			isa = XCConfigurationList;
@@ -554,6 +559,7 @@
 				B3054A5A1CCEE1C200A36054 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B3054A5B1CCEE1C200A36054 /* Build configuration list for PBXNativeTarget "JanePhotoBrowserUITests" */ = {
 			isa = XCConfigurationList;
@@ -562,6 +568,7 @@
 				B3054A5D1CCEE1C200A36054 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
