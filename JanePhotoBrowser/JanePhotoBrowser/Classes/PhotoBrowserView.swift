@@ -89,8 +89,7 @@ public class PhotoBrowserView:UIView {
     
     private func setupCloseButton() {
         self.closeButton.backgroundColor = UIColor(white: 1.0, alpha: 0.8)
-        self.closeButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        self.closeButton.setTitle("X", forState: .Normal)
+        self.closeButton.setImage(PhotoBrowserStyleKit.imageOfXIcon(fillColor: UIColor.blackColor()), forState: .Normal)
         self.closeButton.addTarget(self, action: #selector(self.closeTapped(_:)), forControlEvents: .TouchUpInside)
         self.closeButton.layer.cornerRadius = 5
         self.closeButton.layer.masksToBounds = true
