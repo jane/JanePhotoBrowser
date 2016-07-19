@@ -173,6 +173,7 @@ public class PhotoBrowserView:UIView {
     
     public func reloadPhotos() {
         self.collectionView.reloadData()
+        self.updateLabelView()
     }
     
     public func reloadImage(atIndexPath indexPath:NSIndexPath) {
