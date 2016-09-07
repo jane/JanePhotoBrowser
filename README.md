@@ -1,7 +1,7 @@
 # Jane Photo Browser
 
 ##Overview
-The JanePhotoBrowser is a scrolling photo gallary.  The API to interface with the photo browser is similar to the APIs used in UITableViews and UICollectionViews and should have a familiar feel.
+The JanePhotoBrowser is a scrolling photo gallary written in Swift 3.  The API to interface with the photo browser is similar to the APIs used in UITableViews and UICollectionViews and should have a familiar feel.
 
 ![PhotoBrowser](JanePhotoBrowser.gif)
 

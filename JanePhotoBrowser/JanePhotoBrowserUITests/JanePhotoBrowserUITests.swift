@@ -32,7 +32,7 @@ class JanePhotoBrowserUITests: XCTestCase {
         
         let app = XCUIApplication()
         app.collectionViews.images["photoBrowser1"].tap()
-        app.childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.tap()
+        app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.tap()
     }
     
     func testScrolling() {

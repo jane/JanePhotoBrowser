@@ -7,17 +7,17 @@
 
 import UIKit
 
-public class PhotoBrowserViewController: UIViewController {
+open class PhotoBrowserViewController: UIViewController {
     //MARK: - Private Variables
-    private var interactiveAnimation: UIPercentDrivenInteractiveTransition?
+    fileprivate var interactiveAnimation: UIPercentDrivenInteractiveTransition?
     
     //MARK: - Variables
-    var initialIndexPath : NSIndexPath?
+    var initialIndexPath : IndexPath?
     weak var originPhotoView: PhotoBrowserView?
-    public var photoView:PhotoBrowserView? = PhotoBrowserView()
+    open var photoView:PhotoBrowserView? = PhotoBrowserView()
     
     //MARK: - UIViewController
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         
         guard let photoView = self.photoView else { return }
@@ -29,8 +29,8 @@ public class PhotoBrowserViewController: UIViewController {
         photoView.shouldDisplayCloseButton = true
         
         //Setup Layout for PhotoView
-        let vConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: [], metrics: nil, views: ["view":photoView])
-        let hConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: [], metrics: nil, views: ["view":photoView])
+        let vConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|", options: [], metrics: nil, views: ["view":photoView])
+        let hConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options: [], metrics: nil, views: ["view":photoView])
         self.view.addConstraints(vConstraints)
         self.view.addConstraints(hConstraints)
         
@@ -39,41 +39,41 @@ public class PhotoBrowserViewController: UIViewController {
         photoView.addGestureRecognizer(pan)
     }
     
-    override public func viewDidAppear(animated: Bool) {
+    override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         guard let indexPath = self.initialIndexPath, let photoView = self.photoView else { return }
-        photoView.scrollToPhoto(atIndex: indexPath.item, animated: false)
+        photoView.scrollToPhoto(atIndex: (indexPath as NSIndexPath).item, animated: false)
     }
     
-    override public func viewDidLayoutSubviews() {
+    override open func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         guard let photoView = self.photoView else { return }
         if photoView.viewIsAnimating {
-            photoView.visibleImageView()?.hidden = true
+            photoView.visibleImageView()?.isHidden = true
         }
     }
     
-    func panGesture(recognizer:UIPanGestureRecognizer) {
+    func panGesture(_ recognizer:UIPanGestureRecognizer) {
         let flickSpeed:CGFloat = -1300
         
         //Find progress of upward swipe.
-        var progress = recognizer.translationInView(self.view).y / self.view.bounds.size.height
+        var progress = recognizer.translation(in: self.view).y / self.view.bounds.size.height
         progress = fabs(max(-1.0, min(0.0, progress * 2)))
 
         //Update progress
         switch (recognizer.state) {
-            case .Began:
+            case .began:
                 self.interactiveAnimation = UIPercentDrivenInteractiveTransition()
-                self.dismissViewControllerAnimated(true, completion: nil)
-            case .Changed:
-                self.interactiveAnimation?.updateInteractiveTransition(progress)
-            case .Ended: fallthrough
-            case .Cancelled:
+                self.dismiss(animated: true, completion: nil)
+            case .changed:
+                self.interactiveAnimation?.update(progress)
+            case .ended: fallthrough
+            case .cancelled:
                 //If we have swiped over half way, or we flicked the view upward then we want to finish the transition
-                if progress > 0.5 || recognizer.velocityInView(self.view).y < flickSpeed {
-                    self.interactiveAnimation?.finishInteractiveTransition()
+                if progress > 0.5 || recognizer.velocity(in: self.view).y < flickSpeed {
+                    self.interactiveAnimation?.finish()
                 } else {
-                    self.interactiveAnimation?.cancelInteractiveTransition()
+                    self.interactiveAnimation?.cancel()
                 }
                 
                 self.interactiveAnimation = nil
@@ -84,15 +84,15 @@ public class PhotoBrowserViewController: UIViewController {
 
 //MARK: - PhotoBrowserDelegate
 extension PhotoBrowserViewController:PhotoBrowserDelegate {
-    public func photoBrowser(photoBrowser: PhotoBrowserView, photoTappedAtIndex indexPath: NSIndexPath) {
-        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
-        self.interactiveAnimation?.finishInteractiveTransition()
+    public func photoBrowser(_ photoBrowser: PhotoBrowserView, photoTappedAtIndex indexPath: IndexPath) {
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
+        self.interactiveAnimation?.finish()
     }
 }
 
 //MARK: - UIViewControllerTransistioningDelegate
 extension PhotoBrowserViewController:UIViewControllerTransitioningDelegate {
-    public func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         guard let originImageView = self.originPhotoView?.visibleImageView() else { return nil }
         let transition = PhotoBrowserTransition()
         transition.imageView = originImageView
@@ -100,7 +100,7 @@ extension PhotoBrowserViewController:UIViewControllerTransitioningDelegate {
         
         return transition
     }
-    public func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         guard let photoImageViewController = dismissed as? PhotoBrowserViewController,
             let originPhotoView = self.originPhotoView else { return nil }
         
@@ -113,7 +113,7 @@ extension PhotoBrowserViewController:UIViewControllerTransitioningDelegate {
         return transition
     }
     
-    public func interactionControllerForDismissal(animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+    public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         guard let _ = animator as? PhotoBrowserTransition else { return nil }
         return self.interactiveAnimation
     }
