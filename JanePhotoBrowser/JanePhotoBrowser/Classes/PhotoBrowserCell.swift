@@ -13,7 +13,7 @@ public protocol PhotoBrowserViewCell {
 
 class PhotoBrowserCell:UICollectionViewCell, PhotoBrowserViewCell {
     //MARK: - Private Variables
-    private var scrollView:UIScrollView = UIScrollView()
+    fileprivate var scrollView:UIScrollView = UIScrollView()
     
     //MARK: - Variables
     var imageView:UIImageView = UIImageView()
@@ -41,23 +41,23 @@ class PhotoBrowserCell:UICollectionViewCell, PhotoBrowserViewCell {
     }
     
     //MARK: - PhotoBrowserCell Private Methods
-    private func setupImageView() {
+    fileprivate func setupImageView() {
         self.scrollView.minimumZoomScale = 1.0
         self.scrollView.maximumZoomScale = self.canZoom ? 4.0 : 1.0
         
         self.scrollView.translatesAutoresizingMaskIntoConstraints = false
         self.scrollView.delegate = self
         
-        self.imageView.contentMode = .ScaleAspectFit
+        self.imageView.contentMode = .scaleAspectFit
         self.addSubview(self.scrollView)
         self.scrollView.addSubview(self.imageView)
         
         //Add ImageView constraints
         self.imageView.translatesAutoresizingMaskIntoConstraints = false
-        let vImageConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[view(\(self.frame.size.height))]", options: [], metrics: nil, views: ["view":self.imageView])
-        let hImageConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[view(\(self.frame.size.width))]|", options: [], metrics: nil, views: ["view":self.imageView])
-        let vConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: [], metrics: nil, views: ["view":self.scrollView])
-        let hConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: [], metrics: nil, views: ["view":self.scrollView])
+        let vImageConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[view(\(self.frame.size.height))]", options: [], metrics: nil, views: ["view":self.imageView])
+        let hImageConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[view(\(self.frame.size.width))]|", options: [], metrics: nil, views: ["view":self.imageView])
+        let vConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|", options: [], metrics: nil, views: ["view":self.scrollView])
+        let hConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options: [], metrics: nil, views: ["view":self.scrollView])
         
         self.addConstraints(vImageConstraints)
         self.addConstraints(hImageConstraints)
@@ -70,7 +70,7 @@ class PhotoBrowserCell:UICollectionViewCell, PhotoBrowserViewCell {
     }
     
     //MARK: - PhotoBrowserCell Methods
-    func handleTap(gesture:UITapGestureRecognizer) {
+    func handleTap(_ gesture:UITapGestureRecognizer) {
         guard let callback = self.tapped else { return }
         callback()
     }
@@ -79,7 +79,9 @@ class PhotoBrowserCell:UICollectionViewCell, PhotoBrowserViewCell {
 
 //MARK: - UIScrollViewDelegate
 extension PhotoBrowserCell: UIScrollViewDelegate {
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.imageView
     }
+    
+    
 }

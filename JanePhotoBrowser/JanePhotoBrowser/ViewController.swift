@@ -12,7 +12,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var photoView: PhotoBrowserView?
     
     //MARK: - Private Variables
-    private var images:[UIImage] = []
+    fileprivate var images:[UIImage] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,11 +36,11 @@ class ViewController: UIViewController {
 }
 
 extension ViewController:PhotoBrowserDataSource, PhotoBrowserDelegate {
-    func numberOfPhotos(photoBrowser: PhotoBrowserView) -> Int {
+    func numberOfPhotos(_ photoBrowser: PhotoBrowserView) -> Int {
         return self.images.count
     }
     
-    func photoBrowser(photoBrowser: PhotoBrowserView, photoAtIndex index: Int, forCell cell:PhotoBrowserViewCell) -> UIImage {
+    func photoBrowser(_ photoBrowser: PhotoBrowserView, photoAtIndex index: Int, forCell cell:PhotoBrowserViewCell) -> UIImage {
         return self.images[index]
     }
 }

@@ -7,38 +7,38 @@
 
 import UIKit
 
-public class PhotoBrowserView:UIView {
+open class PhotoBrowserView:UIView {
     //MARK: - Private Variables
-    private let collectionView:UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: PhotoBrowserView.layout())
-    private var imageLabel:UILabel = UILabel()
-    private let closeButton:UIButton = UIButton()
+    fileprivate let collectionView:UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: PhotoBrowserView.layout())
+    fileprivate var imageLabel:UILabel = UILabel()
+    fileprivate let closeButton:UIButton = UIButton()
     
     //MARK: - Variables
-    public weak var dataSource:PhotoBrowserDataSource? {
+    open weak var dataSource:PhotoBrowserDataSource? {
         didSet {
             self.collectionView.reloadData()
             self.updateLabelView()
         }
     }
-    public weak var delegate:PhotoBrowserDelegate?
+    open weak var delegate:PhotoBrowserDelegate?
     var viewIsAnimating:Bool = false
     
     //MARK: - IBInspectable
-    @IBInspectable public var canZoom:Bool = false {
+    @IBInspectable open var canZoom:Bool = false {
         didSet {
             self.collectionView.reloadData()
         }
     }
     
-    @IBInspectable public var labelFont:UIFont = UIFont.systemFontOfSize(10) {
+    @IBInspectable open var labelFont:UIFont = UIFont.systemFont(ofSize: 10) {
         didSet {
             self.imageLabel.font = labelFont
         }
     }
     
-    @IBInspectable public var shouldDisplayCloseButton:Bool = false {
+    @IBInspectable open var shouldDisplayCloseButton:Bool = false {
         didSet {
-            self.closeButton.hidden = !shouldDisplayCloseButton
+            self.closeButton.isHidden = !shouldDisplayCloseButton
         }
     }
     
@@ -58,44 +58,44 @@ public class PhotoBrowserView:UIView {
         self.setupPhotoView()
     }
     
-    override public func layoutSubviews() {
+    override open func layoutSubviews() {
         super.layoutSubviews()
         self.updateLabelView()
     }
     
     //MARK: - Private PhotoBrowser Methods
-    private class func layout() -> UICollectionViewFlowLayout {
+    fileprivate class func layout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .Horizontal
+        layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 0.0
         layout.minimumInteritemSpacing = 0.0
         
         return layout
     }
     
-    private func updateLabelView() {
+    fileprivate func updateLabelView() {
         let hasWidth = self.collectionView.frame.size.width > 0
         let row = hasWidth ? Int(self.collectionView.contentOffset.x / self.collectionView.frame.size.width) + 1 : 1
         
         self.imageLabel.text = "\(row) of \(self.dataSource?.numberOfPhotos(self) ?? 0)"
     }
     
-    private func addVisualConstraints(vertical:String, horizontal:String, view:UIView) {
-        let veritcalConstraints = NSLayoutConstraint.constraintsWithVisualFormat(vertical, options: [], metrics: nil, views: ["view":view])
-        let horizontalConstraints = NSLayoutConstraint.constraintsWithVisualFormat(horizontal, options: [], metrics: nil, views: ["view":view])
+    fileprivate func addVisualConstraints(_ vertical:String, horizontal:String, view:UIView) {
+        let veritcalConstraints = NSLayoutConstraint.constraints(withVisualFormat: vertical, options: [], metrics: nil, views: ["view":view])
+        let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: horizontal, options: [], metrics: nil, views: ["view":view])
         self.addConstraints(veritcalConstraints)
         self.addConstraints(horizontalConstraints)
     }
     
-    private func setupCloseButton() {
+    fileprivate func setupCloseButton() {
         self.closeButton.backgroundColor = UIColor(white: 1.0, alpha: 0.8)
-        self.closeButton.setImage(PhotoBrowserStyleKit.imageOfXIcon(fillColor: UIColor.blackColor()), forState: .Normal)
-        self.closeButton.addTarget(self, action: #selector(self.closeTapped(_:)), forControlEvents: .TouchUpInside)
+        self.closeButton.setImage(PhotoBrowserStyleKit.imageOfXIcon(fillColor: UIColor.black), for: .normal)
+        self.closeButton.addTarget(self, action: #selector(self.closeTapped(_:)), for: .touchUpInside)
         self.closeButton.layer.cornerRadius = 5
         self.closeButton.layer.masksToBounds = true
         
         if #available(iOS 8.2, *) {
-            self.closeButton.titleLabel?.font = UIFont.systemFontOfSize(26, weight: UIFontWeightThin)
+            self.closeButton.titleLabel?.font = UIFont.systemFont(ofSize: 26, weight: UIFontWeightThin)
         } else {
             self.closeButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Thin", size: 30)
         }
@@ -103,16 +103,16 @@ public class PhotoBrowserView:UIView {
         self.addVisualConstraints("V:|-30-[view(35)]", horizontal: "H:[view(35)]-20-|", view: self.closeButton)
     }
     
-    private func setupPhotoView() {
+    fileprivate func setupPhotoView() {
         let numberView:UIView = UIView()
         numberView.layer.cornerRadius = 5
         numberView.layer.masksToBounds = true
         
-        self.closeButton.hidden = !self.shouldDisplayCloseButton
+        self.closeButton.isHidden = !self.shouldDisplayCloseButton
         
         self.collectionView.backgroundColor = self.backgroundColor
-        self.collectionView.registerClass(PhotoBrowserCell.self, forCellWithReuseIdentifier: "PhotoCell")
-        self.collectionView.pagingEnabled = true
+        self.collectionView.register(PhotoBrowserCell.self, forCellWithReuseIdentifier: "PhotoCell")
+        self.collectionView.isPagingEnabled = true
         
         numberView.translatesAutoresizingMaskIntoConstraints = false
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -138,57 +138,57 @@ public class PhotoBrowserView:UIView {
         numberView.addSubview(self.imageLabel)
         self.imageLabel.font = self.labelFont
         self.updateLabelView()
-        numberView.addConstraint(NSLayoutConstraint(item: self.imageLabel, attribute: .CenterX, relatedBy: .Equal, toItem: numberView, attribute: .CenterX, multiplier: 1.0, constant: 0.0))
-        numberView.addConstraint(NSLayoutConstraint(item: self.imageLabel, attribute: .CenterY, relatedBy: .Equal, toItem: numberView, attribute: .CenterY, multiplier: 1.0, constant: 0.0))
+        numberView.addConstraint(NSLayoutConstraint(item: self.imageLabel, attribute: .centerX, relatedBy: .equal, toItem: numberView, attribute: .centerX, multiplier: 1.0, constant: 0.0))
+        numberView.addConstraint(NSLayoutConstraint(item: self.imageLabel, attribute: .centerY, relatedBy: .equal, toItem: numberView, attribute: .centerY, multiplier: 1.0, constant: 0.0))
         
         //Setup Close Button
         self.setupCloseButton()
     }
     
     //MARK: - PhotoBrowser Methods
-    public func scrollToPhoto(atIndex index:Int, animated:Bool) {
-        let indexPath:NSIndexPath = NSIndexPath(forRow: index, inSection: 0)
-        self.collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: [.CenteredVertically, .CenteredHorizontally], animated: animated)
+    open func scrollToPhoto(atIndex index:Int, animated:Bool) {
+        let indexPath:IndexPath = IndexPath(row: index, section: 0)
+        self.collectionView.scrollToItem(at: indexPath, at: [.centeredVertically, .centeredHorizontally], animated: animated)
         self.updateLabelView()
     }
     
-    public func closeTapped(sender:UIButton) {
+    open func closeTapped(_ sender:UIButton) {
         guard let photoDelegate = self.delegate else { return }
         photoDelegate.closeButtonTapped()
     }
     
-    public func visibleImageView() -> UIImageView? {
-        guard let cell = self.collectionView.visibleCells().first as? PhotoBrowserCell else { return nil }
+    open func visibleImageView() -> UIImageView? {
+        guard let cell = self.collectionView.visibleCells.first as? PhotoBrowserCell else { return nil }
         return cell.imageView
     }
-    public func visibleIndexPath() -> NSIndexPath? {
-        let indexPaths = self.collectionView.indexPathsForVisibleItems()
+    open func visibleIndexPath() -> IndexPath? {
+        let indexPaths = self.collectionView.indexPathsForVisibleItems
         print(indexPaths)
         return indexPaths.first
     }
     
-    public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         self.updateLabelView()
     }
     
-    public func reloadPhotos() {
+    open func reloadPhotos() {
         self.collectionView.reloadData()
         self.updateLabelView()
     }
     
-    public func reloadImage(atIndexPath indexPath:NSIndexPath) {
-        self.collectionView.reloadItemsAtIndexPaths([indexPath])
+    open func reloadImage(atIndexPath indexPath:IndexPath) {
+        self.collectionView.reloadItems(at: [indexPath])
     }
 }
 
 //MARK: - UICollectionViewDelegate/DataSource/Layouts
 extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.dataSource?.numberOfPhotos(self) ?? 0
     }
     
-    public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell:PhotoBrowserCell = collectionView.dequeueReusableCellWithReuseIdentifier("PhotoCell", forIndexPath: indexPath) as! PhotoBrowserCell
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell:PhotoBrowserCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoBrowserCell
         
         if let image = self.dataSource?.photoBrowser(self, photoAtIndex: indexPath.row, forCell:cell) {
             cell.imageView.image = image
@@ -202,7 +202,7 @@ extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate,
         return cell
     }
     
-    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return self.frame.size
     }
 }
