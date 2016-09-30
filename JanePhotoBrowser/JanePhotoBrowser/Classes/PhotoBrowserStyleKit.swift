@@ -15,8 +15,8 @@ public class PhotoBrowserStyleKit: NSObject {
         let context = UIGraphicsGetCurrentContext()
         
         //// Bezier Drawing
-        CGContextSaveGState(context)
-        CGContextTranslateCTM(context, 59, 54.22)
+        CGContextSaveGState(context!)
+        CGContextTranslateCTM(context!, 59, 54.22)
         
         let bezierPath = UIBezierPath()
         bezierPath.moveToPoint(CGPoint(x: -46.01, y: -42.23))
@@ -46,7 +46,7 @@ public class PhotoBrowserStyleKit: NSObject {
         fillColor.setFill()
         bezierPath.fill()
         
-        CGContextRestoreGState(context)
+        CGContextRestoreGState(context!)
     }
     
     public class func imageOfXIcon(fillColor fillColor: UIColor = UIColor(red: 0.824, green: 0.334, blue: 0.746, alpha: 1.000)) -> UIImage {
@@ -56,7 +56,7 @@ public class PhotoBrowserStyleKit: NSObject {
         let imageOfXIcon = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return imageOfXIcon
+        return imageOfXIcon!
     }
 
 }
