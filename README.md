@@ -11,6 +11,10 @@ The JanePhotoBrowser is a scrolling photo gallary written in Swift 3.  The API t
 * **Swipe Gestures:** Close the full screen browser by tapping the close button, tapping the image, or swiping up.
 * **Swift:** This project was writen completely in Swift.
 
+##Swift Version
+For using swift version `3.0`, tags `0.2.*`  
+For using swift version `2.3`, tags `0.1.*`
+
 ##Setup
 To get started, install the JanePhotoBrowser either using [Cocoapods](https://cocoapods.org/) or by adding the files in the `Class` folder into your project.
 
