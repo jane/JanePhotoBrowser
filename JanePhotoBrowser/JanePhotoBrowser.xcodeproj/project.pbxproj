@@ -252,16 +252,16 @@
 					B3054A2C1CCEE1C200A36054 = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = YU9U6J5U3K;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0810;
 					};
 					B3054A401CCEE1C200A36054 = {
 						CreatedOnToolsVersion = 7.3;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0810;
 						TestTargetID = B3054A2C1CCEE1C200A36054;
 					};
 					B3054A4B1CCEE1C200A36054 = {
 						CreatedOnToolsVersion = 7.3;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0810;
 						TestTargetID = B3054A2C1CCEE1C200A36054;
 					};
 				};
