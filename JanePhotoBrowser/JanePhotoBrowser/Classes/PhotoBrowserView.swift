@@ -148,6 +148,7 @@ open class PhotoBrowserView:UIView {
     //MARK: - PhotoBrowser Methods
     open func scrollToPhoto(atIndex index:Int, animated:Bool) {
         let indexPath:IndexPath = IndexPath(row: index, section: 0)
+        guard indexPath.row < self.collectionView.numberOfItems(inSection: 0) && indexPath.row >= 0 else { self.reloadPhotos(); return }
         self.collectionView.scrollToItem(at: indexPath, at: [.centeredVertically, .centeredHorizontally], animated: animated)
         self.updateLabelView()
     }
