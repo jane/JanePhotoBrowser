@@ -251,6 +251,7 @@
 				TargetAttributes = {
 					B3054A2C1CCEE1C200A36054 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = YU9U6J5U3K;
 						LastSwiftMigration = 0800;
 					};
 					B3054A401CCEE1C200A36054 = {
@@ -473,7 +474,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YU9U6J5U3K;
 				INFOPLIST_FILE = JanePhotoBrowser/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -487,7 +488,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YU9U6J5U3K;
 				INFOPLIST_FILE = JanePhotoBrowser/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
