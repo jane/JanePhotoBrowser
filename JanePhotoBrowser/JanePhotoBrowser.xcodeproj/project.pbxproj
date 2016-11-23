@@ -59,6 +59,7 @@
 		B3054A691CCFCA5700A36054 /* PhotoBrowserProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoBrowserProtocols.swift; path = Classes/PhotoBrowserProtocols.swift; sourceTree = "<group>"; };
 		B3054A6D1CD00E5400A36054 /* PhotoBrowserTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoBrowserTransition.swift; path = Classes/PhotoBrowserTransition.swift; sourceTree = "<group>"; };
 		F82E51E31D00A31100A0F041 /* PhotoBrowserStyleKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoBrowserStyleKit.swift; path = Classes/PhotoBrowserStyleKit.swift; sourceTree = "<group>"; };
+		F8DDCE531DE64E9A007270BF /* JanePhotoBrowser.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = JanePhotoBrowser.podspec; path = ../JanePhotoBrowser.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +90,7 @@
 		B3054A241CCEE1C200A36054 = {
 			isa = PBXGroup;
 			children = (
+				F8DDCE531DE64E9A007270BF /* JanePhotoBrowser.podspec */,
 				B3054A2F1CCEE1C200A36054 /* JanePhotoBrowser */,
 				B3054A441CCEE1C200A36054 /* JanePhotoBrowserTests */,
 				B3054A4F1CCEE1C200A36054 /* JanePhotoBrowserUITests */,

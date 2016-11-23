@@ -7,6 +7,7 @@
 
 import UIKit
 
+@IBDesignable
 open class PhotoBrowserView:UIView {
     //MARK: - Private Variables
     fileprivate let collectionView:UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: PhotoBrowserView.layout())
@@ -39,6 +40,39 @@ open class PhotoBrowserView:UIView {
     @IBInspectable open var shouldDisplayCloseButton:Bool = false {
         didSet {
             self.closeButton.isHidden = !shouldDisplayCloseButton
+        }
+    }
+    
+    open override func prepareForInterfaceBuilder() {
+        self.setupPhotoView()
+        
+        self.layer.borderColor = UIColor(white: 0.8, alpha: 0.9).cgColor
+        self.layer.borderWidth = 1
+        
+        var frame = self.bounds
+        frame.origin.x += 1
+        frame.origin.y += 1
+        frame.size.width -= 2
+        frame.size.height -= 2
+        let label = UILabel(frame: frame)
+        label.text = "JanePhotoBrowser"
+        label.textColor = UIColor.white
+        
+        if #available(iOS 8.2, *) {
+            label.font = UIFont.systemFont(ofSize: 13, weight: UIFontWeightBold)
+        } else {
+            label.font = UIFont(name: "HelveticaNeue-Medium", size: 13)
+        }
+        
+        label.backgroundColor = UIColor(red: 0.718, green: 0.8, blue: 0.898, alpha: 0.9)
+        
+        label.layer.borderColor = UIColor.white.cgColor
+        label.layer.borderWidth = 1
+        label.textAlignment = .center
+        
+        self.addSubview(label)
+        if let superview = self.imageLabel.superview {
+            self.bringSubview(toFront: superview)
         }
     }
     
@@ -75,9 +109,15 @@ open class PhotoBrowserView:UIView {
     
     fileprivate func updateLabelView() {
         let hasWidth = self.collectionView.frame.size.width > 0
-        let row = hasWidth ? Int(self.collectionView.contentOffset.x / self.collectionView.frame.size.width) + 1 : 1
+        var row = hasWidth ? Int(self.collectionView.contentOffset.x / self.collectionView.frame.size.width) + 1 : 1
         
-        self.imageLabel.text = "\(row) of \(self.dataSource?.numberOfPhotos(self) ?? 0)"
+        let max = self.dataSource?.numberOfPhotos(self) ?? 0
+        
+        if row > max {
+            row = max
+        }
+        
+        self.imageLabel.text = "\(row) of \(max)"
     }
     
     fileprivate func addVisualConstraints(_ vertical:String, horizontal:String, view:UIView) {
