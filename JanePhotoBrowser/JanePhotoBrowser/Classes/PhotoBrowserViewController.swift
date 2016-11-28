@@ -54,23 +54,24 @@ open class PhotoBrowserViewController: UIViewController {
     }
     
     func panGesture(_ recognizer:UIPanGestureRecognizer) {
-        let flickSpeed:CGFloat = -1300
+        let flickSpeed:CGFloat = 1300
         
         //Find progress of upward swipe.
         var progress = recognizer.translation(in: self.view).y / self.view.bounds.size.height
-        progress = fabs(max(-1.0, min(0.0, progress * 2)))
+        progress = min(1.0, fabs(progress) * 2)
 
         //Update progress
         switch (recognizer.state) {
             case .began:
                 self.interactiveAnimation = UIPercentDrivenInteractiveTransition()
+                self.interactiveAnimation?.completionCurve = .easeInOut
                 self.dismiss(animated: true, completion: nil)
             case .changed:
                 self.interactiveAnimation?.update(progress)
             case .ended: fallthrough
             case .cancelled:
                 //If we have swiped over half way, or we flicked the view upward then we want to finish the transition
-                if progress > 0.5 || recognizer.velocity(in: self.view).y < flickSpeed {
+                if progress > 0.5 || fabs(recognizer.velocity(in: self.view).y) > flickSpeed {
                     self.interactiveAnimation?.finish()
                 } else {
                     self.interactiveAnimation?.cancel()
