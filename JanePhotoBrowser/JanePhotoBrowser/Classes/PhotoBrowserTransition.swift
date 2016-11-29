@@ -47,7 +47,7 @@ class PhotoBrowserTransition: NSObject, UIViewControllerAnimatedTransitioning {
         containerView.addSubview(destinationViewController.view)
         containerView.addSubview(snapShot)
         
-        if let selectedIndex:Int = originPhotoView?.visibleIndexPath()?.row {
+        if let selectedIndex:Int = originPhotoView?.visibleIndexPath()?.item {
             photoView.scrollToPhoto(atIndex: selectedIndex, animated: false)
         }
         

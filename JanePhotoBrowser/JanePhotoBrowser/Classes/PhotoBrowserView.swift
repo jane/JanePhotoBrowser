@@ -24,6 +24,8 @@ open class PhotoBrowserView:UIView {
     open weak var delegate:PhotoBrowserDelegate?
     var viewIsAnimating:Bool = false
     
+    var currentVisibleIndexPath: IndexPath?
+    
     //MARK: - IBInspectable
     @IBInspectable open var canZoom:Bool = false {
         didSet {
@@ -93,8 +95,17 @@ open class PhotoBrowserView:UIView {
     }
     
     override open func layoutSubviews() {
+        let indexPath = self.currentVisibleIndexPath ?? self.visibleIndexPath()
+        
         super.layoutSubviews()
+        
         self.updateLabelView()
+        self.collectionView.reloadData()
+        self.collectionView.collectionViewLayout = PhotoBrowserView.layout()
+        
+        if let visibleIndexPath = indexPath {
+            self.scrollToPhoto(atIndex: visibleIndexPath.item, animated: false)
+        }
     }
     
     //MARK: - Private PhotoBrowser Methods
@@ -190,6 +201,7 @@ open class PhotoBrowserView:UIView {
         let indexPath:IndexPath = IndexPath(row: index, section: 0)
         guard indexPath.row < self.collectionView.numberOfItems(inSection: 0) && indexPath.row >= 0 else { self.reloadPhotos(); return }
         self.collectionView.scrollToItem(at: indexPath, at: [.centeredVertically, .centeredHorizontally], animated: animated)
+        self.currentVisibleIndexPath = indexPath
         self.updateLabelView()
     }
     
@@ -204,11 +216,11 @@ open class PhotoBrowserView:UIView {
     }
     open func visibleIndexPath() -> IndexPath? {
         let indexPaths = self.collectionView.indexPathsForVisibleItems
-        print(indexPaths)
         return indexPaths.first
     }
     
     open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        self.currentVisibleIndexPath = self.visibleIndexPath()
         self.updateLabelView()
     }
     
@@ -235,6 +247,8 @@ extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate,
             cell.imageView.image = image
             cell.canZoom = self.canZoom
         }
+        
+        cell.setImageViewSize(self.bounds.size)
         
         cell.tapped = {
             self.delegate?.photoBrowser(self, photoTappedAtIndex: indexPath)
