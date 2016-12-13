@@ -254,8 +254,4 @@ extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate,
         
         return cell
     }
-    
-//    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        return self.frame.size
-//    }
 }
