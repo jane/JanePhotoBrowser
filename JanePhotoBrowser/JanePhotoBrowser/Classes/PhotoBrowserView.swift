@@ -23,6 +23,7 @@ open class PhotoBrowserView:UIView {
     }
     open weak var delegate:PhotoBrowserDelegate?
     var viewIsAnimating:Bool = false
+    var currentVisibleIndexPath: IndexPath?
     
     //MARK: - IBInspectable
     @IBInspectable open var canZoom:Bool = false {
@@ -93,8 +94,17 @@ open class PhotoBrowserView:UIView {
     }
     
     override open func layoutSubviews() {
+        let indexPath = self.currentVisibleIndexPath ?? self.visibleIndexPath()
         super.layoutSubviews()
         self.updateLabelView()
+
+        let layout = PhotoBrowserView.layout()
+        layout.itemSize = self.bounds.size
+        self.collectionView.collectionViewLayout = layout
+        
+        if let visibleIndexPath = indexPath {
+            self.scrollToPhoto(atIndex: visibleIndexPath.item, animated: false)
+        }
     }
     
     //MARK: - Private PhotoBrowser Methods
@@ -190,6 +200,8 @@ open class PhotoBrowserView:UIView {
         let indexPath:IndexPath = IndexPath(row: index, section: 0)
         guard indexPath.row < self.collectionView.numberOfItems(inSection: 0) && indexPath.row >= 0 else { self.reloadPhotos(); return }
         self.collectionView.scrollToItem(at: indexPath, at: [.centeredVertically, .centeredHorizontally], animated: animated)
+        self.currentVisibleIndexPath = indexPath
+        
         self.updateLabelView()
     }
     
@@ -204,11 +216,11 @@ open class PhotoBrowserView:UIView {
     }
     open func visibleIndexPath() -> IndexPath? {
         let indexPaths = self.collectionView.indexPathsForVisibleItems
-        print(indexPaths)
         return indexPaths.first
     }
     
     open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        self.currentVisibleIndexPath = self.visibleIndexPath()
         self.updateLabelView()
     }
     
@@ -241,9 +253,5 @@ extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate,
         }
         
         return cell
-    }
-    
-    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return self.frame.size
     }
 }
