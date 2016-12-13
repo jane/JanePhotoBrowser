@@ -12,8 +12,8 @@ open class PhotoBrowserViewController: UIViewController {
     fileprivate var interactiveAnimation: UIPercentDrivenInteractiveTransition?
     
     //MARK: - Variables
-    var initialIndexPath : IndexPath?
-    weak var originPhotoView: PhotoBrowserView?
+    open var initialIndexPath : IndexPath?
+    weak open var originPhotoView: PhotoBrowserView?
     open var photoView:PhotoBrowserView? = PhotoBrowserView()
     
     //MARK: - UIViewController
