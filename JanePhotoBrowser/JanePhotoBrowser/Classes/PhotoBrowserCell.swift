@@ -54,8 +54,8 @@ class PhotoBrowserCell:UICollectionViewCell, PhotoBrowserViewCell {
         
         //Add ImageView constraints
         self.imageView.translatesAutoresizingMaskIntoConstraints = false
-        let vImageConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[view(\(self.frame.size.height))]", options: [], metrics: nil, views: ["view":self.imageView])
-        let hImageConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[view(\(self.frame.size.width))]|", options: [], metrics: nil, views: ["view":self.imageView])
+        let vImageConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]", options: [], metrics: nil, views: ["view":self.imageView])
+        let hImageConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options: [], metrics: nil, views: ["view":self.imageView])
         let vConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|", options: [], metrics: nil, views: ["view":self.scrollView])
         let hConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options: [], metrics: nil, views: ["view":self.scrollView])
         
@@ -63,6 +63,9 @@ class PhotoBrowserCell:UICollectionViewCell, PhotoBrowserViewCell {
         self.addConstraints(hImageConstraints)
         self.addConstraints(vConstraints)
         self.addConstraints(hConstraints)
+        
+        self.addConstraint(NSLayoutConstraint(item: self, attribute: .height, relatedBy: .equal, toItem: self.imageView, attribute: .height, multiplier: 1, constant: 0))
+        self.addConstraint(NSLayoutConstraint(item: self, attribute: .width, relatedBy: .equal, toItem: self.imageView, attribute: .width, multiplier: 1, constant: 0))
         
         //Add Tap Gesture to capture cell tap
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
