@@ -10,7 +10,7 @@ import UIKit
 
 open class PhotoBrowserStyleKit: NSObject {
     
-    open class func drawXIcon(fillColor: UIColor = UIColor(red: 0.824, green: 0.334, blue: 0.746, alpha: 1.000)) {
+    open class func drawXIcon(fillColor: UIColor = UIColor(red: 0.333, green: 0.333, blue: 0.333, alpha: 1.000)) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
         
@@ -49,7 +49,7 @@ open class PhotoBrowserStyleKit: NSObject {
         context?.restoreGState()
     }
     
-    open class func imageOfXIcon(fillColor: UIColor = UIColor(red: 0.824, green: 0.334, blue: 0.746, alpha: 1.000)) -> UIImage {
+    open class func imageOfXIcon(fillColor: UIColor = UIColor(red: 0.333, green: 0.333, blue: 0.333, alpha: 1.000)) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 24, height: 24), false, 0)
         PhotoBrowserStyleKit.drawXIcon(fillColor: fillColor)
         
