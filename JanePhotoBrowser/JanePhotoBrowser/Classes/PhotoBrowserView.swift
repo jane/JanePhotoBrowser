@@ -14,6 +14,30 @@ open class PhotoBrowserView:UIView {
     fileprivate var imageLabel:UILabel = UILabel()
     fileprivate let closeButton:UIButton = UIButton()
     
+    fileprivate var numberViewRightConstraint: NSLayoutConstraint?
+    fileprivate var defaultNumberViewRightOffset: CGFloat = 20
+    public var numberViewRightOffset: CGFloat {
+        get {
+            return self.numberViewRightConstraint?.constant ?? self.defaultNumberViewRightOffset
+        }
+        set {
+            self.defaultNumberViewRightOffset = newValue
+            self.numberViewRightConstraint?.constant = newValue
+        }
+    }
+    
+    fileprivate var numberViewBottomConstraint: NSLayoutConstraint?
+    fileprivate var defaultNumberViewBottomOffset: CGFloat = 20
+    public var numberViewBottomOffset: CGFloat {
+        get {
+            return self.numberViewBottomConstraint?.constant ?? self.defaultNumberViewBottomOffset
+        }
+        set {
+            self.defaultNumberViewBottomOffset = newValue
+            self.numberViewBottomConstraint?.constant = newValue
+        }
+    }
+    
     //MARK: - Variables
     open weak var dataSource:PhotoBrowserDataSource? {
         didSet {
@@ -45,8 +69,6 @@ open class PhotoBrowserView:UIView {
     }
     
     open override func prepareForInterfaceBuilder() {
-        self.setupPhotoView()
-        
         self.layer.borderColor = UIColor(white: 0.8, alpha: 0.9).cgColor
         self.layer.borderWidth = 1
         
@@ -130,11 +152,14 @@ open class PhotoBrowserView:UIView {
         self.imageLabel.text = "\(row) of \(max)"
     }
     
-    fileprivate func addVisualConstraints(_ vertical:String, horizontal:String, view:UIView) {
-        let veritcalConstraints = NSLayoutConstraint.constraints(withVisualFormat: vertical, options: [], metrics: nil, views: ["view":view])
+    @discardableResult
+    fileprivate func addVisualConstraints(_ vertical:String, horizontal:String, view:UIView) -> (vertical: [NSLayoutConstraint], horizontal: [NSLayoutConstraint]) {
+        let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: vertical, options: [], metrics: nil, views: ["view":view])
         let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: horizontal, options: [], metrics: nil, views: ["view":view])
-        self.addConstraints(veritcalConstraints)
+        self.addConstraints(verticalConstraints)
         self.addConstraints(horizontalConstraints)
+        
+        return (vertical: verticalConstraints, horizontal: horizontalConstraints)
     }
     
     fileprivate func setupCloseButton() {
@@ -183,7 +208,10 @@ open class PhotoBrowserView:UIView {
         
         //Setup Number Label
         numberView.backgroundColor = UIColor(white: 1.0, alpha: 0.8)
-        self.addVisualConstraints("V:[view(30)]-10-|", horizontal: "H:[view(70)]-10-|", view: numberView)
+        let constraints = self.addVisualConstraints("V:[view(30)]-\(self.numberViewBottomOffset)-|", horizontal: "H:[view(70)]-\(self.numberViewRightOffset)-|", view: numberView)
+        
+        self.numberViewRightConstraint = constraints.horizontal.first
+        self.numberViewBottomConstraint = constraints.vertical.first
         
         numberView.addSubview(self.imageLabel)
         self.imageLabel.font = self.labelFont
