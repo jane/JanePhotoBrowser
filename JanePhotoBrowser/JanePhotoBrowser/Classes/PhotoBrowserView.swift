@@ -12,6 +12,7 @@ open class PhotoBrowserView:UIView {
     //MARK: - Private Variables
     fileprivate let collectionView:UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: PhotoBrowserView.layout())
     fileprivate var imageLabel:UILabel = UILabel()
+    fileprivate var closeButtonWrapper: UIView = UIView()
     fileprivate let closeButton:UIButton = UIButton()
     
     fileprivate var numberViewRightConstraint: NSLayoutConstraint?
@@ -38,6 +39,8 @@ open class PhotoBrowserView:UIView {
         }
     }
     
+    
+    
     //MARK: - Variables
     open weak var dataSource:PhotoBrowserDataSource? {
         didSet {
@@ -56,7 +59,7 @@ open class PhotoBrowserView:UIView {
         }
     }
     
-    @IBInspectable open var labelFont:UIFont = UIFont.systemFont(ofSize: 10) {
+    @IBInspectable open var labelFont:UIFont = UIFont.systemFont(ofSize: 12) {
         didSet {
             self.imageLabel.font = labelFont
         }
@@ -64,7 +67,7 @@ open class PhotoBrowserView:UIView {
     
     @IBInspectable open var shouldDisplayCloseButton:Bool = false {
         didSet {
-            self.closeButton.isHidden = !shouldDisplayCloseButton
+            self.closeButtonWrapper.isHidden = !shouldDisplayCloseButton
         }
     }
     
@@ -149,6 +152,7 @@ open class PhotoBrowserView:UIView {
             row = max
         }
         
+        self.imageLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         self.imageLabel.text = "\(row) of \(max)"
     }
     
@@ -163,11 +167,11 @@ open class PhotoBrowserView:UIView {
     }
     
     fileprivate func setupCloseButton() {
-        self.closeButton.backgroundColor = UIColor(white: 1.0, alpha: 0.8)
-        self.closeButton.setImage(PhotoBrowserStyleKit.imageOfXIcon(fillColor: UIColor.black), for: .normal)
+        self.closeButton.backgroundColor = UIColor.clear
+        self.closeButton.setImage(PhotoBrowserStyleKit.imageOfXIcon(fillColor: UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)), for: .normal)
         self.closeButton.addTarget(self, action: #selector(self.closeTapped(_:)), for: .touchUpInside)
-        self.closeButton.layer.cornerRadius = 5
-        self.closeButton.layer.masksToBounds = true
+        self.closeButtonWrapper.layer.cornerRadius = 3
+        self.closeButtonWrapper.layer.masksToBounds = true
         
         if #available(iOS 8.2, *) {
             self.closeButton.titleLabel?.font = UIFont.systemFont(ofSize: 26, weight: UIFontWeightThin)
@@ -175,15 +179,26 @@ open class PhotoBrowserView:UIView {
             self.closeButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Thin", size: 30)
         }
         
-        self.addVisualConstraints("V:|-30-[view(35)]", horizontal: "H:[view(35)]-20-|", view: self.closeButton)
+        self.addVisualConstraints("V:|-30-[view(35)]", horizontal: "H:[view(35)]-20-|", view: self.closeButtonWrapper)
     }
     
     fileprivate func setupPhotoView() {
+        
         let numberView:UIView = UIView()
-        numberView.layer.cornerRadius = 5
+        numberView.layer.cornerRadius = 3
         numberView.layer.masksToBounds = true
         
-        self.closeButton.isHidden = !self.shouldDisplayCloseButton
+        let closeBlurEffect = UIBlurEffect(style: UIBlurEffectStyle.extraLight)
+        let closeBlurEffectView = UIVisualEffectView(effect: closeBlurEffect)
+        //always fill the view
+        closeBlurEffectView.frame = self.closeButtonWrapper.bounds
+        closeBlurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        self.closeButtonWrapper.addSubview(closeBlurEffectView)
+        self.closeButtonWrapper.backgroundColor = UIColor.clear
+        self.closeButtonWrapper.addSubview(self.closeButton)
+        
+        self.closeButtonWrapper.isHidden = !self.shouldDisplayCloseButton
         
         self.collectionView.backgroundColor = self.backgroundColor
         self.collectionView.register(PhotoBrowserCell.self, forCellWithReuseIdentifier: "PhotoCell")
@@ -193,11 +208,12 @@ open class PhotoBrowserView:UIView {
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
         self.imageLabel.translatesAutoresizingMaskIntoConstraints = false
         self.closeButton.translatesAutoresizingMaskIntoConstraints = false
+        self.closeButtonWrapper.translatesAutoresizingMaskIntoConstraints = false
         
         //Add all the subviews before applying layout constraints
         self.addSubview(self.collectionView)
         self.addSubview(numberView)
-        self.addSubview(self.closeButton)
+        self.addSubview(self.closeButtonWrapper)
         
         //Setup CollectionView datasource and delegate
         self.collectionView.dataSource = self
@@ -205,9 +221,20 @@ open class PhotoBrowserView:UIView {
         
         //Setup collectionview layout constraints
         self.addVisualConstraints("V:|[view]|", horizontal: "H:|[view]|", view: self.collectionView)
+        self.addVisualConstraints("V:|[view]|", horizontal: "H:|[view]|", view: self.closeButton)
         
         //Setup Number Label
-        numberView.backgroundColor = UIColor(white: 1.0, alpha: 0.8)
+        numberView.backgroundColor = UIColor.clear // UIColor(white: 1.0, alpha: 0.8)
+        
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.extraLight)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        //always fill the view
+        blurEffectView.frame = numberView.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        numberView.addSubview(blurEffectView)
+        
+        
         let constraints = self.addVisualConstraints("V:[view(30)]-\(self.numberViewBottomOffset)-|", horizontal: "H:[view(70)]-\(self.numberViewRightOffset)-|", view: numberView)
         
         self.numberViewRightConstraint = constraints.horizontal.first
