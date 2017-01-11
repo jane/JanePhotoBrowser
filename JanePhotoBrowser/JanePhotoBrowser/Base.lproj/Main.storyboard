@@ -21,19 +21,35 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lbv-d5-lmX" customClass="PhotoBrowserView" customModule="JanePhotoBrowser" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="20" width="375" height="183"/>
-                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lbv-d5-lmX" customClass="PhotoBrowserView" customModule="JanePhotoBrowser" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="114" width="375" height="183"/>
+                                <color key="backgroundColor" red="0.95283776521682739" green="0.95300072431564331" blue="0.95282751321792603" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="183" id="SIH-m2-cEf"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="JanePhotoBrowser Cocoapod" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="25E-3L-sYi">
+                                <rect key="frame" x="30" y="50" width="315" height="24"/>
+                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Gm-fW-EbL">
+                                <rect key="frame" x="159" y="341" width="0.0" height="0.0"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Lbv-d5-lmX" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="0WH-LN-xw8"/>
                             <constraint firstAttribute="leading" secondItem="Lbv-d5-lmX" secondAttribute="leading" id="UJy-nE-obG"/>
+                            <constraint firstAttribute="trailing" secondItem="25E-3L-sYi" secondAttribute="trailing" constant="30" id="VEb-8Z-gIO"/>
                             <constraint firstAttribute="trailing" secondItem="Lbv-d5-lmX" secondAttribute="trailing" id="XDP-hs-ZUb"/>
+                            <constraint firstItem="25E-3L-sYi" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="30" id="kAc-pu-wWd"/>
+                            <constraint firstItem="Lbv-d5-lmX" firstAttribute="top" secondItem="25E-3L-sYi" secondAttribute="bottom" constant="30" id="kYC-7R-d67"/>
+                            <constraint firstItem="25E-3L-sYi" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="30" id="nxJ-vQ-Xh3"/>
                         </constraints>
                     </view>
                     <connections>
