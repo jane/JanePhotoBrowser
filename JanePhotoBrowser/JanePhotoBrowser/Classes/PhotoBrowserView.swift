@@ -154,6 +154,7 @@ open class PhotoBrowserView:UIView {
         
         self.imageLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         self.imageLabel.text = "\(row) of \(max)"
+        self.imageLabel.accessibilityIdentifier = "JanePhotoBrowser-imageCountLabel"
     }
     
     @discardableResult
