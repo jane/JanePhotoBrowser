@@ -119,7 +119,6 @@ open class PhotoBrowserView:UIView {
     }
     
     override open func layoutSubviews() {
-        let indexPath = self.currentVisibleIndexPath ?? self.visibleIndexPath()
         super.layoutSubviews()
         self.updateLabelView()
 
@@ -127,7 +126,7 @@ open class PhotoBrowserView:UIView {
         layout.itemSize = self.bounds.size
         self.collectionView.collectionViewLayout = layout
         
-        if let visibleIndexPath = indexPath {
+        if let visibleIndexPath = self.currentVisibleIndexPath ?? self.visibleIndexPath() {
             self.scrollToPhoto(atIndex: visibleIndexPath.item, animated: false)
         }
     }
