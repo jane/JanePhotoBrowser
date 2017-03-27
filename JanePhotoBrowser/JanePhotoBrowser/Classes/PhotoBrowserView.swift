@@ -123,8 +123,11 @@ open class PhotoBrowserView:UIView {
         self.updateLabelView()
 
         let layout = PhotoBrowserView.layout()
-        layout.itemSize = self.bounds.size
-        self.collectionView.collectionViewLayout = layout
+        
+        if layout.itemSize != self.bounds.size {
+            layout.itemSize = self.bounds.size
+            self.collectionView.collectionViewLayout = layout
+        }
         
         if let visibleIndexPath = self.currentVisibleIndexPath ?? self.visibleIndexPath() {
             self.scrollToPhoto(atIndex: visibleIndexPath.item, animated: false)
