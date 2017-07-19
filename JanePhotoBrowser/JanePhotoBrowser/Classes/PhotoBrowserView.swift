@@ -16,7 +16,7 @@ open class PhotoBrowserView:UIView {
     fileprivate let closeButton:UIButton = UIButton()
     
     fileprivate var numberViewRightConstraint: NSLayoutConstraint?
-    fileprivate var defaultNumberViewRightOffset: CGFloat = 20
+    fileprivate var defaultNumberViewRightOffset: CGFloat = 16
     public var numberViewRightOffset: CGFloat {
         get {
             return self.numberViewRightConstraint?.constant ?? self.defaultNumberViewRightOffset
@@ -28,7 +28,7 @@ open class PhotoBrowserView:UIView {
     }
     
     fileprivate var numberViewBottomConstraint: NSLayoutConstraint?
-    fileprivate var defaultNumberViewBottomOffset: CGFloat = 20
+    fileprivate var defaultNumberViewBottomOffset: CGFloat = 16
     public var numberViewBottomOffset: CGFloat {
         get {
             return self.numberViewBottomConstraint?.constant ?? self.defaultNumberViewBottomOffset
@@ -182,7 +182,7 @@ open class PhotoBrowserView:UIView {
             self.closeButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Thin", size: 30)
         }
         
-        self.addVisualConstraints("V:|-30-[view(35)]", horizontal: "H:[view(35)]-20-|", view: self.closeButtonWrapper)
+        self.addVisualConstraints("V:|-24-[view(35)]", horizontal: "H:[view(35)]-16-|", view: self.closeButtonWrapper)
     }
     
     fileprivate func setupPhotoView() {
