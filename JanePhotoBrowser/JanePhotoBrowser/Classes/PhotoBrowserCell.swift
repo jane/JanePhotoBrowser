@@ -73,7 +73,7 @@ class PhotoBrowserCell:UICollectionViewCell, PhotoBrowserViewCell {
     }
     
     //MARK: - PhotoBrowserCell Methods
-    func handleTap(_ gesture:UITapGestureRecognizer) {
+    @objc func handleTap(_ gesture: UITapGestureRecognizer) {
         guard let callback = self.tapped else { return }
         callback()
     }
