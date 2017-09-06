@@ -85,7 +85,7 @@ open class PhotoBrowserView:UIView {
         label.textColor = UIColor.white
         
         if #available(iOS 8.2, *) {
-            label.font = UIFont.systemFont(ofSize: 13, weight: UIFontWeightBold)
+            label.font = UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.bold)
         } else {
             label.font = UIFont(name: "HelveticaNeue-Medium", size: 13)
         }
@@ -177,7 +177,7 @@ open class PhotoBrowserView:UIView {
         self.closeButtonWrapper.layer.masksToBounds = true
         
         if #available(iOS 8.2, *) {
-            self.closeButton.titleLabel?.font = UIFont.systemFont(ofSize: 26, weight: UIFontWeightThin)
+            self.closeButton.titleLabel?.font = UIFont.systemFont(ofSize: 26, weight: UIFont.Weight.thin)
         } else {
             self.closeButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Thin", size: 30)
         }
@@ -263,7 +263,7 @@ open class PhotoBrowserView:UIView {
         self.updateLabelView()
     }
     
-    open func closeTapped(_ sender:UIButton) {
+    @objc open func closeTapped(_ sender:UIButton) {
         guard let photoDelegate = self.delegate else { return }
         photoDelegate.closeButtonTapped()
     }

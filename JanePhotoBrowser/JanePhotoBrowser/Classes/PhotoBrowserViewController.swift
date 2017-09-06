@@ -53,7 +53,7 @@ open class PhotoBrowserViewController: UIViewController {
         }
     }
     
-    func panGesture(_ recognizer:UIPanGestureRecognizer) {
+    @objc func panGesture(_ recognizer:UIPanGestureRecognizer) {
         let flickSpeed:CGFloat = 1300
         
         //Find progress of upward swipe.
