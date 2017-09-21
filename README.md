@@ -1,21 +1,21 @@
 # Jane Photo Browser
 
-##Overview
+## Overview
 The JanePhotoBrowser is a scrolling photo gallary written in Swift 3.  The API to interface with the photo browser is similar to the APIs used in UITableViews and UICollectionViews and should have a familiar feel.
 
 ![PhotoBrowser](JanePhotoBrowser.gif)
 
-##Features
+## Features
 * **Easy setup:**  Just add a PhotoBrowserView to your ViewController and implement the datasource and delegate
 * **Full Screen Browser:** Tap on an image in the PhotoView to launch the full screen browser.
 * **Swipe Gestures:** Close the full screen browser by tapping the close button, tapping the image, or swiping up.
 * **Swift:** This project was writen completely in Swift.
 
-##Swift Version
+## Swift Version
 For using swift version `3.0`, tags `0.2.*`  
 For using swift version `2.3`, tags `0.1.*`
 
-##Setup
+## Setup
 To get started, install the JanePhotoBrowser either using [Cocoapods](https://cocoapods.org/) or by adding the files in the `Class` folder into your project.
 
 Add a PhotoBrowserView either in the Storyboard or programmatically by calling one of the initializers and set the datasource and delegate.  
@@ -33,7 +33,7 @@ override func viewDidLoad() {
 
 > If your delegate is a UIViewController, then the default implementation of the delegate methods is done for you in the PhotoBrowserDelegate protocol extension.
 
-###Data Source
+### Data Source
 The data source protocol supplies methods for the PhotoBrowser to get the images that need to be included.
 
 **Data Source Protocol:**
@@ -68,10 +68,10 @@ func photoBrowser(photoBrowser: PhotoBrowserView, photoAtIndex index: Int, forCe
 }
 ```
 
-##License
+## License
 This project is made available with the MIT License.
 
-##Feedback
+## Feedback
 If you have any issues or feature request for this project, please create an issue and/or send us a pull request.
 
 We hope you enjoy the JanePhotoBrowser!
