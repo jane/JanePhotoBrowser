@@ -182,7 +182,7 @@ open class PhotoBrowserView:UIView {
             self.closeButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Thin", size: 30)
         }
         
-        self.addVisualConstraints("V:|-24-[view(35)]", horizontal: "H:[view(35)]-16-|", view: self.closeButtonWrapper)
+        self.addVisualConstraints("V:|-[view(35)]", horizontal: "H:[view(35)]-16-|", view: self.closeButtonWrapper)
     }
     
     fileprivate func setupPhotoView() {
@@ -236,7 +236,6 @@ open class PhotoBrowserView:UIView {
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
         numberView.addSubview(blurEffectView)
-        
         
         let constraints = self.addVisualConstraints("V:[view(30)]-\(self.numberViewBottomOffset)-|", horizontal: "H:[view(70)]-\(self.numberViewRightOffset)-|", view: numberView)
         
