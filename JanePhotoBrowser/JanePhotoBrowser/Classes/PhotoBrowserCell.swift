@@ -7,16 +7,12 @@
 
 import UIKit
 
-public protocol PhotoBrowserViewCell {
-    var imageView:UIImageView { get set }
-}
-
-class PhotoBrowserCell:UICollectionViewCell, PhotoBrowserViewCell {
+public class PhotoBrowserCell:UICollectionViewCell {
     //MARK: - Private Variables
     fileprivate var scrollView:UIScrollView = UIScrollView()
     
     //MARK: - Variables
-    var imageView:UIImageView = UIImageView()
+    public var imageView:UIImageView = UIImageView()
     var tapped:(()->())? = nil
     var canZoom:Bool = false {
         didSet {
@@ -25,17 +21,17 @@ class PhotoBrowserCell:UICollectionViewCell, PhotoBrowserViewCell {
     }
     
     //MARK: - UICollectionViewCell
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         self.setupImageView()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.setupImageView()
     }
     
-    override func prepareForReuse() {
+    public override func prepareForReuse() {
         super.prepareForReuse()
         self.scrollView.zoomScale = 1.0
     }
@@ -82,9 +78,7 @@ class PhotoBrowserCell:UICollectionViewCell, PhotoBrowserViewCell {
 
 //MARK: - UIScrollViewDelegate
 extension PhotoBrowserCell: UIScrollViewDelegate {
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+    public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.imageView
     }
-    
-    
 }

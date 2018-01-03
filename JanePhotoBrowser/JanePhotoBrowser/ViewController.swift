@@ -40,8 +40,8 @@ extension ViewController:PhotoBrowserDataSource, PhotoBrowserDelegate {
         return self.images.count
     }
     
-    func photoBrowser(_ photoBrowser: PhotoBrowserView, photoAtIndex index: Int, forCell cell:PhotoBrowserViewCell) -> UIImage {
-        return self.images[index]
+    func photoBrowser(_ photoBrowser: PhotoBrowserView, photoAtIndex index: Int, forCell cell:PhotoBrowserCell, completion: @escaping (UIImage?) -> ()) {
+        completion(self.images[index])
     }
 }
 
