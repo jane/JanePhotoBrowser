@@ -300,10 +300,16 @@ extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate,
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell:PhotoBrowserCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoBrowserCell
         
-        if let image = self.dataSource?.photoBrowser(self, photoAtIndex: indexPath.row, forCell:cell) {
-            cell.imageView.image = image
-            cell.canZoom = self.canZoom
+        cell.imageView.image = nil
+        cell.imageView.tag = indexPath.item
+        self.dataSource?.photoBrowser(self, photoAtIndex: indexPath.row, forCell:cell) { [weak cell] image in
+            guard let cell = cell, cell.imageView.tag == indexPath.item else { return }
+            
+            UIView.transition(with: cell.imageView, duration: 0.3, options: [.transitionCrossDissolve], animations: {
+                cell.imageView.image = image
+            }, completion: nil)
         }
+        cell.canZoom = self.canZoom
         
         cell.tapped = {
             self.delegate?.photoBrowser(self, photoTappedAtIndex: indexPath)

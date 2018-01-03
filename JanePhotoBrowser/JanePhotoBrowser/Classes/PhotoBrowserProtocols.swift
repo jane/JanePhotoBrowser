@@ -8,7 +8,7 @@
 import UIKit
 
 public protocol PhotoBrowserDataSource:class {
-    func photoBrowser(_ photoBrowser:PhotoBrowserView, photoAtIndex index: Int, forCell cell:PhotoBrowserViewCell) -> UIImage
+    func photoBrowser(_ photoBrowser:PhotoBrowserView, photoAtIndex index: Int, forCell cell:PhotoBrowserCell, completion: @escaping (UIImage?) -> ())
     func numberOfPhotos(_ photoBrowser:PhotoBrowserView) -> Int
 }
 
