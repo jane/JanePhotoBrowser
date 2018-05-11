@@ -26,6 +26,7 @@ open class PhotoBrowserView:UIView {
             self.numberViewRightConstraint?.constant = newValue
         }
     }
+    public var visibleRow: Int = -1
     
     fileprivate var numberViewBottomConstraint: NSLayoutConstraint?
     fileprivate var defaultNumberViewBottomOffset: CGFloat = 16
@@ -48,7 +49,11 @@ open class PhotoBrowserView:UIView {
             self.updateLabelView()
         }
     }
-    open weak var delegate:PhotoBrowserDelegate?
+    open weak var delegate:PhotoBrowserDelegate? {
+        didSet {
+            self.updateLabelView()
+        }
+    }
     var viewIsAnimating:Bool = false
     var currentVisibleIndexPath: IndexPath?
     
@@ -121,7 +126,7 @@ open class PhotoBrowserView:UIView {
     override open func layoutSubviews() {
         super.layoutSubviews()
         self.updateLabelView()
-
+        
         let layout = PhotoBrowserView.layout()
         
         if layout.itemSize != self.bounds.size {
@@ -144,7 +149,7 @@ open class PhotoBrowserView:UIView {
         return layout
     }
     
-    fileprivate func updateLabelView() {
+    func updateLabelView() {
         let hasWidth = self.collectionView.frame.size.width > 0
         var row = hasWidth ? Int(self.collectionView.contentOffset.x / self.collectionView.frame.size.width) + 1 : 1
         
@@ -152,6 +157,11 @@ open class PhotoBrowserView:UIView {
         
         if row > max {
             row = max
+        }
+        
+        if self.visibleRow != row {
+            self.delegate?.photoBrowser(self, photoViewedAtIndex: IndexPath(item: row - 1, section: 0))
+            self.visibleRow = row
         }
         
         self.imageLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)

@@ -13,7 +13,15 @@ open class PhotoBrowserViewController: UIViewController {
     
     //MARK: - Variables
     open var initialIndexPath : IndexPath?
-    weak open var originPhotoView: PhotoBrowserView?
+    weak open var originPhotoView: PhotoBrowserView? {
+        didSet {
+            // Make sure the label is updated to be the right number and triggers a view event
+            if self.originPhotoView?.visibleRow == 1 {
+                self.photoView?.visibleRow = -1
+            }
+            self.photoView?.updateLabelView()
+        }
+    }
     open var photoView:PhotoBrowserView? = PhotoBrowserView()
     
     //MARK: - UIViewController
@@ -59,7 +67,7 @@ open class PhotoBrowserViewController: UIViewController {
         //Find progress of upward swipe.
         var progress = recognizer.translation(in: self.view).y / self.view.bounds.size.height
         progress = min(1.0, fabs(progress) * 2)
-
+        
         //Update progress
         switch (recognizer.state) {
             case .began:
@@ -88,6 +96,11 @@ extension PhotoBrowserViewController:PhotoBrowserDelegate {
     public func photoBrowser(_ photoBrowser: PhotoBrowserView, photoTappedAtIndex indexPath: IndexPath) {
         self.presentingViewController?.dismiss(animated: true, completion: nil)
         self.interactiveAnimation?.finish()
+    }
+    
+    public func photoBrowser(_ photoBrowser: PhotoBrowserView, photoViewedAtIndex indexPath: IndexPath) {
+        self.originPhotoView?.visibleRow = -1
+        self.originPhotoView?.delegate?.photoBrowser(photoBrowser, photoViewedAtIndex: indexPath)
     }
 }
 

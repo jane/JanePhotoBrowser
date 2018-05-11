@@ -14,8 +14,13 @@ public protocol PhotoBrowserDataSource:class {
 
 public protocol PhotoBrowserDelegate:class {
     var photoView:PhotoBrowserView? { get set }
-    func photoBrowser(_ photoBrowser:PhotoBrowserView, photoTappedAtIndex indexPath:IndexPath)
+    func photoBrowser(_ photoBrowser: PhotoBrowserView, photoTappedAtIndex indexPath: IndexPath)
+    func photoBrowser(_ photoBrowser: PhotoBrowserView, photoViewedAtIndex indexPath: IndexPath)
     func closeButtonTapped()
+}
+
+extension PhotoBrowserDelegate {
+    public func photoBrowser(_ photoBrowser: PhotoBrowserView, photoViewedAtIndex indexPath: IndexPath) { }
 }
 
 //Provide default implementation for UIViewController delegates
