@@ -103,7 +103,7 @@ open class PhotoBrowserView:UIView {
         
         self.addSubview(label)
         if let superview = self.imageLabel.superview {
-            self.bringSubview(toFront: superview)
+            self.bringSubviewToFront(superview)
         }
     }
     
@@ -201,7 +201,7 @@ open class PhotoBrowserView:UIView {
         numberView.layer.cornerRadius = 3
         numberView.layer.masksToBounds = true
         
-        let closeBlurEffect = UIBlurEffect(style: UIBlurEffectStyle.extraLight)
+        let closeBlurEffect = UIBlurEffect(style: UIBlurEffect.Style.extraLight)
         let closeBlurEffectView = UIVisualEffectView(effect: closeBlurEffect)
         //always fill the view
         closeBlurEffectView.frame = self.closeButtonWrapper.bounds
@@ -239,7 +239,7 @@ open class PhotoBrowserView:UIView {
         //Setup Number Label
         numberView.backgroundColor = UIColor.clear // UIColor(white: 1.0, alpha: 0.8)
         
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.extraLight)
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.extraLight)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         //always fill the view
         blurEffectView.frame = numberView.bounds
