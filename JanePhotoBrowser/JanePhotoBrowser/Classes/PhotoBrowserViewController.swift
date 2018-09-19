@@ -66,7 +66,7 @@ open class PhotoBrowserViewController: UIViewController {
         
         //Find progress of upward swipe.
         var progress = recognizer.translation(in: self.view).y / self.view.bounds.size.height
-        progress = min(1.0, fabs(progress) * 2)
+        progress = min(1.0, abs(progress) * 2)
         
         //Update progress
         switch (recognizer.state) {
@@ -79,7 +79,7 @@ open class PhotoBrowserViewController: UIViewController {
             case .ended: fallthrough
             case .cancelled:
                 //If we have swiped over half way, or we flicked the view upward then we want to finish the transition
-                if progress > 0.5 || fabs(recognizer.velocity(in: self.view).y) > flickSpeed {
+                if progress > 0.5 || abs(recognizer.velocity(in: self.view).y) > flickSpeed {
                     self.interactiveAnimation?.finish()
                 } else {
                     self.interactiveAnimation?.cancel()
