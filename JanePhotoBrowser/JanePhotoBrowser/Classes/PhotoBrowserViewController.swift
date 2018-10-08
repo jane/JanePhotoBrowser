@@ -27,7 +27,7 @@ public class PhotoBrowserViewController: UIViewController {
         }
     }
     public var photoView:PhotoBrowserView? = PhotoBrowserView()
-    weak var delegate: PhotoBrowserViewControllerDelegate?
+    public weak var delegate: PhotoBrowserViewControllerDelegate?
     
     //MARK: - UIViewController
     override public func viewDidLoad() {
@@ -93,6 +93,18 @@ public class PhotoBrowserViewController: UIViewController {
                 self.interactiveAnimation = nil
             default: break
         }
+    }
+    
+    public static func instantiate(photoBrowser: PhotoBrowserView) -> PhotoBrowserViewController {
+        let controller = PhotoBrowserViewController(nibName: nil, bundle: nil)
+        controller.photoView!.dataSource = photoBrowser.dataSource
+        controller.photoView!.backgroundColor = UIColor.white
+        controller.transitioningDelegate = controller
+        controller.initialIndexPath = photoBrowser.visibleIndexPath()
+        controller.originPhotoView = photoBrowser
+        controller.delegate = photoBrowser
+        
+        return controller
     }
 }
 
