@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-open class PhotoBrowserView:UIView {
+public class PhotoBrowserView:UIView {
     //MARK: - Private Variables
     fileprivate let collectionView:UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: PhotoBrowserView.layout())
     fileprivate var imageLabel:UILabel = UILabel()
@@ -40,16 +40,14 @@ open class PhotoBrowserView:UIView {
         }
     }
     
-    
-    
     //MARK: - Variables
-    open weak var dataSource:PhotoBrowserDataSource? {
+    public weak var dataSource:PhotoBrowserDataSource? {
         didSet {
             self.collectionView.reloadData()
             self.updateLabelView()
         }
     }
-    open weak var delegate:PhotoBrowserDelegate? {
+    public weak var delegate:PhotoBrowserDelegate? {
         didSet {
             self.updateLabelView()
         }
@@ -58,25 +56,25 @@ open class PhotoBrowserView:UIView {
     var currentVisibleIndexPath: IndexPath?
     
     //MARK: - IBInspectable
-    @IBInspectable open var canZoom:Bool = false {
+    @IBInspectable public var canZoom:Bool = false {
         didSet {
             self.collectionView.reloadData()
         }
     }
     
-    @IBInspectable open var labelFont:UIFont = UIFont.systemFont(ofSize: 12) {
+    @IBInspectable public var labelFont:UIFont = UIFont.systemFont(ofSize: 12) {
         didSet {
             self.imageLabel.font = labelFont
         }
     }
     
-    @IBInspectable open var shouldDisplayCloseButton:Bool = false {
+    @IBInspectable public var shouldDisplayCloseButton:Bool = false {
         didSet {
             self.closeButtonWrapper.isHidden = !shouldDisplayCloseButton
         }
     }
     
-    open override func prepareForInterfaceBuilder() {
+    public override func prepareForInterfaceBuilder() {
         self.layer.borderColor = UIColor(white: 0.8, alpha: 0.9).cgColor
         self.layer.borderWidth = 1
         
@@ -123,7 +121,7 @@ open class PhotoBrowserView:UIView {
         self.setupPhotoView()
     }
     
-    override open func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         self.updateLabelView()
         
@@ -263,7 +261,7 @@ open class PhotoBrowserView:UIView {
     }
     
     //MARK: - PhotoBrowser Methods
-    open func scrollToPhoto(atIndex index:Int, animated:Bool) {
+    public func scrollToPhoto(atIndex index:Int, animated:Bool) {
         let indexPath:IndexPath = IndexPath(row: index, section: 0)
         guard indexPath.row < self.collectionView.numberOfItems(inSection: 0) && indexPath.row >= 0 else { self.reloadPhotos(); return }
         self.collectionView.scrollToItem(at: indexPath, at: [.centeredVertically, .centeredHorizontally], animated: animated)
@@ -272,31 +270,30 @@ open class PhotoBrowserView:UIView {
         self.updateLabelView()
     }
     
-    @objc open func closeTapped(_ sender:UIButton) {
-        guard let photoDelegate = self.delegate else { return }
-        photoDelegate.closeButtonTapped()
+    @objc public func closeTapped(_ sender:UIButton) {
+        self.delegate?.photoBrowserCloseButtonTapped()
     }
     
-    open func visibleImageView() -> UIImageView? {
+    public func visibleImageView() -> UIImageView? {
         guard let cell = self.collectionView.visibleCells.first as? PhotoBrowserCell else { return nil }
         return cell.imageView
     }
-    open func visibleIndexPath() -> IndexPath? {
+    public func visibleIndexPath() -> IndexPath? {
         let indexPaths = self.collectionView.indexPathsForVisibleItems
         return indexPaths.first
     }
     
-    open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         self.currentVisibleIndexPath = self.visibleIndexPath()
         self.updateLabelView()
     }
     
-    open func reloadPhotos() {
+    public func reloadPhotos() {
         self.collectionView.reloadData()
         self.updateLabelView()
     }
     
-    open func reloadImage(atIndexPath indexPath:IndexPath) {
+    public func reloadImage(atIndexPath indexPath:IndexPath) {
         self.collectionView.reloadItems(at: [indexPath])
     }
 }
@@ -321,10 +318,23 @@ extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate,
         }
         cell.canZoom = self.canZoom
         
-        cell.tapped = {
+        cell.tapped = { [weak self] in
+            guard let self = self else { return }
             self.delegate?.photoBrowser(self, photoTappedAtIndex: indexPath)
         }
         
         return cell
+    }
+}
+
+//MARK: - PhotoBrowserViewControllerDelegate
+extension PhotoBrowserView: PhotoBrowserViewControllerDelegate {
+    public func photoBrowser(_ photoBrowser: PhotoBrowserViewController, closeTappedOnIndex indexPath: IndexPath) {
+        
+    }
+    
+    public func photoBrowser(_ photoBrowser: PhotoBrowserViewController, photoViewedAtIndex indexPath: IndexPath) {
+        self.delegate?.photoBrowser(self, photoViewedAtIndex: indexPath)
+        self.scrollToPhoto(atIndex: indexPath.item, animated: false)
     }
 }

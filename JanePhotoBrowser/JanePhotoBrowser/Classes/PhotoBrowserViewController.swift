@@ -7,25 +7,19 @@
 
 import UIKit
 
-open class PhotoBrowserViewController: UIViewController {
-    //MARK: - Private Variables
-    fileprivate var interactiveAnimation: UIPercentDrivenInteractiveTransition?
-    
+public protocol PhotoBrowserViewControllerDelegate: class {
+    func photoBrowser(_ photoBrowser: PhotoBrowserViewController, closeTappedOnIndex indexPath: IndexPath)
+    func photoBrowser(_ photoBrowser: PhotoBrowserViewController, photoViewedAtIndex indexPath: IndexPath)
+}
+
+public class PhotoBrowserViewController: UIViewController {
     //MARK: - Variables
-    open var initialIndexPath : IndexPath?
-    weak open var originPhotoView: PhotoBrowserView? {
-        didSet {
-            // Make sure the label is updated to be the right number and triggers a view event
-            if self.originPhotoView?.visibleRow == 1 {
-                self.photoView?.visibleRow = -1
-            }
-            self.photoView?.updateLabelView()
-        }
-    }
-    open var photoView:PhotoBrowserView? = PhotoBrowserView()
+    public var initialIndexPath: IndexPath!
+    public var photoView: PhotoBrowserView? = PhotoBrowserView()
+    public weak var delegate: PhotoBrowserViewControllerDelegate?
     
     //MARK: - UIViewController
-    override open func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         
         guard let photoView = self.photoView else { return }
@@ -42,23 +36,18 @@ open class PhotoBrowserViewController: UIViewController {
         self.view.addConstraints(vConstraints)
         self.view.addConstraints(hConstraints)
         
+        if let indexPath = self.initialIndexPath, let photoView = self.photoView {
+            self.initialIndexPath = nil
+            photoView.scrollToPhoto(atIndex: (indexPath as NSIndexPath).item, animated: false)
+        }
+        
         //Add pan gesture to watch for sliding up to dismiss image
         let pan = UIPanGestureRecognizer(target: self, action: #selector(self.panGesture(_:)))
         photoView.addGestureRecognizer(pan)
     }
     
-    override open func viewDidAppear(_ animated: Bool) {
+    override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        guard let indexPath = self.initialIndexPath, let photoView = self.photoView else { return }
-        photoView.scrollToPhoto(atIndex: (indexPath as NSIndexPath).item, animated: false)
-    }
-    
-    override open func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        guard let photoView = self.photoView else { return }
-        if photoView.viewIsAnimating {
-            photoView.visibleImageView()?.isHidden = true
-        }
     }
     
     @objc func panGesture(_ recognizer:UIPanGestureRecognizer) {
@@ -71,64 +60,52 @@ open class PhotoBrowserViewController: UIViewController {
         //Update progress
         switch (recognizer.state) {
             case .began:
-                self.interactiveAnimation = UIPercentDrivenInteractiveTransition()
-                self.interactiveAnimation?.completionCurve = .easeInOut
-                self.dismiss(animated: true, completion: nil)
+                self.view.alpha = 1
+                self.photoView?.alpha = 1
             case .changed:
-                self.interactiveAnimation?.update(progress)
-            case .ended: fallthrough
+                self.view.alpha = max(0, 1 - progress)
+                self.photoView?.alpha = min(1, self.view.alpha * 2)
+            case .ended:
+                self.dismiss(animated: false, completion: nil)
             case .cancelled:
                 //If we have swiped over half way, or we flicked the view upward then we want to finish the transition
                 if progress > 0.5 || abs(recognizer.velocity(in: self.view).y) > flickSpeed {
-                    self.interactiveAnimation?.finish()
+                    self.dismiss(animated: false, completion: nil)
                 } else {
-                    self.interactiveAnimation?.cancel()
+                    UIView.animate(withDuration: 0.2) {
+                        self.view.alpha = 1
+                        self.photoView?.alpha = 1
+                    }
                 }
-                
-                self.interactiveAnimation = nil
             default: break
         }
     }
+        
+    public static func instantiate(dataSource: PhotoBrowserDataSource, delegate: PhotoBrowserViewControllerDelegate, indexPath: IndexPath? = nil) -> PhotoBrowserViewController {
+        let photoBrowserViewController:PhotoBrowserViewController = PhotoBrowserViewController(nibName: nil, bundle: nil)
+        photoBrowserViewController.photoView!.dataSource = dataSource
+        photoBrowserViewController.photoView!.backgroundColor = UIColor.white
+        photoBrowserViewController.initialIndexPath = indexPath
+        photoBrowserViewController.delegate = delegate
+        photoBrowserViewController.modalTransitionStyle = .crossDissolve
+        photoBrowserViewController.modalPresentationStyle = .overFullScreen
+        
+        return photoBrowserViewController
+    }
+    
 }
 
 //MARK: - PhotoBrowserDelegate
-extension PhotoBrowserViewController:PhotoBrowserDelegate {
+extension PhotoBrowserViewController: PhotoBrowserDelegate {
     public func photoBrowser(_ photoBrowser: PhotoBrowserView, photoTappedAtIndex indexPath: IndexPath) {
-        self.presentingViewController?.dismiss(animated: true, completion: nil)
-        self.interactiveAnimation?.finish()
+        self.dismiss(animated: true, completion: nil)
     }
     
     public func photoBrowser(_ photoBrowser: PhotoBrowserView, photoViewedAtIndex indexPath: IndexPath) {
-        self.originPhotoView?.visibleRow = -1
-        self.originPhotoView?.delegate?.photoBrowser(photoBrowser, photoViewedAtIndex: indexPath)
-    }
-}
-
-//MARK: - UIViewControllerTransistioningDelegate
-extension PhotoBrowserViewController:UIViewControllerTransitioningDelegate {
-    public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        guard let originImageView = self.originPhotoView?.visibleImageView() else { return nil }
-        let transition = PhotoBrowserTransition()
-        transition.imageView = originImageView
-        transition.destinationPhotoView = self.photoView
-        
-        return transition
-    }
-    public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        guard let photoImageViewController = dismissed as? PhotoBrowserViewController,
-            let originPhotoView = self.originPhotoView else { return nil }
-        
-        let transition = PhotoBrowserTransition()
-        transition.animateIn = false
-        transition.imageView = photoImageViewController.photoView?.visibleImageView()
-        transition.destinationPhotoView = originPhotoView
-        transition.originPhotoView = photoImageViewController.photoView
-        
-        return transition
+        self.delegate?.photoBrowser(self, photoViewedAtIndex: indexPath)
     }
     
-    public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        guard let _ = animator as? PhotoBrowserTransition else { return nil }
-        return self.interactiveAnimation
+    public func photoBrowserCloseButtonTapped() {
+        self.dismiss(animated: true, completion: nil)
     }
 }
