@@ -8,12 +8,13 @@
 import UIKit
 
 public protocol PhotoBrowserViewControllerDelegate: class {
-    func photoBrowser(_ photoBrowser: PhotoBrowserViewController, closeTappedOnIndex indexPath: IndexPath)
     func photoBrowser(_ photoBrowser: PhotoBrowserViewController, photoViewedAtIndex indexPath: IndexPath)
 }
 
 public class PhotoBrowserViewController: UIViewController {
     //MARK: - Variables
+    fileprivate var interactiveAnimation: UIPercentDrivenInteractiveTransition?
+    
     public var initialIndexPath: IndexPath!
     public var photoView: PhotoBrowserView? = PhotoBrowserView()
     public weak var delegate: PhotoBrowserViewControllerDelegate?
@@ -87,8 +88,9 @@ public class PhotoBrowserViewController: UIViewController {
         photoBrowserViewController.photoView!.backgroundColor = UIColor.white
         photoBrowserViewController.initialIndexPath = indexPath
         photoBrowserViewController.delegate = delegate
-        photoBrowserViewController.modalTransitionStyle = .crossDissolve
-        photoBrowserViewController.modalPresentationStyle = .overFullScreen
+        photoBrowserViewController.transitioningDelegate = photoBrowserViewController
+        //photoBrowserViewController.modalTransitionStyle = .crossDissolve
+        //photoBrowserViewController.modalPresentationStyle = .overFullScreen
         
         return photoBrowserViewController
     }
@@ -107,5 +109,36 @@ extension PhotoBrowserViewController: PhotoBrowserDelegate {
     
     public func photoBrowserCloseButtonTapped() {
         self.dismiss(animated: true, completion: nil)
+    }
+}
+
+//MARK: - UIViewControllerTransistioningDelegate
+extension PhotoBrowserViewController:UIViewControllerTransitioningDelegate {
+    public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard let source = source as? PhotoBrowserDelegate, let originView = source.photoView else { return nil }
+        let transition = PhotoBrowserTransition()
+        transition.originView = originView
+        transition.destinationView = self.photoView
+        transition.image = originView.visibleImageView()?.image
+        
+        return transition
+    }
+    
+    public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard let dismissed = dismissed as? PhotoBrowserViewController else { return nil }
+        guard let destination = dismissed.presentingViewController as? PhotoBrowserDelegate, let destinationView = destination.photoView else { return nil }
+        
+        let transition = PhotoBrowserTransition()
+        transition.animateIn = false
+        transition.originView = dismissed.photoView
+        transition.destinationView = destinationView
+        transition.image = dismissed.photoView?.visibleImageView()?.image
+        
+        return transition
+    }
+    
+    public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        guard let _ = animator as? PhotoBrowserTransition else { return nil }
+        return self.interactiveAnimation
     }
 }
