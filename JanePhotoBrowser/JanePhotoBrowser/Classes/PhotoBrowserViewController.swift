@@ -7,13 +7,17 @@
 
 import UIKit
 
-open class PhotoBrowserViewController: UIViewController {
+public protocol PhotoBrowserViewControllerDelegate: class {
+    func photoBrowser(_ photoBrowser: PhotoBrowserViewController, photoViewedAtIndex indexPath: IndexPath)
+}
+
+public class PhotoBrowserViewController: UIViewController {
     //MARK: - Private Variables
     fileprivate var interactiveAnimation: UIPercentDrivenInteractiveTransition?
     
     //MARK: - Variables
-    open var initialIndexPath : IndexPath?
-    weak open var originPhotoView: PhotoBrowserView? {
+    public var initialIndexPath : IndexPath?
+    weak public var originPhotoView: PhotoBrowserView? {
         didSet {
             // Make sure the label is updated to be the right number and triggers a view event
             if self.originPhotoView?.visibleRow == 1 {
@@ -22,10 +26,11 @@ open class PhotoBrowserViewController: UIViewController {
             self.photoView?.updateLabelView()
         }
     }
-    open var photoView:PhotoBrowserView? = PhotoBrowserView()
+    public var photoView:PhotoBrowserView? = PhotoBrowserView()
+    weak var delegate: PhotoBrowserViewControllerDelegate?
     
     //MARK: - UIViewController
-    override open func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         
         guard let photoView = self.photoView else { return }
@@ -47,13 +52,13 @@ open class PhotoBrowserViewController: UIViewController {
         photoView.addGestureRecognizer(pan)
     }
     
-    override open func viewDidAppear(_ animated: Bool) {
+    override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         guard let indexPath = self.initialIndexPath, let photoView = self.photoView else { return }
         photoView.scrollToPhoto(atIndex: (indexPath as NSIndexPath).item, animated: false)
     }
     
-    override open func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         guard let photoView = self.photoView else { return }
         if photoView.viewIsAnimating {
@@ -99,8 +104,12 @@ extension PhotoBrowserViewController:PhotoBrowserDelegate {
     }
     
     public func photoBrowser(_ photoBrowser: PhotoBrowserView, photoViewedAtIndex indexPath: IndexPath) {
-        self.originPhotoView?.visibleRow = -1
-        self.originPhotoView?.delegate?.photoBrowser(photoBrowser, photoViewedAtIndex: indexPath)
+        self.delegate?.photoBrowser(self, photoViewedAtIndex: indexPath)
+    }
+    
+    public func photoBrowserCloseButtonTapped() {
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
+        self.interactiveAnimation?.finish()
     }
 }
 

@@ -20,9 +20,12 @@ class PhotoBrowserTransition: NSObject, UIViewControllerAnimatedTransitioning {
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         guard let destinationViewController:UIViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to),
             let image = self.imageView,
-            let photoView = self.destinationPhotoView else { return }
+            let photoView = self.destinationPhotoView else {
+                transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+                return
+        }
         
-        let containerView:UIView = transitionContext.containerView
+        let containerView: UIView = transitionContext.containerView
         
         //Create Image View to Animate
         let snapShot = UIImageView()
@@ -32,24 +35,18 @@ class PhotoBrowserTransition: NSObject, UIViewControllerAnimatedTransitioning {
             snapShot.frame = frame
         }
         
-        //Hide UIImageView that we are animating from
-        image.isHidden = true
+        image.alpha = 0
         
         //Prep destination view controller for animation
         destinationViewController.view.frame = transitionContext.finalFrame(for: destinationViewController)
         destinationViewController.view.alpha = 0
         
         //Hide the distination photoview until the animation is finished
-        photoView.visibleImageView()?.isHidden = true
-        photoView.viewIsAnimating = true
+        photoView.alpha = 0
         
         //Prep animating container view
         containerView.addSubview(destinationViewController.view)
         containerView.addSubview(snapShot)
-        
-        if let selectedIndex:Int = originPhotoView?.visibleIndexPath()?.item {
-            photoView.scrollToPhoto(atIndex: selectedIndex, animated: false)
-        }
         
         //Animate the transition between view controllers
         UIView.animate(withDuration: 0.4, animations: {
@@ -60,9 +57,8 @@ class PhotoBrowserTransition: NSObject, UIViewControllerAnimatedTransitioning {
                 snapShot.frame = destinationViewController.view.frame
             }
         }) { (finished) in
-            photoView.visibleImageView()?.isHidden = false
-            photoView.viewIsAnimating = false
-            image.isHidden = false
+            photoView.alpha = 1
+            image.alpha = 1
             snapShot.removeFromSuperview()
             
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
