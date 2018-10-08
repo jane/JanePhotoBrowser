@@ -16,7 +16,7 @@ public protocol PhotoBrowserDelegate:class {
     var photoView:PhotoBrowserView? { get set }
     func photoBrowser(_ photoBrowser: PhotoBrowserView, photoTappedAtIndex indexPath: IndexPath)
     func photoBrowser(_ photoBrowser: PhotoBrowserView, photoViewedAtIndex indexPath: IndexPath)
-    func closeButtonTapped()
+    func photoBrowserCloseButtonTapped()
 }
 
 extension PhotoBrowserDelegate {
@@ -32,10 +32,11 @@ extension PhotoBrowserDelegate where Self: UIViewController {
         photoBrowserViewController.transitioningDelegate = photoBrowserViewController
         photoBrowserViewController.initialIndexPath = photoBrowser.visibleIndexPath()
         photoBrowserViewController.originPhotoView = photoBrowser
+        photoBrowserViewController.delegate = photoBrowser
         
         self.present(photoBrowserViewController, animated: true, completion: nil)
     }
-    public func closeButtonTapped() {
+    public func photoBrowserCloseButtonTapped() {
         self.dismiss(animated: true, completion: nil)
     }
 }
