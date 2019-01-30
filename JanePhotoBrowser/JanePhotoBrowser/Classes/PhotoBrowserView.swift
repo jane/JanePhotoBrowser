@@ -134,16 +134,12 @@ public class PhotoBrowserView: UIView {
         
         let largeImagesLayout = PhotoBrowserView.largeImagesLayout()
         let smallImagesLayout = PhotoBrowserView.smallImagesLayout()
-
-        if largeImagesLayout.itemSize != self.largeImagesCollectionView.bounds.size {
-            largeImagesLayout.itemSize = self.largeImagesCollectionView.bounds.size
-            self.largeImagesCollectionView.collectionViewLayout = largeImagesLayout
-        }
         
-        if smallImagesLayout.itemSize.height != self.smallImagesCollectionView.bounds.height {
-            smallImagesLayout.itemSize = CGSize(width: self.smallImagesCollectionView.bounds.height, height: self.smallImagesCollectionView.bounds.height)
-            self.largeImagesCollectionView.collectionViewLayout = smallImagesLayout
-        }
+        largeImagesLayout.itemSize = self.largeImagesCollectionView.bounds.size
+        self.largeImagesCollectionView.collectionViewLayout = largeImagesLayout
+        
+        smallImagesLayout.itemSize = CGSize(width: self.smallImagesCollectionView.bounds.height, height: self.smallImagesCollectionView.bounds.height)
+        self.largeImagesCollectionView.collectionViewLayout = smallImagesLayout
         
         if let visibleIndexPath = self.currentVisibleIndexPath ?? self.visibleIndexPath() {
             self.scrollToPhoto(atIndex: visibleIndexPath.item, animated: false)
@@ -263,7 +259,7 @@ public class PhotoBrowserView: UIView {
         self.addConstraints([largeImagesLeadingConstraint, largeImagesTopConstraint, largeImagesTrailingConstraint, smallImagesLeadingConstraint, smallImagesBottomConstraint, smallImagesTrailingConstraint, largeImagesBottomConstraint])
         
         self.addVisualConstraints("V:|[view]|", horizontal: "H:|[view]|", view: self.closeButton)
-
+        
         //Setup CollectionView datasource and delegate
         self.largeImagesCollectionView.dataSource = self
         self.largeImagesCollectionView.dataSource = self
