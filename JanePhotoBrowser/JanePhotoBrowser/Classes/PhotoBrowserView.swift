@@ -10,10 +10,8 @@ import UIKit
 @IBDesignable
 public class PhotoBrowserView: UIView {
     
-    // MARK: - Outlets
-    
-    
     //MARK: - Private Variables
+    
     fileprivate var largeImagesCollectionView: UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: PhotoBrowserView.largeImagesLayout())
     fileprivate var smallImagesCollectionView: UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: PhotoBrowserView.smallImagesLayout())
     fileprivate var imageLabel: UILabel = UILabel()
@@ -46,6 +44,7 @@ public class PhotoBrowserView: UIView {
     }
     
     //MARK: - Variables
+    
     public weak var dataSource: PhotoBrowserDataSource? {
         didSet {
             self.largeImagesCollectionView.reloadData()
@@ -62,6 +61,7 @@ public class PhotoBrowserView: UIView {
     var currentVisibleIndexPath: IndexPath?
     
     //MARK: - IBInspectable
+    
     @IBInspectable public var canZoom: Bool = false {
         didSet {
             self.largeImagesCollectionView.reloadData()
@@ -113,6 +113,7 @@ public class PhotoBrowserView: UIView {
     }
     
     //MARK: - UIView
+    
     override public init(frame: CGRect) {
         super.init(frame: frame)
         self.setupPhotoView()
@@ -139,7 +140,7 @@ public class PhotoBrowserView: UIView {
         self.largeImagesCollectionView.collectionViewLayout = largeImagesLayout
         
         smallImagesLayout.itemSize = CGSize(width: self.smallImagesCollectionView.bounds.height, height: self.smallImagesCollectionView.bounds.height)
-        self.largeImagesCollectionView.collectionViewLayout = smallImagesLayout
+        self.smallImagesCollectionView.collectionViewLayout = smallImagesLayout
         
         if let visibleIndexPath = self.currentVisibleIndexPath ?? self.visibleIndexPath() {
             self.scrollToPhoto(atIndex: visibleIndexPath.item, animated: false)
@@ -147,6 +148,7 @@ public class PhotoBrowserView: UIView {
     }
     
     //MARK: - Private PhotoBrowser Methods
+    
     fileprivate class func largeImagesLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -229,9 +231,9 @@ public class PhotoBrowserView: UIView {
         self.closeButtonWrapper.isHidden = !self.shouldDisplayCloseButton
         
         self.largeImagesCollectionView.backgroundColor = self.backgroundColor
-        self.smallImagesCollectionView.backgroundColor = self.backgroundColor
         self.largeImagesCollectionView.register(PhotoBrowserCell.self, forCellWithReuseIdentifier: "PhotoCell")
         self.largeImagesCollectionView.isPagingEnabled = true
+        self.smallImagesCollectionView.backgroundColor = self.backgroundColor
         self.smallImagesCollectionView.register(PhotoBrowserCell.self, forCellWithReuseIdentifier: "PhotoCell")
         self.smallImagesCollectionView.isPagingEnabled = true
         
@@ -252,18 +254,19 @@ public class PhotoBrowserView: UIView {
         let largeImagesLeadingConstraint = NSLayoutConstraint(item: self.largeImagesCollectionView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: 0)
         let largeImagesTopConstraint = NSLayoutConstraint(item: self.largeImagesCollectionView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: 0)
         let largeImagesTrailingConstraint = NSLayoutConstraint(item: self.largeImagesCollectionView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: 0)
+        let smallImagesHeightConstraint = NSLayoutConstraint(item: self.smallImagesCollectionView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 50)
         let smallImagesLeadingConstraint = NSLayoutConstraint(item: self.smallImagesCollectionView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: 0)
         let smallImagesBottomConstraint = NSLayoutConstraint(item: self.smallImagesCollectionView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0)
         let smallImagesTrailingConstraint = NSLayoutConstraint(item: self.smallImagesCollectionView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: 0)
         let largeImagesBottomConstraint = NSLayoutConstraint(item: self.largeImagesCollectionView, attribute: .bottom, relatedBy: .equal, toItem: self.smallImagesCollectionView, attribute: .top, multiplier: 1, constant: 0)
-        self.addConstraints([largeImagesLeadingConstraint, largeImagesTopConstraint, largeImagesTrailingConstraint, smallImagesLeadingConstraint, smallImagesBottomConstraint, smallImagesTrailingConstraint, largeImagesBottomConstraint])
+        self.addConstraints([largeImagesLeadingConstraint, largeImagesTopConstraint, largeImagesTrailingConstraint, smallImagesHeightConstraint, smallImagesLeadingConstraint, smallImagesBottomConstraint, smallImagesTrailingConstraint, largeImagesBottomConstraint])
         
         self.addVisualConstraints("V:|[view]|", horizontal: "H:|[view]|", view: self.closeButton)
         
         //Setup CollectionView datasource and delegate
         self.largeImagesCollectionView.dataSource = self
-        self.largeImagesCollectionView.dataSource = self
-        self.smallImagesCollectionView.delegate = self
+        self.largeImagesCollectionView.delegate = self
+        self.smallImagesCollectionView.dataSource = self
         self.smallImagesCollectionView.delegate = self
         
         //Setup Number Label
@@ -293,6 +296,7 @@ public class PhotoBrowserView: UIView {
     }
     
     //MARK: - PhotoBrowser Methods
+    
     public func scrollToPhoto(atIndex index:Int, animated:Bool) {
         let indexPath:IndexPath = IndexPath(row: index, section: 0)
         guard indexPath.row < self.largeImagesCollectionView.numberOfItems(inSection: 0) && indexPath.row >= 0 else { self.reloadPhotos(); return }
@@ -334,6 +338,7 @@ public class PhotoBrowserView: UIView {
 }
 
 //MARK: - UICollectionViewDelegate/DataSource/Layouts
+
 extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.dataSource?.numberOfPhotos(self) ?? 0
@@ -363,6 +368,7 @@ extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate,
 }
 
 //MARK: - PhotoBrowserViewControllerDelegate
+
 extension PhotoBrowserView: PhotoBrowserViewControllerDelegate {
     public func photoBrowser(_ photoBrowser: PhotoBrowserViewController, photoViewedAtIndex indexPath: IndexPath) {
         self.delegate?.photoBrowser(self, photoViewedAtIndex: indexPath)
