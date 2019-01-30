@@ -9,7 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
     //MARK: - IBOutlets
-    @IBOutlet weak var photoView: PhotoBrowserView?
+    @IBOutlet var photoView: PhotoBrowserView?
     
     //MARK: - Private Variables
     fileprivate var images:[UIImage] = []

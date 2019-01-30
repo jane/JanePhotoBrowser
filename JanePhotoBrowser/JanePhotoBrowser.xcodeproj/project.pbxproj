@@ -20,7 +20,6 @@
 		B3054A6A1CCFCA5700A36054 /* PhotoBrowserProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3054A691CCFCA5700A36054 /* PhotoBrowserProtocols.swift */; };
 		B3054A6E1CD00E5400A36054 /* PhotoBrowserTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3054A6D1CD00E5400A36054 /* PhotoBrowserTransition.swift */; };
 		F82E51E41D00A31100A0F041 /* PhotoBrowserStyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82E51E31D00A31100A0F041 /* PhotoBrowserStyleKit.swift */; };
-		FD8B73282200F93000CF36E8 /* PhotoBrowserView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD8B73272200F93000CF36E8 /* PhotoBrowserView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,7 +60,6 @@
 		B3054A6D1CD00E5400A36054 /* PhotoBrowserTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoBrowserTransition.swift; path = Classes/PhotoBrowserTransition.swift; sourceTree = "<group>"; };
 		F82E51E31D00A31100A0F041 /* PhotoBrowserStyleKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoBrowserStyleKit.swift; path = Classes/PhotoBrowserStyleKit.swift; sourceTree = "<group>"; };
 		F8DDCE531DE64E9A007270BF /* JanePhotoBrowser.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = JanePhotoBrowser.podspec; path = ../JanePhotoBrowser.podspec; sourceTree = "<group>"; };
-		FD8B73272200F93000CF36E8 /* PhotoBrowserView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PhotoBrowserView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,7 +111,6 @@
 		B3054A2F1CCEE1C200A36054 /* JanePhotoBrowser */ = {
 			isa = PBXGroup;
 			children = (
-				FD8B73272200F93000CF36E8 /* PhotoBrowserView.xib */,
 				B3054A621CCEE21100A36054 /* Classes */,
 				B3054A5E1CCEE1D100A36054 /* Example */,
 			);
@@ -298,7 +295,6 @@
 			files = (
 				B3054A3B1CCEE1C200A36054 /* LaunchScreen.storyboard in Resources */,
 				B3054A381CCEE1C200A36054 /* Assets.xcassets in Resources */,
-				FD8B73282200F93000CF36E8 /* PhotoBrowserView.xib in Resources */,
 				B3054A361CCEE1C200A36054 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
