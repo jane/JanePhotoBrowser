@@ -113,9 +113,9 @@
 		B3054A2F1CCEE1C200A36054 /* JanePhotoBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				FD8B73272200F93000CF36E8 /* PhotoBrowserView.xib */,
 				B3054A621CCEE21100A36054 /* Classes */,
 				B3054A5E1CCEE1D100A36054 /* Example */,
-				FD8B73272200F93000CF36E8 /* PhotoBrowserView.xib */,
 			);
 			path = JanePhotoBrowser;
 			sourceTree = "<group>";

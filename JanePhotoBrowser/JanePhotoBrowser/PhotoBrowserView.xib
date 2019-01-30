@@ -13,12 +13,36 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="817" height="447"/>
+            <rect key="frame" x="0.0" y="0.0" width="628" height="441"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="w0K-I8-62Z">
+                    <rect key="frame" x="0.0" y="381" width="628" height="60"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="60" id="wHN-QB-kmu"/>
+                    </constraints>
+                    <collectionViewLayout key="collectionViewLayout" id="R7k-T4-RR9"/>
+                </collectionView>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="KUJ-Jb-kah">
+                    <rect key="frame" x="0.0" y="0.0" width="628" height="381"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <collectionViewLayout key="collectionViewLayout" id="NVe-FT-pm3"/>
+                </collectionView>
+            </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="KUJ-Jb-kah" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="5p0-P9-HmM"/>
+                <constraint firstItem="w0K-I8-62Z" firstAttribute="top" secondItem="KUJ-Jb-kah" secondAttribute="bottom" id="IEW-3i-iKX"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="w0K-I8-62Z" secondAttribute="trailing" id="Sz4-RB-naD"/>
+                <constraint firstItem="KUJ-Jb-kah" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="ZPf-o8-8x3"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="w0K-I8-62Z" secondAttribute="bottom" id="jkg-Pl-veF"/>
+                <constraint firstItem="w0K-I8-62Z" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="r8w-z6-z9M"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="KUJ-Jb-kah" secondAttribute="trailing" id="scc-KA-Bk4"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <point key="canvasLocation" x="484" y="54.422788605697157"/>
+            <point key="canvasLocation" x="332.80000000000001" y="51.724137931034484"/>
         </view>
     </objects>
 </document>
