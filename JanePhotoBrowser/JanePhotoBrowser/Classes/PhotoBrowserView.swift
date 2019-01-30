@@ -9,6 +9,12 @@ import UIKit
 
 @IBDesignable
 public class PhotoBrowserView: UIView {
+    
+    // MARK: - Outlets
+    
+    @IBOutlet fileprivate var largeImagesCollectionView: UICollectionView!
+    @IBOutlet fileprivate var smallImagesCollectionView: UICollectionView!
+    
     //MARK: - Private Variables
     fileprivate let collectionView: UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: PhotoBrowserView.layout())
     fileprivate var imageLabel: UILabel = UILabel()
@@ -138,7 +144,16 @@ public class PhotoBrowserView: UIView {
     }
     
     //MARK: - Private PhotoBrowser Methods
-    fileprivate class func layout() -> UICollectionViewFlowLayout {
+    fileprivate class func largeImagesLayout() -> UICollectionViewFlowLayout {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 0.0
+        layout.minimumInteritemSpacing = 0.0
+        
+        return layout
+    }
+    
+    fileprivate class func smallImagesLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 0.0
