@@ -280,10 +280,10 @@ public class PhotoBrowserView: UIView {
         
         numberView.addSubview(blurEffectView)
         
-        let constraints = self.addVisualConstraints("V:[view(30)]-\(self.numberViewBottomOffset)-|", horizontal: "H:[view(70)]-\(self.numberViewRightOffset)-|", view: numberView)
+        let numberViewConstraints = self.addVisualConstraints("V:[view(30)]-\(self.numberViewBottomOffset)-|", horizontal: "H:[view(70)]-\(self.numberViewRightOffset)-|", view: numberView)
         
-        self.numberViewRightConstraint = constraints.horizontal.first
-        self.numberViewBottomConstraint = constraints.vertical.first
+        self.numberViewRightConstraint = numberViewConstraints.horizontal.first
+        self.numberViewBottomConstraint = numberViewConstraints.vertical.first
         
         numberView.addSubview(self.imageLabel)
         self.imageLabel.font = self.labelFont
