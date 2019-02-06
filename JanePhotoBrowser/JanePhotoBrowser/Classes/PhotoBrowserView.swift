@@ -167,7 +167,7 @@ public class PhotoBrowserView: UIView {
         return layout
     }
     
-    func updateLabelView() {
+    func updateLabelView(with index: Int? = nil) {
         let hasWidth = self.largeImagesCollectionView.frame.size.width > 0
         var row = hasWidth ? Int(self.largeImagesCollectionView.contentOffset.x / self.largeImagesCollectionView.frame.size.width) + 1 : 1
         
@@ -183,7 +183,7 @@ public class PhotoBrowserView: UIView {
         }
         
         self.imageLabel.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
-        self.imageLabel.text = "\(row) of \(max)"
+        self.imageLabel.text = "\(index ?? row) of \(max)"
         self.imageLabel.accessibilityIdentifier = "JanePhotoBrowser-imageCountLabel"
     }
     
@@ -280,7 +280,7 @@ public class PhotoBrowserView: UIView {
         
         numberView.addSubview(blurEffectView)
         
-        let numberViewConstraints = self.addVisualConstraints("V:[view(30)]-\(self.numberViewBottomOffset)-|", horizontal: "H:[view(70)]-\(self.numberViewRightOffset)-|", view: numberView)
+        let numberViewConstraints = self.addVisualConstraints("V:[view(30)]-\(self.numberViewBottomOffset + 50)-|", horizontal: "H:[view(70)]-\(self.numberViewRightOffset)-|", view: numberView)
         
         self.numberViewRightConstraint = numberViewConstraints.horizontal.first
         self.numberViewBottomConstraint = numberViewConstraints.vertical.first
@@ -304,7 +304,7 @@ public class PhotoBrowserView: UIView {
         self.smallImagesCollectionView.scrollToItem(at: indexPath, at: [.centeredVertically, .centeredHorizontally], animated: animated)
         self.currentVisibleIndexPath = indexPath
         
-        self.updateLabelView()
+        self.updateLabelView(with: index + 1)
     }
     
     @objc public func closeTapped(_ sender:UIButton) {
