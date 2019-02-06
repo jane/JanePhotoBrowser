@@ -310,7 +310,7 @@ public class PhotoBrowserView: UIView {
         self.largeImagesCollectionView.scrollToItem(at: indexPath, at: [.centeredVertically, .centeredHorizontally], animated: animated)
         self.smallImagesCollectionView.scrollToItem(at: indexPath, at: [.centeredVertically, .centeredHorizontally], animated: animated)
         self.currentVisibleIndexPath = indexPath
-        
+        self.delegate?.photoBrowser(self, photoViewedAtIndex: indexPath)
         self.updateLabelView(with: index + 1)
     }
     
