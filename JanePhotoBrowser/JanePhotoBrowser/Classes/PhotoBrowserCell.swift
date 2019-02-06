@@ -20,6 +20,13 @@ public class PhotoBrowserCell:UICollectionViewCell {
         }
     }
     
+    public var imageScaleToFit = false {
+        didSet {
+            self.imageView.clipsToBounds = true
+            self.imageView.contentMode = .scaleAspectFill
+        }
+    }
+    
     //MARK: - UICollectionViewCell
     public override init(frame: CGRect) {
         super.init(frame: frame)

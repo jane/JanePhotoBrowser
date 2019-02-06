@@ -356,13 +356,21 @@ extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate,
                 cell.imageView.image = image
             }, completion: nil)
         }
-        cell.canZoom = self.canZoom
-        
-        cell.tapped = { [weak self] in
-            guard let self = self else { return }
-            self.delegate?.photoBrowser(self, photoTappedAtIndex: indexPath)
+        if collectionView === self.largeImagesCollectionView {
+            cell.canZoom = self.canZoom
+            
+            cell.tapped = { [weak self] in
+                guard let self = self else { return }
+                self.delegate?.photoBrowser(self, photoTappedAtIndex: indexPath)
+            }
+        } else if collectionView === self.smallImagesCollectionView {
+            cell.tapped = { [weak self] in
+                guard let self = self else { return }
+                self.scrollToPhoto(atIndex: indexPath.row, animated: true)
+            }
         }
         
+        if collectionView === self.smallImagesCollectionView { cell.imageScaleToFit = true }
         return cell
     }
 }
