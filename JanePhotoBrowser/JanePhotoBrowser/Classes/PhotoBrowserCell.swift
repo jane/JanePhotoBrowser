@@ -27,6 +27,12 @@ public class PhotoBrowserCell:UICollectionViewCell {
         }
     }
     
+    public var cellSelected = false {
+        didSet {
+            self.configureImageViewAlpha()
+        }
+    }
+    
     //MARK: - UICollectionViewCell
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -81,6 +87,13 @@ public class PhotoBrowserCell:UICollectionViewCell {
         callback()
     }
     
+    private func configureImageViewAlpha() {
+        if self.cellSelected {
+            self.imageView.alpha = 0.3
+        } else {
+            self.imageView.alpha = 1
+        }
+    }
 }
 
 //MARK: - UIScrollViewDelegate

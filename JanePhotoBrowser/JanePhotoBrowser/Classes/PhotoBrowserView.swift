@@ -366,7 +366,11 @@ extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate,
         } else if collectionView === self.smallImagesCollectionView {
             cell.tapped = { [weak self] in
                 guard let self = self else { return }
+                if let cells = self.smallImagesCollectionView.visibleCells as? [PhotoBrowserCell] {
+                    cells.first(where: { $0.cellSelected })?.cellSelected = false
+                }
                 self.scrollToPhoto(atIndex: indexPath.row, animated: true)
+                cell.cellSelected = true
             }
         }
         
