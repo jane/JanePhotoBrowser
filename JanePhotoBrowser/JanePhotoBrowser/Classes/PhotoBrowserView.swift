@@ -58,7 +58,13 @@ public class PhotoBrowserView: UIView {
         }
     }
     var viewIsAnimating: Bool = false
-    var currentVisibleIndexPath: IndexPath?
+    var currentVisibleIndexPath: IndexPath? {
+        didSet {
+            if self.currentVisibleIndexPath != nil {
+                self.setSmallCellSelected(at: self.currentVisibleIndexPath!.row)
+            }
+        }
+    }
     
     //MARK: - IBInspectable
     
@@ -139,7 +145,8 @@ public class PhotoBrowserView: UIView {
         largeImagesLayout.itemSize = self.largeImagesCollectionView.bounds.size
         self.largeImagesCollectionView.collectionViewLayout = largeImagesLayout
         
-        smallImagesLayout.itemSize = CGSize(width: self.smallImagesCollectionView.bounds.height, height: self.smallImagesCollectionView.bounds.height)
+        let smallImageWidth = self.smallImagesCollectionView.bounds.height - 4
+        smallImagesLayout.itemSize = CGSize(width: smallImageWidth, height: smallImageWidth)
         self.smallImagesCollectionView.collectionViewLayout = smallImagesLayout
         
         if let visibleIndexPath = self.currentVisibleIndexPath ?? self.visibleIndexPath() {
@@ -161,8 +168,8 @@ public class PhotoBrowserView: UIView {
     fileprivate class func smallImagesLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 0.0
-        layout.minimumInteritemSpacing = 0.0
+        layout.minimumLineSpacing = 4
+        layout.minimumInteritemSpacing = 4
         
         return layout
     }
@@ -258,7 +265,7 @@ public class PhotoBrowserView: UIView {
         let smallImagesLeadingConstraint = NSLayoutConstraint(item: self.smallImagesCollectionView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: 0)
         let smallImagesBottomConstraint = NSLayoutConstraint(item: self.smallImagesCollectionView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0)
         let smallImagesTrailingConstraint = NSLayoutConstraint(item: self.smallImagesCollectionView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: 0)
-        let largeImagesBottomConstraint = NSLayoutConstraint(item: self.largeImagesCollectionView, attribute: .bottom, relatedBy: .equal, toItem: self.smallImagesCollectionView, attribute: .top, multiplier: 1, constant: 0)
+        let largeImagesBottomConstraint = NSLayoutConstraint(item: self.largeImagesCollectionView, attribute: .bottom, relatedBy: .equal, toItem: self.smallImagesCollectionView, attribute: .top, multiplier: 1, constant: 8)
         self.addConstraints([largeImagesLeadingConstraint, largeImagesTopConstraint, largeImagesTrailingConstraint, smallImagesHeightConstraint, smallImagesLeadingConstraint, smallImagesBottomConstraint, smallImagesTrailingConstraint, largeImagesBottomConstraint])
         
         self.addVisualConstraints("V:|[view]|", horizontal: "H:|[view]|", view: self.closeButton)
@@ -335,6 +342,13 @@ public class PhotoBrowserView: UIView {
         self.largeImagesCollectionView.reloadItems(at: [indexPath])
         self.smallImagesCollectionView.reloadItems(at: [indexPath])
     }
+    
+    fileprivate func setSmallCellSelected(at index: Int) {
+        if let cells = self.smallImagesCollectionView.visibleCells as? [PhotoBrowserCell] {
+            cells.first(where: { $0.cellSelected })?.cellSelected = false
+            cells[index].cellSelected = true
+        }
+    }
 }
 
 //MARK: - UICollectionViewDelegate/DataSource/Layouts
@@ -366,15 +380,13 @@ extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate,
         } else if collectionView === self.smallImagesCollectionView {
             cell.tapped = { [weak self] in
                 guard let self = self else { return }
-                if let cells = self.smallImagesCollectionView.visibleCells as? [PhotoBrowserCell] {
-                    cells.first(where: { $0.cellSelected })?.cellSelected = false
-                }
                 self.scrollToPhoto(atIndex: indexPath.row, animated: true)
-                cell.cellSelected = true
+                self.setSmallCellSelected(at: indexPath.row)
             }
+            cell.imageScaleToFit = true
+            cell.cellSelected = self.visibleIndexPath()?.row ?? 0 == indexPath.row
         }
         
-        if collectionView === self.smallImagesCollectionView { cell.imageScaleToFit = true }
         return cell
     }
 }

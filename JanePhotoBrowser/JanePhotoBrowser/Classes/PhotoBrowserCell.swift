@@ -88,10 +88,12 @@ public class PhotoBrowserCell:UICollectionViewCell {
     }
     
     private func configureImageViewAlpha() {
-        if self.cellSelected {
-            self.imageView.alpha = 0.3
-        } else {
-            self.imageView.alpha = 1
+        UIView.animate(withDuration: 0.1) {
+            if self.cellSelected {
+                self.imageView.alpha = 0.3
+            } else {
+                self.imageView.alpha = 1
+            }
         }
     }
 }
