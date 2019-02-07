@@ -236,7 +236,7 @@ public class PhotoBrowserView: UIView {
         self.largeImagesCollectionView.isPagingEnabled = true
         self.smallImagesCollectionView.backgroundColor = self.backgroundColor
         self.smallImagesCollectionView.register(PhotoBrowserCell.self, forCellWithReuseIdentifier: "PhotoCell")
-        self.smallImagesCollectionView.isPagingEnabled = true
+        self.smallImagesCollectionView.isPagingEnabled = false
         
         numberView.translatesAutoresizingMaskIntoConstraints = false
         self.largeImagesCollectionView.translatesAutoresizingMaskIntoConstraints = false
