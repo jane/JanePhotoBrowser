@@ -344,7 +344,6 @@ public class PhotoBrowserView: UIView {
                 cell.cellSelected = false
             }
             cells[index].cellSelected = true
-            print(index)
         }
     }
 }
