@@ -379,6 +379,7 @@ extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate,
             cell.tapped = { [weak self] in
                 guard let self = self else { return }
                 self.scrollToPhoto(atIndex: indexPath.row, animated: true)
+                self.delegate?.photoBrowser(self, photoViewedAtIndex: indexPath)
                 self.setSmallCellSelected(at: indexPath.row)
             }
             cell.imageScaleToFit = true
