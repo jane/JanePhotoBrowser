@@ -58,13 +58,7 @@ public class PhotoBrowserView: UIView {
         }
     }
     var viewIsAnimating: Bool = false
-    var currentVisibleIndexPath: IndexPath? {
-        didSet {
-            if self.currentVisibleIndexPath != nil {
-                self.setSmallCellSelected(at: self.currentVisibleIndexPath!.row)
-            }
-        }
-    }
+    var currentVisibleIndexPath: IndexPath?
     
     //MARK: - IBInspectable
     
@@ -344,9 +338,13 @@ public class PhotoBrowserView: UIView {
     }
     
     fileprivate func setSmallCellSelected(at index: Int) {
-        if let cells = self.smallImagesCollectionView.visibleCells as? [PhotoBrowserCell] {
-            cells.first(where: { $0.cellSelected })?.cellSelected = false
+        if let cells = self.smallImagesCollectionView.visibleCells as? [PhotoBrowserCell],
+            index < cells.count && index >= 0 {
+            for cell in cells where cell.cellSelected == true {
+                cell.cellSelected = false
+            }
             cells[index].cellSelected = true
+            print(index)
         }
     }
 }
@@ -365,7 +363,6 @@ extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate,
         cell.imageView.tag = indexPath.item
         self.dataSource?.photoBrowser(self, photoAtIndex: indexPath.row, forCell:cell) { [weak cell] image in
             guard let cell = cell, cell.imageView.tag == indexPath.item else { return }
-            
             UIView.transition(with: cell.imageView, duration: 0.3, options: [.transitionCrossDissolve], animations: {
                 cell.imageView.image = image
             }, completion: nil)
@@ -384,9 +381,8 @@ extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate,
                 self.setSmallCellSelected(at: indexPath.row)
             }
             cell.imageScaleToFit = true
-            cell.cellSelected = self.visibleIndexPath()?.row ?? 0 == indexPath.row
+            if self.visibleIndexPath() == nil, indexPath.row == 0 { cell.cellSelected = true }
         }
-        
         return cell
     }
 }
