@@ -34,6 +34,7 @@ public class PhotoBrowserViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = .white
         guard let photoView = self.photoView else { return }
         self.view.addSubview(photoView)
         
@@ -43,10 +44,8 @@ public class PhotoBrowserViewController: UIViewController {
         photoView.shouldDisplayCloseButton = true
         
         //Setup Layout for PhotoView
-        let safeAreaTop = UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0
-        let safeAreaBottom = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
-        UIApplication.shared.keyWindow?.backgroundColor = .white
-        let vConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-\(safeAreaTop)-[view]-\(safeAreaBottom)-|", options: [], metrics: nil, views: ["view":photoView])
+        let formatString = self.photoView?.showPreview == true ? "V:|[view]-|" : "V:|[view]|"
+        let vConstraints = NSLayoutConstraint.constraints(withVisualFormat: formatString, options: [], metrics: nil, views: ["view":photoView])
         let hConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options: [], metrics: nil, views: ["view":photoView])
         self.view.addConstraints(vConstraints)
         self.view.addConstraints(hConstraints)
