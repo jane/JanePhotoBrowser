@@ -399,5 +399,6 @@ extension PhotoBrowserView: PhotoBrowserViewControllerDelegate {
     public func photoBrowser(_ photoBrowser: PhotoBrowserViewController, photoViewedAtIndex indexPath: IndexPath) {
         self.delegate?.photoBrowser(self, photoViewedAtIndex: indexPath)
         self.scrollToPhoto(atIndex: indexPath.item, animated: false)
+        self.setSmallCellSelected(at: indexPath.row)
     }
 }
