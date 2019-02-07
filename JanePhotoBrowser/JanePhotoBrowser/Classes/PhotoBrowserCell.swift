@@ -22,8 +22,7 @@ public class PhotoBrowserCell:UICollectionViewCell {
     
     public var imageScaleToFit = false {
         didSet {
-            self.imageView.clipsToBounds = true
-            self.imageView.contentMode = .scaleAspectFill
+            self.configureImageView()
         }
     }
     
@@ -91,13 +90,15 @@ public class PhotoBrowserCell:UICollectionViewCell {
     }
     
     private func configureImageViewAlpha() {
-        UIView.animate(withDuration: 0.1) {
-            if self.cellSelected {
-                self.imageView.alpha = 0.3
-            } else {
-                self.imageView.alpha = 1
-            }
+        UIView.animate(withDuration: 0.1) { [weak self] in
+            guard let self = self else { return }
+            self.imageView.alpha = self.cellSelected ? 0.3 : 1
         }
+    }
+    
+    private func configureImageView() {
+        self.imageView.clipsToBounds = self.imageScaleToFit
+        self.imageView.contentMode = self.imageScaleToFit ? .scaleAspectFill : .scaleAspectFit
     }
 }
 
