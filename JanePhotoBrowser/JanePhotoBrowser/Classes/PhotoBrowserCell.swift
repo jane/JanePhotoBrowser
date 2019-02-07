@@ -47,7 +47,10 @@ public class PhotoBrowserCell:UICollectionViewCell {
     public override func prepareForReuse() {
         super.prepareForReuse()
         self.scrollView.zoomScale = 1.0
+        self.cellSelected = false
     }
+    
+    
     
     //MARK: - PhotoBrowserCell Private Methods
     fileprivate func setupImageView() {

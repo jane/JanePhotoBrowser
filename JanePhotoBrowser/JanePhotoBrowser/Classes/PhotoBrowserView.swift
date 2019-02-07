@@ -338,13 +338,13 @@ public class PhotoBrowserView: UIView {
     }
     
     fileprivate func setSmallCellSelected(at index: Int) {
-        if let cells = self.smallImagesCollectionView.visibleCells as? [PhotoBrowserCell],
-            index < cells.count && index >= 0 {
-            for cell in cells where cell.cellSelected == true {
-                cell.cellSelected = false
-            }
-            cells[index].cellSelected = true
+        guard let cell = self.smallImagesCollectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? PhotoBrowserCell,
+            let cells = self.smallImagesCollectionView.visibleCells as? [PhotoBrowserCell],
+            index >= 0  else { return }
+        for cell in cells where cell.cellSelected == true {
+            cell.cellSelected = false
         }
+        cell.cellSelected = true
     }
 }
 
@@ -383,6 +383,13 @@ extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate,
             if self.visibleIndexPath() == nil, indexPath.row == 0 { cell.cellSelected = true }
         }
         return cell
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard collectionView === self.smallImagesCollectionView,
+            let photoCell = cell as? PhotoBrowserCell,
+            indexPath == self.currentVisibleIndexPath else { return }
+        photoCell.cellSelected = true
     }
 }
 
