@@ -30,6 +30,8 @@ public class PhotoBrowserView: UIView {
         }
     }
     public var visibleRow: Int = -1
+    
+    /// Set this to `true` if you want the preview to show up while not in full screen mode
     public var showPreview: Bool = false {
         didSet {
             if self.showPreview {
@@ -40,6 +42,9 @@ public class PhotoBrowserView: UIView {
             }
         }
     }
+    
+    /// Set this to `true` if you want the preview to show up while in full screen mode
+    public var showFullScreenPreview: Bool = false
     
     fileprivate var numberViewBottomConstraint: NSLayoutConstraint?
     fileprivate var defaultNumberViewBottomOffset: CGFloat = 16

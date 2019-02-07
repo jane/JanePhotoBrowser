@@ -20,7 +20,7 @@ class ViewController: UIViewController {
         //Set up data source and delegates
         self.photoView?.dataSource = self
         self.photoView?.delegate = self
-        self.photoView?.showPreview = true
+        self.photoView?.showFullScreenPreview = true
         
         //Get an array of images
         guard let photo1 = UIImage(named: "photoBrowser1"),
