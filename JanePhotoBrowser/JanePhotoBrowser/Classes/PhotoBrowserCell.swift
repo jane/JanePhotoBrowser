@@ -20,6 +20,18 @@ public class PhotoBrowserCell:UICollectionViewCell {
         }
     }
     
+    public var imageScaleToFit = false {
+        didSet {
+            self.configureImageView()
+        }
+    }
+    
+    public var cellSelected = false {
+        didSet {
+            self.configureImageViewAlpha()
+        }
+    }
+    
     //MARK: - UICollectionViewCell
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,7 +46,10 @@ public class PhotoBrowserCell:UICollectionViewCell {
     public override func prepareForReuse() {
         super.prepareForReuse()
         self.scrollView.zoomScale = 1.0
+        self.cellSelected = false
     }
+    
+    
     
     //MARK: - PhotoBrowserCell Private Methods
     fileprivate func setupImageView() {
@@ -74,6 +89,17 @@ public class PhotoBrowserCell:UICollectionViewCell {
         callback()
     }
     
+    private func configureImageViewAlpha() {
+        UIView.animate(withDuration: 0.1) { [weak self] in
+            guard let self = self else { return }
+            self.imageView.alpha = self.cellSelected ? 0.3 : 1
+        }
+    }
+    
+    private func configureImageView() {
+        self.imageView.clipsToBounds = self.imageScaleToFit
+        self.imageView.contentMode = self.imageScaleToFit ? .scaleAspectFill : .scaleAspectFit
+    }
 }
 
 //MARK: - UIScrollViewDelegate

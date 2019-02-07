@@ -23,6 +23,7 @@ public class PhotoBrowserViewController: UIViewController {
             if self.originPhotoView?.visibleRow == 1 {
                 self.photoView?.visibleRow = -1
             }
+            self.photoView?.showPreview = self.originPhotoView?.showFullScreenPreview ?? false
             self.photoView?.updateLabelView()
         }
     }
@@ -42,7 +43,10 @@ public class PhotoBrowserViewController: UIViewController {
         photoView.shouldDisplayCloseButton = true
         
         //Setup Layout for PhotoView
-        let vConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|", options: [], metrics: nil, views: ["view":photoView])
+        let safeAreaTop = UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0
+        let safeAreaBottom = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
+        UIApplication.shared.keyWindow?.backgroundColor = .white
+        let vConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-\(safeAreaTop)-[view]-\(safeAreaBottom)-|", options: [], metrics: nil, views: ["view":photoView])
         let hConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options: [], metrics: nil, views: ["view":photoView])
         self.view.addConstraints(vConstraints)
         self.view.addConstraints(hConstraints)
