@@ -306,6 +306,7 @@ public class PhotoBrowserView: UIView {
         self.currentVisibleIndexPath = indexPath
         self.delegate?.photoBrowser(self, photoViewedAtIndex: indexPath)
         self.updateLabelView(with: index + 1)
+        self.setSmallCellSelected(at: index)
     }
     
     @objc public func closeTapped(_ sender:UIButton) {
@@ -399,6 +400,5 @@ extension PhotoBrowserView: PhotoBrowserViewControllerDelegate {
     public func photoBrowser(_ photoBrowser: PhotoBrowserViewController, photoViewedAtIndex indexPath: IndexPath) {
         self.delegate?.photoBrowser(self, photoViewedAtIndex: indexPath)
         self.scrollToPhoto(atIndex: indexPath.item, animated: false)
-        self.setSmallCellSelected(at: indexPath.row)
     }
 }
