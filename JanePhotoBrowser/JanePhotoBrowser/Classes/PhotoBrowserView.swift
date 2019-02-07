@@ -13,7 +13,7 @@ public class PhotoBrowserView: UIView {
     //MARK: - Private Variables
     
     fileprivate var largeImagesCollectionView: UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: PhotoBrowserView.largeImagesLayout())
-    fileprivate var smallImagesCollectionView: UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: PhotoBrowserView.smallImagesLayout())
+    fileprivate var smallImagesCollectionView: UICollectionView?
     fileprivate var imageLabel: UILabel = UILabel()
     fileprivate var closeButtonWrapper: UIView = UIView()
     fileprivate let closeButton: UIButton = UIButton()
@@ -30,6 +30,14 @@ public class PhotoBrowserView: UIView {
         }
     }
     public var visibleRow: Int = -1
+    public var showPreview: Bool = false {
+        didSet {
+            if self.showPreview {
+                self.smallImagesCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: PhotoBrowserView.smallImagesLayout())
+                self.setupPhotoView()
+            }
+        }
+    }
     
     fileprivate var numberViewBottomConstraint: NSLayoutConstraint?
     fileprivate var defaultNumberViewBottomOffset: CGFloat = 16
@@ -48,7 +56,7 @@ public class PhotoBrowserView: UIView {
     public weak var dataSource: PhotoBrowserDataSource? {
         didSet {
             self.largeImagesCollectionView.reloadData()
-            self.smallImagesCollectionView.reloadData()
+            self.smallImagesCollectionView?.reloadData()
             self.updateLabelView()
         }
     }
@@ -65,7 +73,7 @@ public class PhotoBrowserView: UIView {
     @IBInspectable public var canZoom: Bool = false {
         didSet {
             self.largeImagesCollectionView.reloadData()
-            self.smallImagesCollectionView.reloadData()
+            self.smallImagesCollectionView?.reloadData()
         }
     }
     
@@ -139,10 +147,11 @@ public class PhotoBrowserView: UIView {
         largeImagesLayout.itemSize = self.largeImagesCollectionView.bounds.size
         self.largeImagesCollectionView.collectionViewLayout = largeImagesLayout
         
-        let smallImageWidth = self.smallImagesCollectionView.bounds.height - 4
-        smallImagesLayout.itemSize = CGSize(width: smallImageWidth, height: smallImageWidth)
-        self.smallImagesCollectionView.collectionViewLayout = smallImagesLayout
-        
+        if let smallCollectionView = self.smallImagesCollectionView {
+            let smallImageWidth = smallCollectionView.bounds.height - 4
+            smallImagesLayout.itemSize = CGSize(width: smallImageWidth, height: smallImageWidth)
+            smallCollectionView.collectionViewLayout = smallImagesLayout
+        }
         if let visibleIndexPath = self.currentVisibleIndexPath ?? self.visibleIndexPath() {
             self.scrollToPhoto(atIndex: visibleIndexPath.item, animated: false)
         }
@@ -235,41 +244,43 @@ public class PhotoBrowserView: UIView {
         self.largeImagesCollectionView.backgroundColor = self.backgroundColor
         self.largeImagesCollectionView.register(PhotoBrowserCell.self, forCellWithReuseIdentifier: "PhotoCell")
         self.largeImagesCollectionView.isPagingEnabled = true
-        self.smallImagesCollectionView.backgroundColor = self.backgroundColor
-        self.smallImagesCollectionView.register(PhotoBrowserCell.self, forCellWithReuseIdentifier: "PhotoCell")
-        self.smallImagesCollectionView.isPagingEnabled = false
+        self.smallImagesCollectionView?.backgroundColor = self.backgroundColor
+        self.smallImagesCollectionView?.register(PhotoBrowserCell.self, forCellWithReuseIdentifier: "PhotoCell")
+        self.smallImagesCollectionView?.isPagingEnabled = false
         
         numberView.translatesAutoresizingMaskIntoConstraints = false
         self.largeImagesCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        self.smallImagesCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        self.smallImagesCollectionView?.translatesAutoresizingMaskIntoConstraints = false
         self.imageLabel.translatesAutoresizingMaskIntoConstraints = false
         self.closeButton.translatesAutoresizingMaskIntoConstraints = false
         self.closeButtonWrapper.translatesAutoresizingMaskIntoConstraints = false
         
         //Add all the subviews before applying layout constraints
         self.addSubview(self.largeImagesCollectionView)
-        self.addSubview(self.smallImagesCollectionView)
+        if let smallCollectionView = self.smallImagesCollectionView {
+            self.addSubview(smallCollectionView)
+        }
         self.addSubview(numberView)
         self.addSubview(self.closeButtonWrapper)
         
         //Setup collectionview layout constraints
-        let largeImagesLeadingConstraint = NSLayoutConstraint(item: self.largeImagesCollectionView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: 0)
-        let largeImagesTopConstraint = NSLayoutConstraint(item: self.largeImagesCollectionView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: 0)
-        let largeImagesTrailingConstraint = NSLayoutConstraint(item: self.largeImagesCollectionView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: 0)
-        let smallImagesHeightConstraint = NSLayoutConstraint(item: self.smallImagesCollectionView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 50)
-        let smallImagesLeadingConstraint = NSLayoutConstraint(item: self.smallImagesCollectionView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: 0)
-        let smallImagesBottomConstraint = NSLayoutConstraint(item: self.smallImagesCollectionView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0)
-        let smallImagesTrailingConstraint = NSLayoutConstraint(item: self.smallImagesCollectionView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: 0)
-        let largeImagesBottomConstraint = NSLayoutConstraint(item: self.largeImagesCollectionView, attribute: .bottom, relatedBy: .equal, toItem: self.smallImagesCollectionView, attribute: .top, multiplier: 1, constant: 8)
-        self.addConstraints([largeImagesLeadingConstraint, largeImagesTopConstraint, largeImagesTrailingConstraint, smallImagesHeightConstraint, smallImagesLeadingConstraint, smallImagesBottomConstraint, smallImagesTrailingConstraint, largeImagesBottomConstraint])
+        
+        if let smallCollectionView = self.smallImagesCollectionView {
+            let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[largeCollectionView]-8-[smallCollectionView(50)]|", options: [], metrics: nil, views: ["largeCollectionView":self.largeImagesCollectionView, "smallCollectionView": smallCollectionView])
+            let largeViewHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options: [], metrics: nil, views: ["view":self.largeImagesCollectionView])
+            let smallViewHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options: [], metrics: nil, views: ["view":smallCollectionView])
+            self.addConstraints(verticalConstraints + largeViewHorizontalConstraints + smallViewHorizontalConstraints)
+        } else {
+            self.addVisualConstraints("V:|[view]|", horizontal: "H:|[view]|", view: self.largeImagesCollectionView)
+        }
         
         self.addVisualConstraints("V:|[view]|", horizontal: "H:|[view]|", view: self.closeButton)
         
         //Setup CollectionView datasource and delegate
         self.largeImagesCollectionView.dataSource = self
         self.largeImagesCollectionView.delegate = self
-        self.smallImagesCollectionView.dataSource = self
-        self.smallImagesCollectionView.delegate = self
+        self.smallImagesCollectionView?.dataSource = self
+        self.smallImagesCollectionView?.delegate = self
         
         //Setup Number Label
         numberView.backgroundColor = UIColor.clear // UIColor(white: 1.0, alpha: 0.8)
@@ -282,7 +293,8 @@ public class PhotoBrowserView: UIView {
         
         numberView.addSubview(blurEffectView)
         
-        let numberViewConstraints = self.addVisualConstraints("V:[view(30)]-\(self.numberViewBottomOffset + 50)-|", horizontal: "H:[view(70)]-\(self.numberViewRightOffset)-|", view: numberView)
+        let previewCollectionViewOffset:CGFloat = self.smallImagesCollectionView != nil ? 50 : 0
+        let numberViewConstraints = self.addVisualConstraints("V:[view(30)]-\(self.numberViewBottomOffset + previewCollectionViewOffset)-|", horizontal: "H:[view(70)]-\(self.numberViewRightOffset)-|", view: numberView)
         
         self.numberViewRightConstraint = numberViewConstraints.horizontal.first
         self.numberViewBottomConstraint = numberViewConstraints.vertical.first
@@ -303,7 +315,7 @@ public class PhotoBrowserView: UIView {
         let indexPath:IndexPath = IndexPath(row: index, section: 0)
         guard indexPath.row < self.largeImagesCollectionView.numberOfItems(inSection: 0) && indexPath.row >= 0 else { self.reloadPhotos(); return }
         self.largeImagesCollectionView.scrollToItem(at: indexPath, at: [.centeredVertically, .centeredHorizontally], animated: animated)
-        self.smallImagesCollectionView.scrollToItem(at: indexPath, at: [.centeredVertically, .centeredHorizontally], animated: animated)
+        self.smallImagesCollectionView?.scrollToItem(at: indexPath, at: [.centeredVertically, .centeredHorizontally], animated: animated)
         self.currentVisibleIndexPath = indexPath
         self.delegate?.photoBrowser(self, photoViewedAtIndex: indexPath)
         self.updateLabelView(with: index + 1)
@@ -330,18 +342,18 @@ public class PhotoBrowserView: UIView {
     
     public func reloadPhotos() {
         self.largeImagesCollectionView.reloadData()
-        self.smallImagesCollectionView.reloadData()
+        self.smallImagesCollectionView?.reloadData()
         self.updateLabelView()
     }
     
     public func reloadImage(atIndexPath indexPath:IndexPath) {
         self.largeImagesCollectionView.reloadItems(at: [indexPath])
-        self.smallImagesCollectionView.reloadItems(at: [indexPath])
+        self.smallImagesCollectionView?.reloadItems(at: [indexPath])
     }
     
     fileprivate func setSmallCellSelected(at index: Int) {
-        guard let cell = self.smallImagesCollectionView.cellForItem(at: IndexPath(row: index, section: 0)) as? PhotoBrowserCell,
-            let cells = self.smallImagesCollectionView.visibleCells as? [PhotoBrowserCell],
+        guard let cell = self.smallImagesCollectionView?.cellForItem(at: IndexPath(row: index, section: 0)) as? PhotoBrowserCell,
+            let cells = self.smallImagesCollectionView?.visibleCells as? [PhotoBrowserCell],
             index >= 0  else { return }
         for cell in cells where cell.cellSelected == true {
             cell.cellSelected = false
