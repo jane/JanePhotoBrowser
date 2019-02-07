@@ -278,7 +278,6 @@ public class PhotoBrowserView: UIView {
         let largeImagesTopConstraint = NSLayoutConstraint(item: self.largeImagesCollectionView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: 0)
         let largeImagesTrailingConstraint = NSLayoutConstraint(item: self.largeImagesCollectionView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: 0)
         if let smallCollectionView = self.smallImagesCollectionView {
-            let safeAreaBottom = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
             let smallImagesHeightConstraint = NSLayoutConstraint(item: smallCollectionView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 50)
             let smallImagesLeadingConstraint = NSLayoutConstraint(item: smallCollectionView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: 0)
             let smallImagesBottomConstraint = NSLayoutConstraint(item: smallCollectionView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0)

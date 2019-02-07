@@ -130,6 +130,7 @@ extension PhotoBrowserViewController:PhotoBrowserDelegate {
 
 //MARK: - UIViewControllerTransistioningDelegate
 extension PhotoBrowserViewController:UIViewControllerTransitioningDelegate {
+    
     public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         guard let originImageView = self.originPhotoView?.visibleImageView() else { return nil }
         let transition = PhotoBrowserTransition()
@@ -138,6 +139,7 @@ extension PhotoBrowserViewController:UIViewControllerTransitioningDelegate {
         
         return transition
     }
+    
     public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         guard let photoImageViewController = dismissed as? PhotoBrowserViewController,
             let originPhotoView = self.originPhotoView else { return nil }
