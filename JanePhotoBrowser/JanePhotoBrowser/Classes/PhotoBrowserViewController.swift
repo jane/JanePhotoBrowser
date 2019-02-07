@@ -23,6 +23,7 @@ public class PhotoBrowserViewController: UIViewController {
             if self.originPhotoView?.visibleRow == 1 {
                 self.photoView?.visibleRow = -1
             }
+            self.photoView?.showPreview = self.originPhotoView?.showPreview ?? false
             self.photoView?.updateLabelView()
         }
     }

@@ -34,6 +34,8 @@ public class PhotoBrowserView: UIView {
         didSet {
             if self.showPreview {
                 self.smallImagesCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: PhotoBrowserView.smallImagesLayout())
+                self.setNeedsDisplay()
+                self.layoutSubviews()
                 self.setupPhotoView()
             }
         }
@@ -265,13 +267,19 @@ public class PhotoBrowserView: UIView {
         
         //Setup collectionview layout constraints
         
+        let largeImagesLeadingConstraint = NSLayoutConstraint(item: self.largeImagesCollectionView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: 0)
+        let largeImagesTopConstraint = NSLayoutConstraint(item: self.largeImagesCollectionView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: 0)
+        let largeImagesTrailingConstraint = NSLayoutConstraint(item: self.largeImagesCollectionView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: 0)
         if let smallCollectionView = self.smallImagesCollectionView {
-            let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|[largeCollectionView]-8-[smallCollectionView(50)]|", options: [], metrics: nil, views: ["largeCollectionView":self.largeImagesCollectionView, "smallCollectionView": smallCollectionView])
-            let largeViewHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options: [], metrics: nil, views: ["view":self.largeImagesCollectionView])
-            let smallViewHorizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options: [], metrics: nil, views: ["view":smallCollectionView])
-            self.addConstraints(verticalConstraints + largeViewHorizontalConstraints + smallViewHorizontalConstraints)
+            let smallImagesHeightConstraint = NSLayoutConstraint(item: smallCollectionView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 50)
+            let smallImagesLeadingConstraint = NSLayoutConstraint(item: smallCollectionView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: 0)
+            let smallImagesBottomConstraint = NSLayoutConstraint(item: smallCollectionView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0)
+            let smallImagesTrailingConstraint = NSLayoutConstraint(item: smallCollectionView, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: 0)
+            let largeImagesBottomConstraint = NSLayoutConstraint(item: self.largeImagesCollectionView, attribute: .bottom, relatedBy: .equal, toItem: smallCollectionView, attribute: .top, multiplier: 1, constant: 8)
+            self.addConstraints([largeImagesLeadingConstraint, largeImagesTopConstraint, largeImagesTrailingConstraint, smallImagesHeightConstraint, smallImagesLeadingConstraint, smallImagesBottomConstraint, smallImagesTrailingConstraint, largeImagesBottomConstraint])
         } else {
-            self.addVisualConstraints("V:|[view]|", horizontal: "H:|[view]|", view: self.largeImagesCollectionView)
+            let largeImagesBottomConstraint = NSLayoutConstraint(item: self.largeImagesCollectionView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 8)
+            self.addConstraints([largeImagesLeadingConstraint, largeImagesTopConstraint, largeImagesTrailingConstraint, largeImagesBottomConstraint])
         }
         
         self.addVisualConstraints("V:|[view]|", horizontal: "H:|[view]|", view: self.closeButton)
@@ -293,8 +301,8 @@ public class PhotoBrowserView: UIView {
         
         numberView.addSubview(blurEffectView)
         
-        let previewCollectionViewOffset:CGFloat = self.smallImagesCollectionView != nil ? 50 : 0
-        let numberViewConstraints = self.addVisualConstraints("V:[view(30)]-\(self.numberViewBottomOffset + previewCollectionViewOffset)-|", horizontal: "H:[view(70)]-\(self.numberViewRightOffset)-|", view: numberView)
+        let previewCollectionViewOffset:CGFloat = self.showPreview ? 30 : 0
+        let numberViewConstraints = self.addVisualConstraints("V:[view(30)]-\(self.numberViewBottomOffset + previewCollectionViewOffset)-|", horizontal: "H:[view(70)]-\(self.numberViewRightOffset - previewCollectionViewOffset)-|", view: numberView)
         
         self.numberViewRightConstraint = numberViewConstraints.horizontal.first
         self.numberViewBottomConstraint = numberViewConstraints.vertical.first
