@@ -36,10 +36,12 @@ public class PhotoBrowserView: UIView {
         didSet {
             if self.showPreview {
                 self.smallImagesCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: PhotoBrowserView.smallImagesLayout())
-                self.setNeedsDisplay()
-                self.layoutSubviews()
-                self.setupPhotoView()
+            } else {
+                self.smallImagesCollectionView = nil
             }
+            self.setNeedsDisplay()
+            self.layoutSubviews()
+            self.setupPhotoView()
         }
     }
     
