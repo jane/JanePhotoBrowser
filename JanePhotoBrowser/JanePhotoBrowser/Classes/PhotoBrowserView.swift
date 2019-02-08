@@ -345,6 +345,7 @@ public class PhotoBrowserView: UIView {
         guard let cell = self.largeImagesCollectionView.visibleCells.first as? PhotoBrowserCell else { return nil }
         return cell.imageView
     }
+    
     public func visibleIndexPath() -> IndexPath? {
         let indexPaths = self.largeImagesCollectionView.indexPathsForVisibleItems
         return indexPaths.first
@@ -375,6 +376,17 @@ public class PhotoBrowserView: UIView {
         }
         cell.cellSelected = true
     }
+    
+    func getScreenshotForBrowserView() -> UIImage? {
+        // Get image of scroll view to animate
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+        UIGraphicsBeginImageContext(self.bounds.size)
+        self.layer.draw(in: context)
+        let screenshot = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return screenshot
+    }
 }
 
 //MARK: - UICollectionViewDelegate/DataSource/Layouts
@@ -391,9 +403,7 @@ extension PhotoBrowserView:UICollectionViewDataSource, UICollectionViewDelegate,
         cell.imageView.tag = indexPath.item
         self.dataSource?.photoBrowser(self, photoAtIndex: indexPath.row, forCell:cell) { [weak cell] image in
             guard let cell = cell, cell.imageView.tag == indexPath.item else { return }
-            UIView.transition(with: cell.imageView, duration: 0.3, options: [.transitionCrossDissolve], animations: {
-                cell.imageView.image = image
-            }, completion: nil)
+            cell.imageView.image = image
         }
         if collectionView === self.largeImagesCollectionView {
             cell.canZoom = self.canZoom
