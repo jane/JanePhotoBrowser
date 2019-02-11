@@ -17,6 +17,7 @@ public class PhotoBrowserView: UIView {
     fileprivate var imageLabel: UILabel = UILabel()
     fileprivate var closeButtonWrapper: UIView = UIView()
     fileprivate let closeButton: UIButton = UIButton()
+    fileprivate var numberView:UIView = UIView()
     
     fileprivate var numberViewRightConstraint: NSLayoutConstraint?
     fileprivate var defaultNumberViewRightOffset: CGFloat = 16
@@ -74,7 +75,17 @@ public class PhotoBrowserView: UIView {
             self.updateLabelView()
         }
     }
-    var viewIsAnimating: Bool = false
+    public var viewIsAnimating: Bool = false {
+        didSet {
+            if self.viewIsAnimating {
+                self.numberView.alpha = 0
+            } else {
+                UIView.animate(withDuration: 0.3) { [weak self] in
+                    self?.numberView.alpha = 1
+                }
+            }
+        }
+    }
     var currentVisibleIndexPath: IndexPath?
     
     //MARK: - IBInspectable
@@ -234,9 +245,8 @@ public class PhotoBrowserView: UIView {
     }
     
     fileprivate func setupPhotoView() {
-        let numberView:UIView = UIView()
-        numberView.layer.cornerRadius = 3
-        numberView.layer.masksToBounds = true
+        self.numberView.layer.cornerRadius = 3
+        self.numberView.layer.masksToBounds = true
         
         let closeBlurEffect = UIBlurEffect(style: UIBlurEffect.Style.extraLight)
         let closeBlurEffectView = UIVisualEffectView(effect: closeBlurEffect)
@@ -257,7 +267,7 @@ public class PhotoBrowserView: UIView {
         self.smallImagesCollectionView?.register(PhotoBrowserCell.self, forCellWithReuseIdentifier: "PhotoCell")
         self.smallImagesCollectionView?.isPagingEnabled = false
         
-        numberView.translatesAutoresizingMaskIntoConstraints = false
+        self.numberView.translatesAutoresizingMaskIntoConstraints = false
         self.largeImagesCollectionView.translatesAutoresizingMaskIntoConstraints = false
         self.smallImagesCollectionView?.translatesAutoresizingMaskIntoConstraints = false
         self.imageLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -298,15 +308,15 @@ public class PhotoBrowserView: UIView {
         self.smallImagesCollectionView?.delegate = self
         
         //Setup Number Label
-        numberView.backgroundColor = UIColor.clear // UIColor(white: 1.0, alpha: 0.8)
+        self.numberView.backgroundColor = UIColor.clear // UIColor(white: 1.0, alpha: 0.8)
         
         let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.extraLight)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         //always fill the view
-        blurEffectView.frame = numberView.bounds
+        blurEffectView.frame = self.numberView.bounds
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
-        numberView.addSubview(blurEffectView)
+        self.numberView.addSubview(blurEffectView)
         
         let previewCollectionViewOffset:CGFloat = self.showPreview ? 30 : 0
         let numberViewConstraints = self.addVisualConstraints("V:[view(30)]-\(self.numberViewBottomOffset + previewCollectionViewOffset)-|", horizontal: "H:[view(70)]-\(self.numberViewRightOffset - previewCollectionViewOffset)-|", view: numberView)
@@ -314,11 +324,11 @@ public class PhotoBrowserView: UIView {
         self.numberViewRightConstraint = numberViewConstraints.horizontal.first
         self.numberViewBottomConstraint = numberViewConstraints.vertical.first
         
-        numberView.addSubview(self.imageLabel)
+        self.numberView.addSubview(self.imageLabel)
         self.imageLabel.font = self.labelFont
         self.updateLabelView()
-        numberView.addConstraint(NSLayoutConstraint(item: self.imageLabel, attribute: .centerX, relatedBy: .equal, toItem: numberView, attribute: .centerX, multiplier: 1.0, constant: 0.0))
-        numberView.addConstraint(NSLayoutConstraint(item: self.imageLabel, attribute: .centerY, relatedBy: .equal, toItem: numberView, attribute: .centerY, multiplier: 1.0, constant: 0.0))
+        self.numberView.addConstraint(NSLayoutConstraint(item: self.imageLabel, attribute: .centerX, relatedBy: .equal, toItem: numberView, attribute: .centerX, multiplier: 1.0, constant: 0.0))
+        self.numberView.addConstraint(NSLayoutConstraint(item: self.imageLabel, attribute: .centerY, relatedBy: .equal, toItem: numberView, attribute: .centerY, multiplier: 1.0, constant: 0.0))
         
         //Setup Close Button
         self.setupCloseButton()

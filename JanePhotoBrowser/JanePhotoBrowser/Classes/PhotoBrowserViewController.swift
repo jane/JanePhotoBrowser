@@ -61,14 +61,6 @@ public class PhotoBrowserViewController: UIViewController {
         photoView.scrollToPhoto(atIndex: (indexPath as NSIndexPath).item, animated: false)
     }
     
-    override public func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        guard let photoView = self.photoView else { return }
-        if photoView.viewIsAnimating {
-            photoView.visibleImageView()?.isHidden = true
-        }
-    }
-    
     @objc func panGesture(_ recognizer:UIPanGestureRecognizer) {
         let flickSpeed:CGFloat = 1300
         

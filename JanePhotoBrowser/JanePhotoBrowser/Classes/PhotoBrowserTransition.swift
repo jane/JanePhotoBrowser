@@ -50,6 +50,7 @@ class PhotoBrowserTransition: NSObject, UIViewControllerAnimatedTransitioning {
         
         //Animate the transition between view controllers
         UIView.animate(withDuration: 0.4, animations: {
+            photoView.viewIsAnimating = true
             destinationViewController.view.alpha = 1.0
             if let frame = photoView.superview?.convert(photoView.frame, to: containerView), !self.animateIn {
                 let newFrame = CGRect(x: frame.minX, y: frame.minY, width: frame.width, height: frame.height - (photoView.showPreview == true ? (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0) + 42 : -8))
@@ -65,6 +66,7 @@ class PhotoBrowserTransition: NSObject, UIViewControllerAnimatedTransitioning {
                 photoView.alpha = 1
                 image.alpha = 1
             }, completion: { _ in
+                photoView.viewIsAnimating = false
                 snapShot.removeFromSuperview()
                 transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
             })
