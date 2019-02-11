@@ -75,7 +75,7 @@ public class PhotoBrowserView: UIView {
             self.updateLabelView()
         }
     }
-    public var viewIsAnimating: Bool = false {
+    var viewIsAnimating: Bool = false {
         didSet {
             if self.viewIsAnimating {
                 self.numberView.alpha = 0
