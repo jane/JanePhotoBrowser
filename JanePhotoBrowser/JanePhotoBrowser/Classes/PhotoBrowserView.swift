@@ -80,7 +80,7 @@ public class PhotoBrowserView: UIView {
             if self.viewIsAnimating {
                 self.numberView.alpha = 0
             } else {
-                UIView.animate(withDuration: 0.3) { [weak self] in
+                UIView.animate(withDuration: 0.1) { [weak self] in
                     self?.numberView.alpha = 1
                 }
             }
@@ -245,6 +245,7 @@ public class PhotoBrowserView: UIView {
     }
     
     fileprivate func setupPhotoView() {
+        self.numberView = UIView()
         self.numberView.layer.cornerRadius = 3
         self.numberView.layer.masksToBounds = true
         
