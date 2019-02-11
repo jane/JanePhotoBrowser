@@ -50,18 +50,26 @@ class PhotoBrowserTransition: NSObject, UIViewControllerAnimatedTransitioning {
         
         //Animate the transition between view controllers
         UIView.animate(withDuration: 0.4, animations: {
+            photoView.viewIsAnimating = true
             destinationViewController.view.alpha = 1.0
             if let frame = photoView.superview?.convert(photoView.frame, to: containerView), !self.animateIn {
-                snapShot.frame = frame
+                let newFrame = CGRect(x: frame.minX, y: frame.minY, width: frame.width, height: frame.height - (photoView.showPreview == true ? (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0) + 42 : -8))
+                snapShot.frame = newFrame
             } else {
-                snapShot.frame = destinationViewController.view.frame
+                let destinationFrame = destinationViewController.view.frame
+                let newFrame = CGRect(x: destinationFrame.minX, y: destinationFrame.minY, width: destinationFrame.width, height: destinationFrame.height - (photoView.showPreview == true ? (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0) + 42 : -8))
+                snapShot.frame = newFrame
             }
-        }) { (finished) in
-            photoView.alpha = 1
-            image.alpha = 1
-            snapShot.removeFromSuperview()
-            
-            transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+        }) { _ in
+            photoView.superview?.bringSubviewToFront(photoView)
+            UIView.animate(withDuration: 0.3, animations: {
+                photoView.alpha = 1
+                image.alpha = 1
+            }, completion: { _ in
+                photoView.viewIsAnimating = false
+                snapShot.removeFromSuperview()
+                transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+            })
         }
     }
 }
