@@ -387,17 +387,6 @@ public class PhotoBrowserView: UIView {
         }
         cell.cellSelected = true
     }
-    
-    func getScreenshotForBrowserView() -> UIImage? {
-        // Get image of scroll view to animate
-        guard let context = UIGraphicsGetCurrentContext() else { return nil }
-        UIGraphicsBeginImageContext(self.bounds.size)
-        self.layer.draw(in: context)
-        let screenshot = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return screenshot
-    }
 }
 
 //MARK: - UICollectionViewDelegate/DataSource/Layouts
