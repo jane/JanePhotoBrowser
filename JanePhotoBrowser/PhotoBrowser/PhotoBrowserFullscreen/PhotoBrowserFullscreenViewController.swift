@@ -28,7 +28,8 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.view.backgroundColor = .white
+        self.setup()
     }
     
     @objc func closeTapped(_ gesture: UITapGestureRecognizer) {
@@ -145,7 +146,7 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
         
         let border = UIView()
         border.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.8, alpha: 1)
-        blurEffectView.addSubview(border) {
+        blurEffectView.contentView.addSubview(border) {
             $0.edges(.left, .top, .right).pinToSuperview()
             $0.height.set((1.0 / UIScreen.main.scale))
         }

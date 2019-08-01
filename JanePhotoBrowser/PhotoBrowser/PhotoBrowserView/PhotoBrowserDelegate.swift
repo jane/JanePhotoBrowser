@@ -34,7 +34,8 @@ public extension PhotoBrowserDelegate where Self: UIViewController {
             fullscreenController.dataSource = photoBrowserView
             fullscreenController.initialPhotoIndex = photoBrowserView?.pagedView.currentPage ?? 0
             fullscreenController.originImageView = photoBrowserView?.pagedView.currentImageView
-            fullscreenController.modalPresentationStyle = .fullScreen
+            fullscreenController.modalPresentationStyle = .custom
+            fullscreenController.transitioningDelegate = fullscreenController
             
             self.present(fullscreenController, animated: true, completion: nil)
         }
