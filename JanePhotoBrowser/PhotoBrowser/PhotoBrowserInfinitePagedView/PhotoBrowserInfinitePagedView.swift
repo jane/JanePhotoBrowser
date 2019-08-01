@@ -17,7 +17,11 @@ public class PhotoBrowserInfinitePagedView: UIScrollView {
     
     weak var photoDataSource: PhotoBrowserInfinitePagedDataSource?
     weak var photoDelegate: PhotoBrowserInfinitePagedDelegate?
-    var currentPage: Int = 0
+    var currentPage: Int = 0 {
+        didSet {
+            self.updateAccessibilityLabel()
+        }
+    }
     var pageCount: Int {
         return self.photoDataSource?.numberOfPhotos() ?? 0
     }
@@ -95,6 +99,9 @@ public class PhotoBrowserInfinitePagedView: UIScrollView {
         
         let gesture = UITapGestureRecognizer(target: self, action: #selector(self.imageTapped(_:)))
         self.currentImageView.addGestureRecognizer(gesture)
+        self.currentImageView.isUserInteractionEnabled = true
+        self.currentImageView.isAccessibilityElement = true
+        self.currentImageView.accessibilityHint = "Tap to view images full screen"
         self.updateImageViewLayout()
         
         self.zoomScrollView.maximumZoomScale = 3
@@ -125,6 +132,7 @@ public class PhotoBrowserInfinitePagedView: UIScrollView {
         if self.pageCount > 0 {
             self.photoDelegate?.photoBrowserInfinitePhotoViewed(at: self.currentPage)
         }
+        self.updateAccessibilityLabel()
     }
     
     func loadImage(at index: Int, forPosition position: PhotoPosition) {
@@ -145,6 +153,10 @@ public class PhotoBrowserInfinitePagedView: UIScrollView {
             guard currentPage == self?.currentPage else { return }
             imageView?.image = image
         }
+    }
+    
+    private func updateAccessibilityLabel() {
+        self.currentImageView.accessibilityLabel = "Image \(self.currentPage + 1) of \(self.pageCount)"
     }
     
     /// Update the image view layout so each image is the full width of the paged view
@@ -195,5 +207,12 @@ extension PhotoBrowserInfinitePagedView: UIScrollViewDelegate {
         if photoCount > 0 {
             self.photoDelegate?.photoBrowserInfinitePhotoViewed(at: self.currentPage)
         }
+        UIAccessibility.post(notification: .layoutChanged, argument: self.currentImageView)
+    }
+}
+
+extension PhotoBrowserInfinitePagedView: UIScrollViewAccessibilityDelegate {
+    public func accessibilityScrollStatus(for scrollView: UIScrollView) -> String? {
+        return "  "
     }
 }

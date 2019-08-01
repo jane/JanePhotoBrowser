@@ -32,9 +32,6 @@ public class PhotoBrowserView: UIView {
     /// The index of the current photo being shown
     public var currentPhotoIndex: Int = 0
     
-    /// Texted used to build accessibility labels
-    public var accessibilityItemName: String = "Product Image"
-    
     /// Flag indicating if the preview thumbnails should show or not
     @IBInspectable public var showPreview: Bool = true {
         didSet {
