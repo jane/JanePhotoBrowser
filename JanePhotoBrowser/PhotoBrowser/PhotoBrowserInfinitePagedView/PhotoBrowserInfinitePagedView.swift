@@ -25,7 +25,7 @@ public class PhotoBrowserInfinitePagedView: UIScrollView {
     var pageCount: Int {
         return self.photoDataSource?.numberOfPhotos() ?? 0
     }
-    var zoomScrollView: UIScrollView = UIScrollView()
+    var zoomScrollView = PhotoBrowserZoomScrollView()
     var imageViews: [UIImageView] {
         return [previousImageView, currentImageView, nextImageView]
     }
@@ -34,13 +34,11 @@ public class PhotoBrowserInfinitePagedView: UIScrollView {
     var nextImageView = UIImageView()
     var isZoomEnabled: Bool = false {
         didSet {
-            self.resetZoom()
-            self.zoomScrollView.maximumZoomScale = 1
+            self.zoomScrollView.isZoomEnabled = self.isZoomEnabled
         }
     }
     
     private var currentPageWidth: CGFloat = UIScreen.main.bounds.width
-    private var zoomHandler = PhotoBrowserZoomHandler()
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -104,15 +102,7 @@ public class PhotoBrowserInfinitePagedView: UIScrollView {
         self.currentImageView.accessibilityHint = "Tap to view images full screen"
         self.updateImageViewLayout()
         
-        self.zoomScrollView.maximumZoomScale = 3
-        self.zoomScrollView.minimumZoomScale = 1
-        self.zoomScrollView.bouncesZoom = false
-        self.zoomScrollView.zoomScale = 1
-        self.zoomScrollView.addSubview(self.currentImageView) {
-            $0.edges.pinToSuperview()
-            $0.size.match(self.al.size)
-        }
-        self.zoomScrollView.delegate = self.zoomHandler
+        self.zoomScrollView.setup(with: self.currentImageView)
     }
     
     @objc func imageTapped(_ sender: UITapGestureRecognizer?) {

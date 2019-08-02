@@ -34,7 +34,7 @@
 		F889D6F222F3732800F7A162 /* PhotoBrowserFullscreenDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F889D6F122F3732800F7A162 /* PhotoBrowserFullscreenDelegate.swift */; };
 		F889D6F922F3781300F7A162 /* PhotoBrowserFullscreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F889D6F822F3781300F7A162 /* PhotoBrowserFullscreenViewController.swift */; };
 		F889D6FB22F37FF800F7A162 /* PhotoBrowserFullscreenTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F889D6FA22F37FF800F7A162 /* PhotoBrowserFullscreenTransition.swift */; };
-		F889D6FD22F3A01100F7A162 /* PhotoBrowserZoomHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F889D6FC22F3A01000F7A162 /* PhotoBrowserZoomHandler.swift */; };
+		F889D6FD22F3A01100F7A162 /* PhotoBrowserZoomScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F889D6FC22F3A01000F7A162 /* PhotoBrowserZoomScrollView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,7 +109,7 @@
 		F889D6F122F3732800F7A162 /* PhotoBrowserFullscreenDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoBrowserFullscreenDelegate.swift; sourceTree = "<group>"; };
 		F889D6F822F3781300F7A162 /* PhotoBrowserFullscreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoBrowserFullscreenViewController.swift; sourceTree = "<group>"; };
 		F889D6FA22F37FF800F7A162 /* PhotoBrowserFullscreenTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoBrowserFullscreenTransition.swift; sourceTree = "<group>"; };
-		F889D6FC22F3A01000F7A162 /* PhotoBrowserZoomHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoBrowserZoomHandler.swift; sourceTree = "<group>"; };
+		F889D6FC22F3A01000F7A162 /* PhotoBrowserZoomScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoBrowserZoomScrollView.swift; sourceTree = "<group>"; };
 		F8DDCE531DE64E9A007270BF /* JanePhotoBrowser.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = JanePhotoBrowser.podspec; path = ../JanePhotoBrowser.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -247,7 +247,7 @@
 				F889D6DA22F34B2D00F7A162 /* PhotoBrowserInfinitePagedView.swift */,
 				F889D6DF22F34DBA00F7A162 /* PhotoBrowserInfinitePagedDataSource.swift */,
 				F889D6E122F357CA00F7A162 /* PhotoBrowserInfinitePagedDelegate.swift */,
-				F889D6FC22F3A01000F7A162 /* PhotoBrowserZoomHandler.swift */,
+				F889D6FC22F3A01000F7A162 /* PhotoBrowserZoomScrollView.swift */,
 			);
 			path = PhotoBrowserInfinitePagedView;
 			sourceTree = "<group>";
@@ -493,7 +493,7 @@
 				F889D6FB22F37FF800F7A162 /* PhotoBrowserFullscreenTransition.swift in Sources */,
 				F889D6E022F34DBA00F7A162 /* PhotoBrowserInfinitePagedDataSource.swift in Sources */,
 				F889D6E422F358DB00F7A162 /* PhotoBrowserMode.swift in Sources */,
-				F889D6FD22F3A01100F7A162 /* PhotoBrowserZoomHandler.swift in Sources */,
+				F889D6FD22F3A01100F7A162 /* PhotoBrowserZoomScrollView.swift in Sources */,
 				F889D6D922F3468A00F7A162 /* PhotoBrowserDelegate.swift in Sources */,
 				F889D6F222F3732800F7A162 /* PhotoBrowserFullscreenDelegate.swift in Sources */,
 				F889D6EC22F36CFD00F7A162 /* PhotoBrowserPreviewCell.swift in Sources */,

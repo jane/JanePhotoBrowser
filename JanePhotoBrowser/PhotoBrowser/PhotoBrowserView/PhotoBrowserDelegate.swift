@@ -34,7 +34,10 @@ public extension PhotoBrowserDelegate where Self: UIViewController {
             fullscreenController.dataSource = photoBrowserView
             fullscreenController.initialPhotoIndex = photoBrowserView?.pagedView.currentPage ?? 0
             fullscreenController.originImageView = photoBrowserView?.pagedView.currentImageView
-            fullscreenController.modalPresentationStyle = .custom
+            if let customFont = photoBrowserView?.imageNumberFont {
+                fullscreenController.imageNumberFont = customFont
+            }
+            fullscreenController.loadViewIfNeeded()
             fullscreenController.transitioningDelegate = fullscreenController
             
             self.present(fullscreenController, animated: true, completion: nil)

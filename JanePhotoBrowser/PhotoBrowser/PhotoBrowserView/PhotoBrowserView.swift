@@ -33,7 +33,7 @@ public class PhotoBrowserView: UIView {
     public var currentPhotoIndex: Int = 0
     
     /// Flag indicating if the preview thumbnails should show or not
-    @IBInspectable public var showPreview: Bool = true {
+    @IBInspectable public var showPreview: Bool = false {
         didSet {
             if self.showPreview {
                 self.setupPreviewCollectionView()
@@ -58,9 +58,9 @@ public class PhotoBrowserView: UIView {
         }
     }
     
-    public var labelFont: UIFont = UIFont.systemFont(ofSize: 12) {
+    public var imageNumberFont: UIFont = UIFont.systemFont(ofSize: 12) {
         didSet {
-            self.imageNumberLabel.font = labelFont
+            self.imageNumberLabel.font = imageNumberFont
         }
     }
     
@@ -152,10 +152,10 @@ public class PhotoBrowserView: UIView {
         
         self.imageNumberLabel.textColor = UIColor(red: 0.07, green: 0.07, blue: 0.07, alpha: 1)
         self.imageNumberLabel.isAccessibilityElement = false
-        self.imageNumberLabel.font = self.labelFont
+        self.imageNumberLabel.font = self.imageNumberFont
         
         self.imageNumberContainerView.addSubview(self.imageNumberLabel) {
-            $0.edges.pinToSuperview(insets: UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 15), relation: .equal)
+            $0.edges.pinToSuperview(insets: UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12), relation: .equal)
         }
         
         self.updateLabelView()
@@ -195,6 +195,7 @@ public class PhotoBrowserView: UIView {
 extension PhotoBrowserView: PhotoBrowserInfinitePagedDataSource, PhotoBrowserInfinitePagedDelegate {
     func photoBrowserInfinitePhotoViewed(at index: Int) {
         self.delegate?.photoBrowser(self, photoViewedAtIndex: index, mode: .inline)
+        self.previewCollectionView?.selectedPhotoIndex = index
         self.updateLabelView()
     }
     
@@ -231,7 +232,7 @@ extension PhotoBrowserView: PhotoBrowserFullscreenDataSource, PhotoBrowserFullsc
         self.dataSource?.photoBrowser(self, thumbnailAtIndex: index, forImageView: imageView, completion: completion)
     }
     
-    func photoBrowserFullscreenCloseButtonTapped(selectedIndex: Int) {
+    func photoBrowserFullscreenDidDismiss(selectedIndex: Int) {
         self.pagedView.reloadPhotos(at: selectedIndex)
         self.previewCollectionView?.selectedPhotoIndex = selectedIndex
         self.delegate?.photoBrowserCloseButtonTapped()

@@ -17,14 +17,17 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
     public var closeButtonContainer = UIView()
     public var imageNumberLabel: UILabel = UILabel()
     public var imageNumberContainerView: UIView = UIView()
+    
     /// Used to animate from an origin
-    public var originImageView: UIImageView?
+    var originImageView: UIImageView?
+    var interactiveAnimation: UIPercentDrivenInteractiveTransition?
     
     public var pagedView = PhotoBrowserInfinitePagedView(frame: .zero)
     
     public var previewCollectionView: PhotoBrowserPreviewCollectionView!
     
     public var initialPhotoIndex: Int = 0
+    public var imageNumberFont: UIFont = UIFont.systemFont(ofSize: 12)
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +36,11 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
     }
     
     @objc func closeTapped(_ gesture: UITapGestureRecognizer) {
-        self.delegate.photoBrowserFullscreenCloseButtonTapped(selectedIndex: self.pagedView.currentPage)
+        let delegate = self.delegate
+        self.dismiss(animated: true) {
+            delegate?.photoBrowserFullscreenDidDismiss(selectedIndex: self.pagedView.currentPage)
+        }
+        self.interactiveAnimation?.finish()
     }
     
     func updateLabelView() {
@@ -82,14 +89,19 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
             $0.width.set(24)
         }
         
+        // Add tag gesture to close fullscreen
         let gesture = UITapGestureRecognizer(target: self, action: #selector(self.closeTapped(_:)))
         self.closeButtonContainer.addGestureRecognizer(gesture)
+        
+        // Add pan gesture to watch for sliding up to dismiss image
+        //let pan = UIPanGestureRecognizer(target: self, action: #selector(self.panGesture(_:)))
+        //self.pagedView.currentImageView.addGestureRecognizer(pan)
     }
     
     private func setupImageNumber() {
         self.view.addSubview(self.imageNumberContainerView) {
             $0.right.pinToSuperview(inset: 16, relation: .equal)
-            $0.bottom.pinToSuperviewMargin(inset: 66, relation: .equal)
+            $0.bottom.pinToSuperviewMargin(inset: 82, relation: .equal)
         }
         
         self.imageNumberContainerView.layer.cornerRadius = 4
@@ -107,9 +119,10 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
         
         self.imageNumberLabel.textColor = UIColor(red: 0.07, green: 0.07, blue: 0.07, alpha: 1)
         self.imageNumberLabel.isAccessibilityElement = false
+        self.imageNumberLabel.font = self.imageNumberFont
         
         self.imageNumberContainerView.addSubview(self.imageNumberLabel) {
-            $0.edges.pinToSuperview(insets: UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 15), relation: .equal)
+            $0.edges.pinToSuperview(insets: UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12), relation: .equal)
         }
         
         self.updateLabelView()
@@ -122,6 +135,7 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
         
         self.pagedView.photoDelegate = self
         self.pagedView.photoDataSource = self
+        self.pagedView.isZoomEnabled = true
         self.pagedView.reloadPhotos(at: self.initialPhotoIndex)
     }
     
@@ -153,6 +167,38 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
         
         self.previewCollectionView.selectedPhotoIndex = self.initialPhotoIndex
     }
+    
+    @objc func panGesture(_ recognizer:UIPanGestureRecognizer) {
+        let flickSpeed:CGFloat = 1300
+        
+        //Find progress of upward swipe.
+        var progress = recognizer.translation(in: self.view).y / self.view.bounds.size.height
+        progress = min(1.0, abs(progress) * 2)
+        
+        //Update progress
+        switch (recognizer.state) {
+            case .began:
+                self.interactiveAnimation = UIPercentDrivenInteractiveTransition()
+                self.interactiveAnimation?.completionCurve = .easeInOut
+                self.dismiss(animated: true) {
+                    
+            }
+            case .changed:
+                self.interactiveAnimation?.update(progress)
+            case .ended: fallthrough
+            case .cancelled:
+                //If we have swiped over half way, or we flicked the view upward then we want to finish the transition
+                if progress > 0.5 || abs(recognizer.velocity(in: self.view).y) > flickSpeed {
+                    self.interactiveAnimation?.finish()
+                } else {
+                    self.interactiveAnimation?.cancel()
+                }
+                
+                self.interactiveAnimation = nil
+            default: break
+        }
+    }
+    
 }
 
 extension PhotoBrowserFullscreenViewController: PhotoBrowserInfinitePagedDataSource, PhotoBrowserInfinitePagedDelegate {
@@ -191,13 +237,28 @@ extension PhotoBrowserFullscreenViewController: PhotoBrowserPreviewDataSource, P
 extension PhotoBrowserFullscreenViewController: UIViewControllerTransitioningDelegate {
     public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         
-        guard let presented = presented as? PhotoBrowserFullscreenViewController, let originView = presented.originImageView else { return nil }
+        guard let presented = presented as? PhotoBrowserFullscreenViewController, let originImageView = presented.originImageView else { return nil }
         
         let transition = PhotoBrowserFullscreenTransition()
-        transition.destinationView = presented.pagedView.currentImageView
-        transition.sourceView = originView
-        transition.animateIn = true
+        transition.originImageView = originImageView
+        transition.destinationImageView = self.pagedView.currentImageView
         
         return transition
+    }
+    
+    public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard let dismissed = dismissed as? PhotoBrowserFullscreenViewController, let originImageView = dismissed.originImageView else { return nil }
+        
+        let transition = PhotoBrowserFullscreenTransition()
+        transition.animateIn = false
+        transition.destinationImageView = originImageView
+        transition.originImageView = dismissed.pagedView.currentImageView
+        
+        return transition
+    }
+    
+    public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        guard let _ = animator as? PhotoBrowserFullscreenTransition else { return nil }
+        return self.interactiveAnimation
     }
 }

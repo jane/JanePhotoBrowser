@@ -13,5 +13,5 @@ protocol PhotoBrowserFullscreenDelegate: class {
     func photoBrowserFullscreenThumbnailTapped(_ index: Int)
     func photoBrowserFullscreenPhotoViewed(_ index: Int)
     func photoBrowserFullscreenThumbnailViewed(_ index: Int)
-    func photoBrowserFullscreenCloseButtonTapped(selectedIndex: Int)
+    func photoBrowserFullscreenDidDismiss(selectedIndex: Int)
 }
