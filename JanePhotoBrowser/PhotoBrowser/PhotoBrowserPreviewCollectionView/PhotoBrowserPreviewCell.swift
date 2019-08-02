@@ -32,6 +32,7 @@ class PhotoBrowserPreviewCell: UICollectionViewCell {
     public override func prepareForReuse() {
         super.prepareForReuse()
         self.isSelectedPhoto = false
+        self.imageView.image = nil
     }
     
     private func setupImageView() {

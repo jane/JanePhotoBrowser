@@ -193,6 +193,7 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
 extension PhotoBrowserFullscreenViewController: PhotoBrowserInfinitePagedDataSource, PhotoBrowserInfinitePagedDelegate {
     func photoBrowserInfinitePhotoViewed(at index: Int) {
         self.delegate?.photoBrowserFullscreenPhotoViewed(index)
+        self.previewCollectionView?.selectedPhotoIndex = index
         self.updateLabelView()
     }
     

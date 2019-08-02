@@ -20,8 +20,14 @@ public class PhotoBrowserPreviewCollectionView: UICollectionView {
                 return
             }
             let indexPath = IndexPath(item: self.selectedPhotoIndex, section: 0)
+            
             self.visibleCells.compactMap({ $0 as? PhotoBrowserPreviewCell }).forEach({ $0.isSelectedPhoto = false })
-            self.reloadItems(at: [indexPath])
+            if let cell = self.cellForItem(at: indexPath) as? PhotoBrowserPreviewCell {
+                cell.isSelectedPhoto = true
+            } else {
+                self.reloadItems(at: [indexPath])
+            }
+            
             self.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         }
     }
@@ -60,7 +66,6 @@ extension PhotoBrowserPreviewCollectionView: UICollectionViewDataSource, UIColle
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photo", for: indexPath) as! PhotoBrowserPreviewCell
         
-        cell.imageView.image = nil
         cell.imageView.tag = indexPath.item
         cell.imageView.isAccessibilityElement = true
         
