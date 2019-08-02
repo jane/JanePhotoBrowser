@@ -86,6 +86,20 @@ public class PhotoBrowserView: UIView {
         self.setup()
     }
     
+    public func presentFullscreen(from controller: UIViewController) {
+        let fullscreenController = PhotoBrowserFullscreenViewController()
+        fullscreenController.delegate = self
+        fullscreenController.dataSource = self
+        fullscreenController.initialPhotoIndex = self.pagedView.currentPage
+        fullscreenController.originImageView = self.pagedView.currentImageView
+        fullscreenController.originNumberView = self.imageNumberView
+        fullscreenController.imageNumberFont = self.imageNumberFont
+        fullscreenController.loadViewIfNeeded()
+        fullscreenController.transitioningDelegate = fullscreenController
+        
+        controller.present(fullscreenController, animated: true, completion: nil)
+    }
+    
     func updateLabelView() {
         let photoCount = self.dataSource?.numberOfPhotos(self) ?? 0
         let currentPhoto = self.pagedView.currentPage
@@ -212,8 +226,6 @@ extension PhotoBrowserView: PhotoBrowserFullscreenDataSource, PhotoBrowserFullsc
     }
     
     func photoBrowserFullscreenDidDismiss(selectedIndex: Int) {
-        self.pagedView.reloadPhotos(at: selectedIndex)
-        self.previewCollectionView?.selectedPhotoIndex = selectedIndex
         self.delegate?.photoBrowserFullscreenWasDismissed()
     }
     

@@ -52,16 +52,28 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: PhotoBrowserDataSource, PhotoBrowserDelegate {
-    func photoBrowserViewForTransition() -> PhotoBrowserView? {
-        return self.photoBrowserView
-    }
-    
     func numberOfPhotos(_ photoBrowser: PhotoBrowserView) -> Int {
         return self.images.count
     }
     
     func photoBrowser(_ photoBrowser: PhotoBrowserView, photoAtIndex index: Int, forImageView imageView: UIImageView, completion: @escaping (UIImage?) -> ()) {
         completion(self.images[index])
+    }
+    
+    func photoBrowser(_ photoBrowser: PhotoBrowserView, photoTappedAtIndex index: Int, mode: PhotoBrowserMode) {
+        print("Tapped photo at \(index) in \(mode == .fullscreen ? "fullscreen" : "inline")")
+        if mode == .inline {
+            photoBrowser.presentFullscreen(from: self)
+        }
+    }
+    func photoBrowser(_ photoBrowser: PhotoBrowserView, photoViewedAtIndex index: Int, mode: PhotoBrowserMode) {
+        print("Viewed photo at \(index) in \(mode == .fullscreen ? "fullscreen" : "inline")")
+    }
+    func photoBrowser(_ photoBrowser: PhotoBrowserView, thumbnailTappedAtIndex index: Int, mode: PhotoBrowserMode) {
+        print("  Tapped thumbnail at \(index) in \(mode == .fullscreen ? "fullscreen" : "inline")")
+    }
+    func photoBrowserFullscreenWasDismissed() {
+        print("fullscreen dismissed")
     }
 }
 

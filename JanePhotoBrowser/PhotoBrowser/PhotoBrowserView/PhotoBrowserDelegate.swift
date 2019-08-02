@@ -9,8 +9,6 @@
 import UIKit
 
 public protocol PhotoBrowserDelegate: class {
-    func photoBrowserViewForTransition() -> PhotoBrowserView?
-    
     func photoBrowser(_ photoBrowser: PhotoBrowserView, photoTappedAtIndex index: Int, mode: PhotoBrowserMode)
     func photoBrowser(_ photoBrowser: PhotoBrowserView, photoViewedAtIndex index: Int, mode: PhotoBrowserMode)
     func photoBrowser(_ photoBrowser: PhotoBrowserView, thumbnailTappedAtIndex index: Int, mode: PhotoBrowserMode)
@@ -29,20 +27,7 @@ public extension PhotoBrowserDelegate {
 public extension PhotoBrowserDelegate where Self: UIViewController {
     func photoBrowser(_ photoBrowser: PhotoBrowserView, photoTappedAtIndex index: Int, mode: PhotoBrowserMode) {
         if mode == .inline {
-            let photoBrowserView = self.photoBrowserViewForTransition()
-            let fullscreenController = PhotoBrowserFullscreenViewController()
-            fullscreenController.delegate = photoBrowserView
-            fullscreenController.dataSource = photoBrowserView
-            fullscreenController.initialPhotoIndex = photoBrowserView?.pagedView.currentPage ?? 0
-            fullscreenController.originImageView = photoBrowserView?.pagedView.currentImageView
-            fullscreenController.originNumberView = photoBrowserView?.imageNumberView
-            if let customFont = photoBrowserView?.imageNumberFont {
-                fullscreenController.imageNumberFont = customFont
-            }
-            fullscreenController.loadViewIfNeeded()
-            fullscreenController.transitioningDelegate = fullscreenController
-            
-            self.present(fullscreenController, animated: true, completion: nil)
+            photoBrowser.presentFullscreen(from: self)
         }
     }
 }
