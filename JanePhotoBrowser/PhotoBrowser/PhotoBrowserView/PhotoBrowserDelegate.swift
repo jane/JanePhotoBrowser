@@ -35,6 +35,7 @@ public extension PhotoBrowserDelegate where Self: UIViewController {
             fullscreenController.dataSource = photoBrowserView
             fullscreenController.initialPhotoIndex = photoBrowserView?.pagedView.currentPage ?? 0
             fullscreenController.originImageView = photoBrowserView?.pagedView.currentImageView
+            fullscreenController.originNumberView = photoBrowserView?.imageNumberView
             if let customFont = photoBrowserView?.imageNumberFont {
                 fullscreenController.imageNumberFont = customFont
             }

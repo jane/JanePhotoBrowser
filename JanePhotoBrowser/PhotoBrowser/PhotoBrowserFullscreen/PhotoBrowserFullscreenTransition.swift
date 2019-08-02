@@ -13,6 +13,9 @@ public class PhotoBrowserFullscreenTransition: NSObject, UIViewControllerAnimate
     var originImageView: UIImageView?
     var destinationImageView: UIImageView?
     
+    var originNumberView: ImageNumberView?
+    var destinationNumberView: ImageNumberView?
+    
     public func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.4
     }
@@ -20,55 +23,91 @@ public class PhotoBrowserFullscreenTransition: NSObject, UIViewControllerAnimate
     public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         guard let destinationViewController:UIViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to),
             let originImageView = self.originImageView,
-            let destiniationImageView = self.destinationImageView else {
+            let destinationImageView = self.destinationImageView else {
                 transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
                 return
         }
         
         let containerView: UIView = transitionContext.containerView
         
-        //Create Image View to Animate
-        let snapShot = UIImageView()
-        snapShot.image = originImageView.image
-        snapShot.contentMode = .scaleAspectFit
-        if let frame = originImageView.superview?.convert(originImageView.frame, to: containerView) {
-            snapShot.frame = frame
-        }
-        
-        originImageView.alpha = 0
-        
         //Prep destination view controller for animation
         destinationViewController.view.frame = transitionContext.finalFrame(for: destinationViewController)
         destinationViewController.view.alpha = 0
+        containerView.addSubview(destinationViewController.view)
+        
+        //Create Image View to Animate
+        let imageSnapshotView = UIImageView()
+        imageSnapshotView.image = originImageView.image
+        imageSnapshotView.contentMode = .scaleAspectFit
+        if let frame = originImageView.superview?.convert(originImageView.frame, to: containerView) {
+            imageSnapshotView.frame = frame
+        }
+        
+        self.animateViewTransition(originView: originImageView, destinationView: destinationImageView, snapshotView: imageSnapshotView, using: transitionContext, complete: {
+            transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+        })
+        
+        if let originNumberView = self.originNumberView, let destinationNumberView = self.destinationNumberView {
+            let numberSnapshotView = ImageNumberView()
+            
+            if let frame = originNumberView.superview?.convert(originNumberView.frame, to: containerView) {
+                numberSnapshotView.frame = frame
+            }
+            
+            numberSnapshotView.font = originNumberView.font
+            numberSnapshotView.text = originNumberView.text
+            
+            self.animateViewTransition(originView: originNumberView, destinationView: destinationNumberView, snapshotView: numberSnapshotView, using: transitionContext, calculateFrame: {
+                
+                if let frame = destinationNumberView.superview?.convert(destinationNumberView.frame, to: containerView), !self.animateIn {
+                    let diff = originNumberView.frame.width - frame.width
+                    // the destination is off slightly, adjust our frame to fit right
+                    if diff != 0 {
+                        return CGRect(x: frame.minX - diff, y: frame.minY, width: frame.width + diff, height: frame.height)
+                    }
+                    
+                    return frame
+                } else {
+                    let destFrame = destinationViewController.view.frame
+                    let x = destFrame.width - numberSnapshotView.frame.width - 16
+                    let y = destFrame.height - numberSnapshotView.frame.height - 82 - destinationViewController.view.safeAreaInsets.bottom
+                    return CGRect(x: x, y: y, width: numberSnapshotView.bounds.width, height:  numberSnapshotView.bounds.height)
+                }
+            })
+        }
+    }
+    
+    public func animateViewTransition(originView: UIView, destinationView: UIView, snapshotView: UIView, using transitionContext: UIViewControllerContextTransitioning, calculateFrame: (() -> CGRect)? = nil, complete: (() -> ())? = nil) {
+        guard let destinationViewController:UIViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) else { return }
+        
+        let containerView: UIView = transitionContext.containerView
+        
+        originView.alpha = 0
         
         //Hide the distination photoview until the animation is finished
-        destiniationImageView.alpha = 0
+        destinationView.alpha = 0
         
         //Prep animating container view
-        containerView.addSubview(destinationViewController.view)
-        containerView.addSubview(snapShot)
+        containerView.addSubview(snapshotView)
         
         //Animate the transition between view controllers
         UIView.animate(withDuration: 0.4, animations: {
             destinationViewController.view.alpha = 1.0
-            if let frame = destiniationImageView.superview?.convert(destiniationImageView.frame, to: containerView), !self.animateIn {
-                // Old height adjustment:  - (photoView.showPreview == true ? (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0) + 42 : -8)
+            if let frame = calculateFrame?() {
+                snapshotView.frame = frame
+            } else if let frame = destinationView.superview?.convert(destinationView.frame, to: containerView), !self.animateIn {
                 let newFrame = CGRect(x: frame.minX, y: frame.minY, width: frame.width, height: frame.height)
-                snapShot.frame = newFrame
+                snapshotView.frame = newFrame
             } else {
-                // Old height adjustment:  - (photoView.showPreview == true ? (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0) + 42 : -8)
-                let destinationFrame = destinationViewController.view.frame
-                let newFrame = CGRect(x: destinationFrame.minX, y: destinationFrame.minY, width: destinationFrame.width, height: destinationFrame.height)
-                snapShot.frame = newFrame
+                snapshotView.frame = destinationViewController.view.frame
             }
         }) { _ in
-            destiniationImageView.superview?.bringSubviewToFront(destiniationImageView)
-            UIView.animate(withDuration: 0.3, animations: {
-                destiniationImageView.alpha = 1
-                originImageView.alpha = 1
+            UIView.animate(withDuration: 0.1, animations: {
+                destinationView.alpha = 1
+                originView.alpha = 1
             }, completion: { _ in
-                snapShot.removeFromSuperview()
-                transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+                snapshotView.removeFromSuperview()
+                complete?()
             })
         }
     }

@@ -26,8 +26,15 @@ public class PhotoBrowserView: UIView {
     public var imageView: UIImageView {
         return pagedView.currentImageView
     }
-    public var imageNumberLabel: UILabel = UILabel()
-    public var imageNumberContainerView: UIView = UIView()
+    public var imageNumberView = ImageNumberView()
+    public var imageNumberFont: UIFont {
+        set {
+            self.imageNumberView.font = newValue
+        }
+        get {
+            return self.imageNumberView.font
+        }
+    }
     
     /// The index of the current photo being shown
     public var currentPhotoIndex: Int = 0
@@ -48,19 +55,13 @@ public class PhotoBrowserView: UIView {
     /// Flag indicating if the (n of x) labe should show or not
     @IBInspectable public var showImageNumber: Bool = true {
         didSet {
-            self.imageNumberContainerView.isHidden = !self.showImageNumber
+            self.imageNumberView.isHidden = !self.showImageNumber
         }
     }
     
     @IBInspectable public var isZoomEnabled: Bool = false {
         didSet {
             self.pagedView.isZoomEnabled = self.isZoomEnabled
-        }
-    }
-    
-    public var imageNumberFont: UIFont = UIFont.systemFont(ofSize: 12) {
-        didSet {
-            self.imageNumberLabel.font = imageNumberFont
         }
     }
     
@@ -88,7 +89,7 @@ public class PhotoBrowserView: UIView {
     func updateLabelView() {
         let photoCount = self.dataSource?.numberOfPhotos(self) ?? 0
         let currentPhoto = self.pagedView.currentPage
-        self.imageNumberLabel.text = "\(currentPhoto + 1) of \(photoCount)"
+        self.imageNumberView.text = "\(currentPhoto + 1) of \(photoCount)"
     }
     
     //MARK: - Private PhotoBrowser Methods
@@ -101,7 +102,6 @@ public class PhotoBrowserView: UIView {
     }
     
     private func setupPagedView() {
-        print("setting up paged view")
         self.addSubview(self.pagedView) {
             $0.edges(.top, .left, .right).pinToSuperview()
             self.pagedViewBottomConstraint = $0.bottom.pinToSuperview()
@@ -111,7 +111,6 @@ public class PhotoBrowserView: UIView {
     }
     
     private func setupPreviewCollectionView() {
-        print("setting up preview collection view")
         self.updateBottomConstraintsForPreviewState()
         guard self.showPreview, self.previewCollectionView == nil else { return }
         let previewCollectionView = PhotoBrowserPreviewCollectionView(dataSource: self, delegate: self)
@@ -131,31 +130,9 @@ public class PhotoBrowserView: UIView {
     }
     
     private func setupImageNumber() {
-        print("setting up image number view")
-        self.addSubview(self.imageNumberContainerView) {
+        self.addSubview(self.imageNumberView) {
             $0.right.pinToSuperview(inset: 16, relation: .equal)
             self.numberViewBottomConstraint = $0.bottom.pinToSuperview(inset: 16, relation: .equal)
-        }
-        
-        self.imageNumberContainerView.layer.cornerRadius = 4
-        self.imageNumberContainerView.layer.masksToBounds = true
-        self.imageNumberContainerView.backgroundColor = UIColor.clear
-        
-        // Add a blur view so we get a nice effect behind the number count
-        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.extraLight)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        
-        self.imageNumberContainerView.addSubview(blurEffectView) {
-            $0.edges.pinToSuperview()
-        }
-        
-        self.imageNumberLabel.textColor = UIColor(red: 0.07, green: 0.07, blue: 0.07, alpha: 1)
-        self.imageNumberLabel.isAccessibilityElement = false
-        self.imageNumberLabel.font = self.imageNumberFont
-        
-        self.imageNumberContainerView.addSubview(self.imageNumberLabel) {
-            $0.edges.pinToSuperview(insets: UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12), relation: .equal)
         }
         
         self.updateLabelView()
@@ -164,7 +141,6 @@ public class PhotoBrowserView: UIView {
     //MARK: - PhotoBrowser Methods
     
     public func scrollToPhoto(_ index:Int) {
-        print("scrolling to \(index)")
         guard index < self.dataSource?.numberOfPhotos(self) ?? 0 && index >= 0 else {
             self.reloadPhotos()
             return
@@ -178,11 +154,9 @@ public class PhotoBrowserView: UIView {
     }
     
     public func reloadPhotos() {
-        print("Reloading photos")
         self.pagedView.reloadPhotos()
         self.previewCollectionView?.reloadData()
         self.updateLabelView()
-        print("Reloaded photos")
     }
     
     func numberOfPhotos() -> Int {
@@ -257,6 +231,7 @@ extension PhotoBrowserView: PhotoBrowserFullscreenDataSource, PhotoBrowserFullsc
     
     func photoBrowserFullscreenPhotoViewed(_ index: Int) {
         self.delegate?.photoBrowser(self, photoViewedAtIndex: index, mode: .fullscreen)
+        self.updateLabelView()
     }
 }
 

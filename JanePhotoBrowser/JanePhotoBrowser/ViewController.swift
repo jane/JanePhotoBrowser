@@ -57,12 +57,10 @@ extension ViewController: PhotoBrowserDataSource, PhotoBrowserDelegate {
     }
     
     func numberOfPhotos(_ photoBrowser: PhotoBrowserView) -> Int {
-        print("image count: \(self.images.count)")
         return self.images.count
     }
     
     func photoBrowser(_ photoBrowser: PhotoBrowserView, photoAtIndex index: Int, forImageView imageView: UIImageView, completion: @escaping (UIImage?) -> ()) {
-        print("Loading image at \(index)")
         completion(self.images[index])
     }
 }

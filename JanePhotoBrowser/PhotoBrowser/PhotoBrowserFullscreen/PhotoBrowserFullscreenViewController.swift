@@ -15,11 +15,11 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
     
     public var closeButton = UIImageView()
     public var closeButtonContainer = UIView()
-    public var imageNumberLabel: UILabel = UILabel()
-    public var imageNumberContainerView: UIView = UIView()
+    public var imageNumberView = ImageNumberView()
     
     /// Used to animate from an origin
     var originImageView: UIImageView?
+    var originNumberView: ImageNumberView?
     var interactiveAnimation: UIPercentDrivenInteractiveTransition?
     
     public var pagedView = PhotoBrowserInfinitePagedView(frame: .zero)
@@ -27,7 +27,14 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
     public var previewCollectionView: PhotoBrowserPreviewCollectionView!
     
     public var initialPhotoIndex: Int = 0
-    public var imageNumberFont: UIFont = UIFont.systemFont(ofSize: 12)
+    public var imageNumberFont: UIFont {
+        set {
+            self.imageNumberView.font = newValue
+        }
+        get {
+            return self.imageNumberView.font
+        }
+    }
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +54,7 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
     func updateLabelView() {
         let photoCount = self.dataSource.numberOfPhotos()
         let currentPhoto = self.pagedView.currentPage
-        self.imageNumberLabel.text = "\(currentPhoto + 1) of \(photoCount)"
+        self.imageNumberView.text = "\(currentPhoto + 1) of \(photoCount)"
     }
     
     private func setup() {
@@ -101,30 +108,9 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
     }
     
     private func setupImageNumber() {
-        self.view.addSubview(self.imageNumberContainerView) {
+        self.view.addSubview(self.imageNumberView) {
             $0.right.pinToSuperview(inset: 16, relation: .equal)
             $0.bottom.pinToSuperviewMargin(inset: 82, relation: .equal)
-        }
-        
-        self.imageNumberContainerView.layer.cornerRadius = 4
-        self.imageNumberContainerView.layer.masksToBounds = true
-        self.imageNumberContainerView.backgroundColor = UIColor.clear
-        
-        // Add a blur view so we get a nice effect behind the number count
-        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.extraLight)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        
-        self.imageNumberContainerView.addSubview(blurEffectView) {
-            $0.edges.pinToSuperview()
-        }
-        
-        self.imageNumberLabel.textColor = UIColor(red: 0.07, green: 0.07, blue: 0.07, alpha: 1)
-        self.imageNumberLabel.isAccessibilityElement = false
-        self.imageNumberLabel.font = self.imageNumberFont
-        
-        self.imageNumberContainerView.addSubview(self.imageNumberLabel) {
-            $0.edges.pinToSuperview(insets: UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12), relation: .equal)
         }
         
         self.updateLabelView()
@@ -207,10 +193,13 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
 extension PhotoBrowserFullscreenViewController: PhotoBrowserInfinitePagedDataSource, PhotoBrowserInfinitePagedDelegate {
     func photoBrowserInfinitePhotoViewed(at index: Int) {
         self.delegate?.photoBrowserFullscreenPhotoViewed(index)
+        self.updateLabelView()
     }
     
     func photoBrowserInfinitePhotoTapped(at index: Int) {
         self.delegate?.photoBrowserFullscreenPhotoTapped(index)
+        self.previewCollectionView.selectedPhotoIndex = (self.pagedView.currentPage + 1) % self.pagedView.pageCount
+        self.pagedView.scrollRectToVisible(self.pagedView.nextImageView.frame, animated: true)
     }
     
     func photoBrowserInfiniteLoadPhoto(_ index: Int, forImageView imageView: UIImageView, completion: @escaping (UIImage?) -> ()) {
@@ -245,6 +234,8 @@ extension PhotoBrowserFullscreenViewController: UIViewControllerTransitioningDel
         let transition = PhotoBrowserFullscreenTransition()
         transition.originImageView = originImageView
         transition.destinationImageView = self.pagedView.currentImageView
+        transition.originNumberView = presented.originNumberView
+        transition.destinationNumberView = self.imageNumberView
         
         return transition
     }
@@ -256,6 +247,8 @@ extension PhotoBrowserFullscreenViewController: UIViewControllerTransitioningDel
         transition.animateIn = false
         transition.destinationImageView = originImageView
         transition.originImageView = dismissed.pagedView.currentImageView
+        transition.originNumberView = dismissed.imageNumberView
+        transition.destinationNumberView = dismissed.originNumberView
         
         return transition
     }

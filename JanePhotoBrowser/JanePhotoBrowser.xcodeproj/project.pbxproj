@@ -35,6 +35,7 @@
 		F889D6F922F3781300F7A162 /* PhotoBrowserFullscreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F889D6F822F3781300F7A162 /* PhotoBrowserFullscreenViewController.swift */; };
 		F889D6FB22F37FF800F7A162 /* PhotoBrowserFullscreenTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F889D6FA22F37FF800F7A162 /* PhotoBrowserFullscreenTransition.swift */; };
 		F889D6FD22F3A01100F7A162 /* PhotoBrowserZoomScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F889D6FC22F3A01000F7A162 /* PhotoBrowserZoomScrollView.swift */; };
+		F889D6FF22F4CE9C00F7A162 /* ImageNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F889D6FE22F4CE9C00F7A162 /* ImageNumberView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +111,7 @@
 		F889D6F822F3781300F7A162 /* PhotoBrowserFullscreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoBrowserFullscreenViewController.swift; sourceTree = "<group>"; };
 		F889D6FA22F37FF800F7A162 /* PhotoBrowserFullscreenTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoBrowserFullscreenTransition.swift; sourceTree = "<group>"; };
 		F889D6FC22F3A01000F7A162 /* PhotoBrowserZoomScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoBrowserZoomScrollView.swift; sourceTree = "<group>"; };
+		F889D6FE22F4CE9C00F7A162 /* ImageNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageNumberView.swift; sourceTree = "<group>"; };
 		F8DDCE531DE64E9A007270BF /* JanePhotoBrowser.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = JanePhotoBrowser.podspec; path = ../JanePhotoBrowser.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -223,6 +225,7 @@
 				F889D6F622F376ED00F7A162 /* PhotoBrowserPreviewCollectionView */,
 				F889D6F522F376D700F7A162 /* PhotoBrowserInfinitePagedView */,
 				F889D6F722F3770900F7A162 /* PhotoBrowserFullscreen */,
+				F889D6FE22F4CE9C00F7A162 /* ImageNumberView.swift */,
 				F889D6E722F35FEB00F7A162 /* Yalta.swift */,
 				F889D6C622F3462B00F7A162 /* PhotoBrowser.h */,
 				F889D6C722F3462B00F7A162 /* Info.plist */,
@@ -488,6 +491,7 @@
 				F889D6EE22F36F1900F7A162 /* PhotoBrowserPreviewDelegate.swift in Sources */,
 				F889D6D322F3463000F7A162 /* PhotoBrowserStyleKit.swift in Sources */,
 				F889D6D122F3463000F7A162 /* PhotoBrowserDataSource.swift in Sources */,
+				F889D6FF22F4CE9C00F7A162 /* ImageNumberView.swift in Sources */,
 				F889D6F022F372F100F7A162 /* PhotoBrowserFullscreenDataSource.swift in Sources */,
 				F889D6DB22F34B2D00F7A162 /* PhotoBrowserInfinitePagedView.swift in Sources */,
 				F889D6FB22F37FF800F7A162 /* PhotoBrowserFullscreenTransition.swift in Sources */,

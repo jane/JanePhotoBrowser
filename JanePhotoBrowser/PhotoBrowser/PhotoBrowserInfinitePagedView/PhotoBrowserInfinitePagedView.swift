@@ -161,7 +161,15 @@ public class PhotoBrowserInfinitePagedView: UIScrollView {
 }
 
 extension PhotoBrowserInfinitePagedView: UIScrollViewDelegate {
+    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        self.calculatePageChange()
+    }
+    
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        self.calculatePageChange()
+    }
+    
+    private func calculatePageChange() {
         // Once we finish scrolling, move back to the middle
         var newPage: Int = self.currentPage
         
