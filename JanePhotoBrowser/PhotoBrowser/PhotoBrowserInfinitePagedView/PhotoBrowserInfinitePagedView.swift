@@ -125,9 +125,8 @@ public class PhotoBrowserInfinitePagedView: UIScrollView {
         self.updateAccessibilityLabel()
     }
     
-    func loadImage(at index: Int, forPosition position: PhotoPosition) {
+    private func correctedIndex(_ index: Int) -> Int {
         let photoCount = self.pageCount
-        guard photoCount > 0 else { return }
         var adjustedIndex = index
         while adjustedIndex < 0 {
             adjustedIndex += photoCount
@@ -135,16 +134,22 @@ public class PhotoBrowserInfinitePagedView: UIScrollView {
         while adjustedIndex >= photoCount {
             adjustedIndex -= photoCount
         }
+        return adjustedIndex
+    }
+    
+    func loadImage(at index: Int, forPosition position: PhotoPosition) {
+        guard self.pageCount > 0 else { return }
+        let index = self.correctedIndex(index)
         let imageView = self.imageViews[position.rawValue]
         
-        self.photoDataSource?.photoBrowserInfiniteLoadPhoto(adjustedIndex, forImageView: imageView) { [weak self] (image) in
+        self.photoDataSource?.photoBrowserInfiniteLoadPhoto(index, forImageView: imageView) { [weak self] (image) in
             guard let self = self else { return }
             
-            if adjustedIndex == self.currentPage {
+            if index == self.currentPage {
                 self.currentImageView.image = image
-            } else if adjustedIndex + 1 == self.currentPage {
+            } else if self.correctedIndex(index + 1) == self.currentPage {
                 self.previousImageView.image = image
-            } else if adjustedIndex - 1 == self.currentPage {
+            } else if self.correctedIndex(index - 1) == self.currentPage {
                 self.nextImageView.image = image
             }
         }
