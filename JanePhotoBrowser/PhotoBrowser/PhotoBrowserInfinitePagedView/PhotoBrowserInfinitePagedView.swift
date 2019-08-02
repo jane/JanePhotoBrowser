@@ -137,11 +137,16 @@ public class PhotoBrowserInfinitePagedView: UIScrollView {
         }
         let imageView = self.imageViews[position.rawValue]
         
-        let currentPage = self.currentPage
-        self.photoDataSource?.photoBrowserInfiniteLoadPhoto(adjustedIndex, forImageView: imageView) { [weak imageView, weak self] (image) in
-            // Make sure they didn't change pages since we tried to load the photo
-            guard currentPage == self?.currentPage else { return }
-            imageView?.image = image
+        self.photoDataSource?.photoBrowserInfiniteLoadPhoto(adjustedIndex, forImageView: imageView) { [weak self] (image) in
+            guard let self = self else { return }
+            
+            if adjustedIndex == self.currentPage {
+                self.currentImageView.image = image
+            } else if adjustedIndex + 1 == self.currentPage {
+                self.previousImageView.image = image
+            } else if adjustedIndex - 1 == self.currentPage {
+                self.nextImageView.image = image
+            }
         }
     }
     
@@ -174,24 +179,14 @@ extension PhotoBrowserInfinitePagedView: UIScrollViewDelegate {
         var newPage: Int = self.currentPage
         
         if self.contentOffset.x < 10 {
-            // We moved backwards
-            self.nextImageView.image = self.currentImageView.image
-            self.currentImageView.image = self.previousImageView.image
-            self.previousImageView.image = nil
-            self.loadImage(at: self.currentPage - 2, forPosition: .previous)
-            self.resetZoom()
             newPage -= 1
         } else if self.contentOffset.x > self.currentPageWidth * 1.5 {
-            // We moved forwards
-            self.previousImageView.image = self.currentImageView.image
-            self.currentImageView.image = self.nextImageView.image
-            self.nextImageView.image = nil
-            self.loadImage(at: self.currentPage + 2, forPosition: .next)
             newPage += 1
         } else {
             // Nothing changed, do nothing here
             return
         }
+        
         let photoCount = self.pageCount
         if photoCount == 0 || newPage >= photoCount {
             self.currentPage = 0
@@ -199,6 +194,21 @@ extension PhotoBrowserInfinitePagedView: UIScrollViewDelegate {
             self.currentPage = photoCount - 1
         } else {
             self.currentPage = newPage
+        }
+        
+        if self.contentOffset.x < 10 {
+            // We moved backwards
+            self.nextImageView.image = self.currentImageView.image
+            self.currentImageView.image = self.previousImageView.image
+            self.previousImageView.image = nil
+            self.loadImage(at: self.currentPage - 1, forPosition: .previous)
+            self.resetZoom()
+        } else if self.contentOffset.x > self.currentPageWidth * 1.5 {
+            // We moved forwards
+            self.previousImageView.image = self.currentImageView.image
+            self.currentImageView.image = self.nextImageView.image
+            self.nextImageView.image = nil
+            self.loadImage(at: self.currentPage + 1, forPosition: .next)
         }
         self.resetZoom()
         self.contentOffset = CGPoint(x: self.currentPageWidth, y: 0)

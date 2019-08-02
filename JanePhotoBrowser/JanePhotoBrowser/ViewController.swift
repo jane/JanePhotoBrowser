@@ -57,7 +57,9 @@ extension ViewController: PhotoBrowserDataSource, PhotoBrowserDelegate {
     }
     
     func photoBrowser(_ photoBrowser: PhotoBrowserView, photoAtIndex index: Int, forImageView imageView: UIImageView, completion: @escaping (UIImage?) -> ()) {
-        completion(self.images[index])
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            completion(self.images[index])
+        }
     }
     
     func photoBrowser(_ photoBrowser: PhotoBrowserView, photoTappedAtIndex index: Int, mode: PhotoBrowserMode) {
