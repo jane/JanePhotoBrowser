@@ -37,6 +37,7 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
     
     @objc func closeTapped(_ gesture: UITapGestureRecognizer) {
         let delegate = self.delegate
+        delegate?.photoBrowserFullscreenWillDismiss(selectedIndex: self.pagedView.currentPage)
         self.dismiss(animated: true) {
             delegate?.photoBrowserFullscreenDidDismiss(selectedIndex: self.pagedView.currentPage)
         }
@@ -94,8 +95,9 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
         self.closeButtonContainer.addGestureRecognizer(gesture)
         
         // Add pan gesture to watch for sliding up to dismiss image
-        //let pan = UIPanGestureRecognizer(target: self, action: #selector(self.panGesture(_:)))
-        //self.pagedView.currentImageView.addGestureRecognizer(pan)
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(self.panGesture(_:)))
+        pan.delegate = self
+        self.pagedView.currentImageView.addGestureRecognizer(pan)
     }
     
     private func setupImageNumber() {
@@ -180,9 +182,11 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
             case .began:
                 self.interactiveAnimation = UIPercentDrivenInteractiveTransition()
                 self.interactiveAnimation?.completionCurve = .easeInOut
+                let delegate = self.delegate
+                delegate?.photoBrowserFullscreenWillDismiss(selectedIndex: self.pagedView.currentPage)
                 self.dismiss(animated: true) {
-                    
-            }
+                    delegate?.photoBrowserFullscreenDidDismiss(selectedIndex: self.pagedView.currentPage)
+                }
             case .changed:
                 self.interactiveAnimation?.update(progress)
             case .ended: fallthrough
@@ -198,7 +202,6 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
             default: break
         }
     }
-    
 }
 
 extension PhotoBrowserFullscreenViewController: PhotoBrowserInfinitePagedDataSource, PhotoBrowserInfinitePagedDelegate {
@@ -260,5 +263,13 @@ extension PhotoBrowserFullscreenViewController: UIViewControllerTransitioningDel
     public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         guard let _ = animator as? PhotoBrowserFullscreenTransition else { return nil }
         return self.interactiveAnimation
+    }
+}
+
+extension PhotoBrowserFullscreenViewController: UIGestureRecognizerDelegate {
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard let panGesture = gestureRecognizer as? UIPanGestureRecognizer else { return true }
+        let velocity = panGesture.velocity(in: self.view)
+        return abs(velocity.y) > abs(velocity.x);
     }
 }

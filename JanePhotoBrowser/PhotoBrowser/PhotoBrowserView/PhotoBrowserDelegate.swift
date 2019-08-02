@@ -15,13 +15,14 @@ public protocol PhotoBrowserDelegate: class {
     func photoBrowser(_ photoBrowser: PhotoBrowserView, photoViewedAtIndex index: Int, mode: PhotoBrowserMode)
     func photoBrowser(_ photoBrowser: PhotoBrowserView, thumbnailTappedAtIndex index: Int, mode: PhotoBrowserMode)
     func photoBrowser(_ photoBrowser: PhotoBrowserView, thumbnailViewedAtIndex index: Int, mode: PhotoBrowserMode)
-    func photoBrowserCloseButtonTapped()
+    func photoBrowserFullscreenWasDismissed()
 }
 
 public extension PhotoBrowserDelegate {
     func photoBrowser(_ photoBrowser: PhotoBrowserView, photoViewedAtIndex index: Int, mode: PhotoBrowserMode) { }
     func photoBrowser(_ photoBrowser: PhotoBrowserView, thumbnailTappedAtIndex index: Int, mode: PhotoBrowserMode) { }
     func photoBrowser(_ photoBrowser: PhotoBrowserView, thumbnailViewedAtIndex index: Int, mode: PhotoBrowserMode) { }
+    func photoBrowserFullscreenWasDismissed() { }
 }
 
 //Provide default implementation for UIViewController delegates
@@ -42,8 +43,5 @@ public extension PhotoBrowserDelegate where Self: UIViewController {
             
             self.present(fullscreenController, animated: true, completion: nil)
         }
-    }
-    func photoBrowserCloseButtonTapped() {
-        self.dismiss(animated: true, completion: nil)
     }
 }

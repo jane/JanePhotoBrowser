@@ -224,6 +224,11 @@ extension PhotoBrowserView: PhotoBrowserPreviewDataSource, PhotoBrowserPreviewDe
 }
 
 extension PhotoBrowserView: PhotoBrowserFullscreenDataSource, PhotoBrowserFullscreenDelegate {
+    func photoBrowserFullscreenWillDismiss(selectedIndex: Int) {
+        self.pagedView.reloadPhotos(at: selectedIndex)
+        self.previewCollectionView?.selectedPhotoIndex = selectedIndex
+    }
+    
     func photoBrowserFullscreenLoadPhoto(_ index: Int, forImageView imageView: UIImageView, completion: @escaping (UIImage?) -> ()) {
         self.dataSource?.photoBrowser(self, photoAtIndex: index, forImageView: imageView, completion: completion)
     }
@@ -235,7 +240,7 @@ extension PhotoBrowserView: PhotoBrowserFullscreenDataSource, PhotoBrowserFullsc
     func photoBrowserFullscreenDidDismiss(selectedIndex: Int) {
         self.pagedView.reloadPhotos(at: selectedIndex)
         self.previewCollectionView?.selectedPhotoIndex = selectedIndex
-        self.delegate?.photoBrowserCloseButtonTapped()
+        self.delegate?.photoBrowserFullscreenWasDismissed()
     }
     
     func photoBrowserFullscreenThumbnailTapped(_ index: Int) {
