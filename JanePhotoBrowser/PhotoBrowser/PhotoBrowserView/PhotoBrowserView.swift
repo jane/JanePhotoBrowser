@@ -109,7 +109,6 @@ public class PhotoBrowserView: UIView {
     //MARK: - Private PhotoBrowser Methods
     
     private func setup() {
-        self.backgroundColor = .clear
         self.setupPagedView()
         self.setupPreviewCollectionView()
         self.setupImageNumber()
