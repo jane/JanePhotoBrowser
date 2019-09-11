@@ -95,6 +95,7 @@ public class PhotoBrowserView: UIView {
         fullscreenController.originNumberView = self.imageNumberView
         fullscreenController.imageNumberFont = self.imageNumberFont
         fullscreenController.loadViewIfNeeded()
+        fullscreenController.modalPresentationStyle = .fullScreen
         fullscreenController.transitioningDelegate = fullscreenController
         
         controller.present(fullscreenController, animated: true, completion: nil)
