@@ -9,6 +9,11 @@
 import UIKit
 
 public class PhotoBrowserIconography: NSObject {
+
+    @available(iOS 13, *)
+    public static func imageOfXIcon() -> UIImage? {
+        return UIImage(systemName: "xmark")
+    }
     
     public static func drawXIcon(fillColor: UIColor = UIColor(red: 0.07, green: 0.07, blue: 0.07, alpha: 1.000)) {
         //// General Declarations
@@ -58,5 +63,18 @@ public class PhotoBrowserIconography: NSObject {
         
         return imageOfXIcon!
     }
-
+    
+    public static func imageOfZoomInIcon() -> UIImage? {
+        if #available(iOS 13, *) {
+            return UIImage(systemName: "arrow.up.left.and.arrow.down.right")
+        }
+        return UIImage(named: "zoom-in")
+    }
+    
+    public static func imageOfZoomOutIcon() -> UIImage? {
+        if #available(iOS 13, *) {
+            return UIImage(systemName: "arrow.down.right.and.arrow.up.left")
+        }
+         return UIImage(named: "zoom-out")
+    }
 }
