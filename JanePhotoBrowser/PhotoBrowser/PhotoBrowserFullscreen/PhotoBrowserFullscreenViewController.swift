@@ -110,7 +110,6 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
         self.closeButton.isAccessibilityElement = false
         self.closeButton.image = PhotoBrowserIconography.imageOfXIcon()
         self.closeButton.backgroundColor = .clear
-        self.closeButton.tintColor = .gray
         
         self.closeButtonContainer.addSubview(self.closeButton) {
             $0.edges.pinToSuperview(insets: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10), relation: .equal)
@@ -155,7 +154,6 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
         self.zoomButton.isAccessibilityElement = false
         self.zoomButton.image = PhotoBrowserIconography.imageOfZoomInIcon()
         self.zoomButton.backgroundColor = .clear
-        self.zoomButton.tintColor = .gray
         
         self.zoomButtonContainer.addSubview(self.zoomButton) {
             $0.edges.pinToSuperview(insets: UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4), relation: .equal)
