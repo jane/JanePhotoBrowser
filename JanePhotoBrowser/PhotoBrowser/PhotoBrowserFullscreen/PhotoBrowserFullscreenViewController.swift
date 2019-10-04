@@ -137,7 +137,7 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
         
         self.zoomButtonContainer.layer.cornerRadius = 4
         self.zoomButtonContainer.layer.masksToBounds = true
-        self.zoomButtonContainer.backgroundColor = UIColor.clear
+        self.zoomButtonContainer.backgroundColor = UIColor(red: 50, green: 50, blue: 50, alpha: 1)
         self.zoomButtonContainer.isAccessibilityElement = true
         self.zoomButtonContainer.accessibilityTraits = [.button]
         self.zoomButtonContainer.accessibilityLabel = "Zoom"

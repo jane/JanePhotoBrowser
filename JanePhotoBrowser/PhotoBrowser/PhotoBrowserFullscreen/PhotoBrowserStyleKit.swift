@@ -68,13 +68,13 @@ public class PhotoBrowserIconography: NSObject {
         if #available(iOS 13, *) {
             return UIImage(systemName: "arrow.up.left.and.arrow.down.right")
         }
-        return UIImage(named: "zoom-in")
+        return UIImage(named: "photobrowser-zoom-in") ?? UIImage(named: "zoom-in", in: Bundle(for: PhotoBrowserIconography.self), compatibleWith: nil)
     }
     
     public static func imageOfZoomOutIcon() -> UIImage? {
         if #available(iOS 13, *) {
             return UIImage(systemName: "arrow.down.right.and.arrow.up.left")
         }
-         return UIImage(named: "zoom-out")
+        return UIImage(named: "photobrowser-zoom-out") ?? UIImage(named: "zoom-out", in: Bundle(for: PhotoBrowserIconography.self), compatibleWith: nil)
     }
 }
