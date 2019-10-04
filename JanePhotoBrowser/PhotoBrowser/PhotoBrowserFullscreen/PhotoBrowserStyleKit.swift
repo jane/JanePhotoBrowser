@@ -50,11 +50,6 @@ public class PhotoBrowserIconography: NSObject {
     }
     
     public static func imageOfXIcon(fillColor: UIColor = UIColor(red: 0.07, green: 0.07, blue: 0.07, alpha: 1.000)) -> UIImage {
-        if #available(iOS 13, *),
-            let image = UIImage(systemName: "xmark") {
-            return image
-        }
-        
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 24, height: 24), false, 0)
         PhotoBrowserIconography.drawXIcon(fillColor: fillColor)
         
@@ -65,16 +60,10 @@ public class PhotoBrowserIconography: NSObject {
     }
     
     public static func imageOfZoomInIcon() -> UIImage? {
-        if #available(iOS 13, *) {
-            return UIImage(systemName: "arrow.up.left.and.arrow.down.right")
-        }
-        return UIImage(named: "photobrowser-zoom-in") ?? UIImage(named: "zoom-in", in: Bundle(for: PhotoBrowserIconography.self), compatibleWith: nil)
+        return UIImage(named: "photobrowser-zoom-in") ?? UIImage(named: "photobrowser-zoom-in", in: Bundle(for: PhotoBrowserIconography.self), compatibleWith: nil)
     }
     
     public static func imageOfZoomOutIcon() -> UIImage? {
-        if #available(iOS 13, *) {
-            return UIImage(systemName: "arrow.down.right.and.arrow.up.left")
-        }
-        return UIImage(named: "photobrowser-zoom-out") ?? UIImage(named: "zoom-out", in: Bundle(for: PhotoBrowserIconography.self), compatibleWith: nil)
+        return UIImage(named: "photobrowser-zoom-out") ?? UIImage(named: "photobrowser-zoom-out", in: Bundle(for: PhotoBrowserIconography.self), compatibleWith: nil)
     }
 }

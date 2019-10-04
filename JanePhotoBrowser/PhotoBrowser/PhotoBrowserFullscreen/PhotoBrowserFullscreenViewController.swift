@@ -113,7 +113,7 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
         self.closeButton.tintColor = .gray
         
         self.closeButtonContainer.addSubview(self.closeButton) {
-            $0.edges.pinToSuperview(insets: UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8), relation: .equal)
+            $0.edges.pinToSuperview(insets: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10), relation: .equal)
             $0.height.set(24)
             $0.width.set(24)
         }
@@ -158,9 +158,9 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
         self.zoomButton.tintColor = .gray
         
         self.zoomButtonContainer.addSubview(self.zoomButton) {
-            $0.edges.pinToSuperview(insets: UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8), relation: .equal)
-            $0.height.set(24)
-            $0.width.set(24)
+            $0.edges.pinToSuperview(insets: UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4), relation: .equal)
+            $0.height.set(36)
+            $0.width.set(36)
         }
         
         // Add tag gesture to close fullscreen
