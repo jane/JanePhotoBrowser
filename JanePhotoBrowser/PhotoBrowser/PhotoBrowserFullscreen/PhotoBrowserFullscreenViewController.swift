@@ -40,8 +40,10 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
     private var isZoomed = false {
         willSet {
             self.zoomButton.image = newValue ?
-                PhotoBrowserIconography.imageOfZoomInIcon() :
-                PhotoBrowserIconography.imageOfZoomOutIcon()
+                PhotoBrowserIconography.imageOfZoomOutIcon() :
+                PhotoBrowserIconography.imageOfZoomInIcon()
+            let zoomed = newValue ? "zoomed in" : "zoomed out"
+            UIAccessibility.post(notification: UIAccessibility.Notification.screenChanged, argument: [zoomed, self.zoomButtonContainer])
         }
     }
     
@@ -62,8 +64,9 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
     
     @objc func zoomTapped(_ gesture: UITapGestureRecognizer) {
         self.isZoomed.toggle()
-        UIView.animate(withDuration: 0.25) {
-            self.pagedView.resetZoom()
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            guard let self = self else { return }
+            self.isZoomed ? self.pagedView.zoomIn() : self.pagedView.resetZoom()
         }
     }
     
@@ -130,6 +133,7 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
     }
     
     private func setupZoomButton() {
+        guard UIAccessibility.isVoiceOverRunning else { return }
         self.view.addSubview(self.zoomButtonContainer) {
             $0.left.pinToSuperview(inset: 16, relation: .equal)
             $0.top.pinToSuperviewMargin(inset: 16, relation: .equal)
@@ -253,6 +257,7 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
 
 extension PhotoBrowserFullscreenViewController: PhotoBrowserInfinitePagedDataSource, PhotoBrowserInfinitePagedDelegate {
     func photoBrowserInfinitePhotoViewed(at index: Int) {
+        self.isZoomed = false
         self.delegate?.photoBrowserFullscreenPhotoViewed(index)
         self.previewCollectionView?.selectedPhotoIndex = index
         self.updateLabelView()
