@@ -167,11 +167,10 @@ public class PhotoBrowserInfinitePagedView: UIScrollView {
     
     func resetZoom() {
         self.zoomScrollView.zoomScale = 1
-        self.currentImageView.contentMode = .scaleAspectFit
     }
     
     func zoomIn() {
-        self.currentImageView.contentMode = .scaleAspectFill
+        self.zoomScrollView.zoomScale = 2
     }
 }
 
