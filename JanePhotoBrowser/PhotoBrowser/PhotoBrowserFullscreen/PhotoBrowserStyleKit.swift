@@ -10,11 +10,6 @@ import UIKit
 
 public class PhotoBrowserIconography: NSObject {
 
-    @available(iOS 13, *)
-    public static func imageOfXIcon() -> UIImage? {
-        return UIImage(systemName: "xmark")
-    }
-    
     public static func drawXIcon(fillColor: UIColor = UIColor(red: 0.07, green: 0.07, blue: 0.07, alpha: 1.000)) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
@@ -55,6 +50,11 @@ public class PhotoBrowserIconography: NSObject {
     }
     
     public static func imageOfXIcon(fillColor: UIColor = UIColor(red: 0.07, green: 0.07, blue: 0.07, alpha: 1.000)) -> UIImage {
+        if #available(iOS 13, *),
+            let image = UIImage(systemName: "xmark") {
+            return image
+        }
+        
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 24, height: 24), false, 0)
         PhotoBrowserIconography.drawXIcon(fillColor: fillColor)
         

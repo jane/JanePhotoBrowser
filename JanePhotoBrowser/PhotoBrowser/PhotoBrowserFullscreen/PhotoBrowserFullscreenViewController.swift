@@ -108,11 +108,7 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
         }
         
         self.closeButton.isAccessibilityElement = false
-        if #available(iOS 13, *) {
-            self.closeButton.image = PhotoBrowserIconography.imageOfXIcon()
-        } else {
-            PhotoBrowserIconography.drawXIcon()
-        }
+        self.closeButton.image = PhotoBrowserIconography.imageOfXIcon()
         self.closeButton.backgroundColor = .clear
         self.closeButton.tintColor = .gray
         
