@@ -7,6 +7,6 @@ Pod::Spec.new do |s|
   s.author        = { "Jane" => "ios@jane.com" }
   s.platform      = :ios, "11.0"
   s.source        = { :git => "https://github.com/jane/JanePhotoBrowser.git", :tag => s.version.to_s }
-  s.source_files  = "JanePhotoBrowser/PhotoBrowser/**/*.swift"
+  s.source_files  = "JanePhotoBrowser/PhotoBrowser/**/*.swift", "JanePhotoBrowser/PhotoBrowser/*.xcassets"
   s.swift_version = "5"
 end
