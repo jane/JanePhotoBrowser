@@ -60,10 +60,10 @@ public class PhotoBrowserIconography: NSObject {
     }
     
     public static func imageOfZoomInIcon() -> UIImage? {
-        return UIImage(named: "photobrowser-zoom-in", in: Bundle(identifier: "com.jane.JanePhotoBrowser"), compatibleWith: nil)
+        return UIImage(named: "photobrowser-zoom-in") ?? UIImage(named: "photobrowser-zoom-in", in: Bundle(for: PhotoBrowserIconography.self), compatibleWith: nil)
     }
     
     public static func imageOfZoomOutIcon() -> UIImage? {
-        return UIImage(named: "photobrowser-zoom-out", in: Bundle(identifier: "com.jane.JanePhotoBrowser"), compatibleWith: nil)
+        return UIImage(named: "photobrowser-zoom-out") ?? UIImage(named: "photobrowser-zoom-out", in: Bundle(for: PhotoBrowserIconography.self), compatibleWith: nil)
     }
 }
