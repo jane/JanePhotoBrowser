@@ -36,6 +36,7 @@
 		F889D6FB22F37FF800F7A162 /* PhotoBrowserFullscreenTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F889D6FA22F37FF800F7A162 /* PhotoBrowserFullscreenTransition.swift */; };
 		F889D6FD22F3A01100F7A162 /* PhotoBrowserZoomScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F889D6FC22F3A01000F7A162 /* PhotoBrowserZoomScrollView.swift */; };
 		F889D6FF22F4CE9C00F7A162 /* ImageNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F889D6FE22F4CE9C00F7A162 /* ImageNumberView.swift */; };
+		FD4F1110234CE89B00351DF1 /* PhotoBrowserAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD4F110F234CE89B00351DF1 /* PhotoBrowserAssets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -113,6 +114,7 @@
 		F889D6FC22F3A01000F7A162 /* PhotoBrowserZoomScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoBrowserZoomScrollView.swift; sourceTree = "<group>"; };
 		F889D6FE22F4CE9C00F7A162 /* ImageNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageNumberView.swift; sourceTree = "<group>"; };
 		F8DDCE531DE64E9A007270BF /* JanePhotoBrowser.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = JanePhotoBrowser.podspec; path = ../JanePhotoBrowser.podspec; sourceTree = "<group>"; };
+		FD4F110F234CE89B00351DF1 /* PhotoBrowserAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = PhotoBrowserAssets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,6 +231,7 @@
 				F889D6E722F35FEB00F7A162 /* Yalta.swift */,
 				F889D6C622F3462B00F7A162 /* PhotoBrowser.h */,
 				F889D6C722F3462B00F7A162 /* Info.plist */,
+				FD4F110F234CE89B00351DF1 /* PhotoBrowserAssets.xcassets */,
 			);
 			path = PhotoBrowser;
 			sourceTree = "<group>";
@@ -448,6 +451,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD4F1110234CE89B00351DF1 /* PhotoBrowserAssets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
