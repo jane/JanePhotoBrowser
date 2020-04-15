@@ -68,6 +68,9 @@ extension PhotoBrowserPreviewCollectionView: UICollectionViewDataSource, UIColle
         
         cell.imageView.tag = indexPath.item
         cell.imageView.isAccessibilityElement = true
+        cell.imageView.contentMode = .scaleAspectFill
+        cell.imageView.clipsToBounds = true
+        cell.imageView.backgroundColor = UIColor(white: 0.96, alpha: 1)
         
         let totalNumberOfImages = self.photoDataSource.numberOfPhotos()
         cell.imageView.accessibilityLabel = "Thumbnail \(indexPath.item + 1) of \(totalNumberOfImages)"
