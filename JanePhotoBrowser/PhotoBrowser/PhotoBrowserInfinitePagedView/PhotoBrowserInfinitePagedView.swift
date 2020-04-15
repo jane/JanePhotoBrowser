@@ -165,12 +165,8 @@ public class PhotoBrowserInfinitePagedView: UIScrollView {
         self.setContentOffset(CGPoint(x: self.currentPageWidth, y: 0), animated: false)
     }
     
-    func resetZoom() {
+    private func resetZoom() {
         self.zoomScrollView.zoomScale = 1
-    }
-    
-    func zoomIn() {
-        self.zoomScrollView.zoomScale = 2
     }
 }
 
