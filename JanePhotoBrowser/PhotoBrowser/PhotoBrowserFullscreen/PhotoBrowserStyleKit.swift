@@ -9,7 +9,7 @@
 import UIKit
 
 public class PhotoBrowserIconography: NSObject {
-
+    
     public static func drawXIcon(fillColor: UIColor = UIColor(red: 0.07, green: 0.07, blue: 0.07, alpha: 1.000)) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
@@ -58,12 +58,5 @@ public class PhotoBrowserIconography: NSObject {
         
         return imageOfXIcon!
     }
-    
-    public static func imageOfZoomInIcon() -> UIImage? {
-        return UIImage(named: "photobrowser-zoom-in") ?? UIImage(named: "photobrowser-zoom-in", in: Bundle(for: PhotoBrowserIconography.self), compatibleWith: nil)
-    }
-    
-    public static func imageOfZoomOutIcon() -> UIImage? {
-        return UIImage(named: "photobrowser-zoom-out") ?? UIImage(named: "photobrowser-zoom-out", in: Bundle(for: PhotoBrowserIconography.self), compatibleWith: nil)
-    }
+
 }

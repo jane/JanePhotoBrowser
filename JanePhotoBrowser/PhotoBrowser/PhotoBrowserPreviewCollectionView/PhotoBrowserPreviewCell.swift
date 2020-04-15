@@ -14,7 +14,7 @@ class PhotoBrowserPreviewCell: UICollectionViewCell {
     var isSelectedPhoto: Bool = false {
         didSet {
             self.imageView.alpha = self.isSelectedPhoto ? 0.3 : 1
-            self.contentView.layer.borderWidth = self.isSelectedPhoto ? 1 : 0
+            self.contentView.layer.borderColor = UIColor(white: self.isSelectedPhoto ? 0.07 : 0.96, alpha: 1).cgColor
         }
     }
     
@@ -42,6 +42,6 @@ class PhotoBrowserPreviewCell: UICollectionViewCell {
         }
         self.contentView.layer.cornerRadius = 4
         self.contentView.layer.masksToBounds = true
-        self.contentView.layer.borderColor = UIColor(white: 0.07, alpha: 1).cgColor
+        self.contentView.layer.borderWidth = 1
     }
 }

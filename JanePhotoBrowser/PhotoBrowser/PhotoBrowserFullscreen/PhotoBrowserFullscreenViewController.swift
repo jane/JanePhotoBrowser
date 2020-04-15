@@ -14,9 +14,7 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
     weak var dataSource: PhotoBrowserFullscreenDataSource!
     
     public var closeButton = UIImageView()
-    public var zoomButton = UIImageView()
     public var closeButtonContainer = UIView()
-    public var zoomButtonContainer = UIView()
     public var imageNumberView = ImageNumberView()
     
     /// Used to animate from an origin
@@ -37,15 +35,6 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
             return self.imageNumberView.font
         }
     }
-    private var isZoomed = false {
-        willSet {
-            self.zoomButton.image = newValue ?
-                PhotoBrowserIconography.imageOfZoomOutIcon() :
-                PhotoBrowserIconography.imageOfZoomInIcon()
-            let zoomed = newValue ? "zoomed in" : "zoomed out"
-            UIAccessibility.post(notification: UIAccessibility.Notification.screenChanged, argument: [zoomed, self.zoomButtonContainer])
-        }
-    }
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,14 +51,6 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
         self.interactiveAnimation?.finish()
     }
     
-    @objc func zoomTapped(_ gesture: UITapGestureRecognizer) {
-        self.isZoomed.toggle()
-        UIView.animate(withDuration: 0.25) { [weak self] in
-            guard let self = self else { return }
-            self.isZoomed ? self.pagedView.zoomIn() : self.pagedView.resetZoom()
-        }
-    }
-    
     func updateLabelView() {
         let photoCount = self.dataSource.numberOfPhotos()
         let currentPhoto = self.pagedView.currentPage
@@ -80,7 +61,6 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
         self.setupPagedView()
         self.setupPreviewCollection()
         self.setupCloseButton()
-        self.setupZoomButton()
         self.setupImageNumber()
     }
     
@@ -112,7 +92,7 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
         self.closeButton.backgroundColor = .clear
         
         self.closeButtonContainer.addSubview(self.closeButton) {
-            $0.edges.pinToSuperview(insets: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10), relation: .equal)
+            $0.edges.pinToSuperview(insets: UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8), relation: .equal)
             $0.height.set(24)
             $0.width.set(24)
         }
@@ -125,45 +105,6 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
         let pan = UIPanGestureRecognizer(target: self, action: #selector(self.panGesture(_:)))
         pan.delegate = self
         self.pagedView.currentImageView.addGestureRecognizer(pan)
-    }
-    
-    private func setupZoomButton() {
-        guard UIAccessibility.isVoiceOverRunning else { return }
-        self.view.addSubview(self.zoomButtonContainer) {
-            $0.left.pinToSuperview(inset: 16, relation: .equal)
-            $0.top.pinToSuperviewMargin(inset: 16, relation: .equal)
-        }
-        
-        self.zoomButtonContainer.layer.cornerRadius = 4
-        self.zoomButtonContainer.layer.masksToBounds = true
-        self.zoomButtonContainer.backgroundColor = UIColor(red: 50, green: 50, blue: 50, alpha: 1)
-        self.zoomButtonContainer.isAccessibilityElement = true
-        self.zoomButtonContainer.accessibilityTraits = [.button]
-        self.zoomButtonContainer.accessibilityLabel = "Zoom"
-        self.zoomButtonContainer.accessibilityHint = "Tap to zoom in or out"
-        
-        // Add a blur view so we get a nice effect behind the number count
-        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.extraLight)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        
-        self.zoomButtonContainer.addSubview(blurEffectView) {
-            $0.edges.pinToSuperview()
-        }
-        
-        self.zoomButton.isAccessibilityElement = false
-        self.zoomButton.image = PhotoBrowserIconography.imageOfZoomInIcon()
-        self.zoomButton.backgroundColor = .clear
-        
-        self.zoomButtonContainer.addSubview(self.zoomButton) {
-            $0.edges.pinToSuperview(insets: UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4), relation: .equal)
-            $0.height.set(36)
-            $0.width.set(36)
-        }
-        
-        // Add tag gesture to close fullscreen
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(self.zoomTapped(_:)))
-        self.zoomButtonContainer.addGestureRecognizer(gesture)
     }
     
     private func setupImageNumber() {
@@ -251,7 +192,6 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
 
 extension PhotoBrowserFullscreenViewController: PhotoBrowserInfinitePagedDataSource, PhotoBrowserInfinitePagedDelegate {
     func photoBrowserInfinitePhotoViewed(at index: Int) {
-        self.isZoomed = false
         self.delegate?.photoBrowserFullscreenPhotoViewed(index)
         self.previewCollectionView?.selectedPhotoIndex = index
         self.updateLabelView()
