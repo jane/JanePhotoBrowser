@@ -40,10 +40,10 @@ public class PhotoBrowserView: UIView {
     public var currentPhotoIndex: Int = 0
     
     /// The desired height of the preview collectionview
-    public var previewCollectionViewHeight: CGFloat = 0
+    @IBInspectable public var previewCollectionViewHeight: CGFloat = 0
     
     /// Flag indicating if the preview thumbnails should show or not
-    public var showPreview: Bool = false {
+    @IBInspectable public var showPreview: Bool = false {
         didSet {
             if self.showPreview {
                 self.setupPreviewCollectionView()
@@ -70,6 +70,9 @@ public class PhotoBrowserView: UIView {
     
     private var numberViewBottomConstraint: NSLayoutConstraint?
     private var pagedViewBottomConstraint: NSLayoutConstraint?
+    private var shouldShowPreview: Bool {
+        return self.showPreview && self.previewCollectionViewHeight > 0
+    }
     
     //MARK: - UIView
     override public init(frame: CGRect) {
@@ -127,7 +130,7 @@ public class PhotoBrowserView: UIView {
     
     private func setupPreviewCollectionView() {
         self.updateBottomConstraintsForPreviewState()
-        guard self.showPreview, self.previewCollectionView == nil else { return }
+        guard self.shouldShowPreview, self.previewCollectionView == nil else { return }
         let previewCollectionView = PhotoBrowserPreviewCollectionView(dataSource: self, delegate: self, imageSize: CGSize(width: previewCollectionViewHeight, height: previewCollectionViewHeight))
         self.addSubview(previewCollectionView) {
             $0.edges(.left, .bottom, .right).pinToSuperview()
@@ -139,7 +142,7 @@ public class PhotoBrowserView: UIView {
     }
     
     private func updateBottomConstraintsForPreviewState() {
-        let bottomModifier: CGFloat = self.showPreview ? -(self.previewCollectionViewHeight + 8) : 0
+        let bottomModifier: CGFloat = self.shouldShowPreview ? -(self.previewCollectionViewHeight + 8) : 0
         self.pagedViewBottomConstraint?.constant = bottomModifier
         self.numberViewBottomConstraint?.constant = bottomModifier - 16
     }

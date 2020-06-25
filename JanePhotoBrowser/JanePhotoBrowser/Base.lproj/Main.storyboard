@@ -26,10 +26,7 @@
                                     <constraint firstAttribute="width" secondItem="Lbv-d5-lmX" secondAttribute="height" multiplier="1:1" priority="999" id="0ii-6j-fXg"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showPreview" value="NO"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="previewCollectionViewHeight">
-                                        <real key="value" value="0.0"/>
-                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showPreview" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="JanePhotoBrowser Cocoapod" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="25E-3L-sYi">
