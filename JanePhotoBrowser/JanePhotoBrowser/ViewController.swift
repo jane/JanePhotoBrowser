@@ -11,6 +11,7 @@ import PhotoBrowser
 class ViewController: UIViewController {
     //MARK: - IBOutlets
     @IBOutlet var photoBrowserView: PhotoBrowserView?
+    @IBOutlet var aspectContstraint: NSLayoutConstraint!
     
     //MARK: - Private Variables
     fileprivate var images:[UIImage] = []
@@ -19,13 +20,16 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         //Set up data source and delegates
+        let height: CGFloat = 50
         self.photoBrowserView?.dataSource = self
         self.photoBrowserView?.delegate = self
-//        self.photoView?.showPreview = true
-        
+        self.photoBrowserView?.previewCollectionViewHeight = height
+        self.photoBrowserView?.showPreview = true
+        self.aspectContstraint.constant =  -(height + 8)
+
         //Get an array of images
-        guard let photo1 = UIImage(named: "photoBrowser1"),
-            let photo2 = UIImage(named: "photoBrowser2"),
+        guard let photo1 = UIImage(named: "photoBrowser2"),
+            let photo2 = UIImage(named: "photoBrowser1"),
             let photo3 = UIImage(named: "photoBrowser3"),
             let photo4 = UIImage(named: "photoBrowser4"),
             let photo5 = UIImage(named: "photoBrowser1"),
