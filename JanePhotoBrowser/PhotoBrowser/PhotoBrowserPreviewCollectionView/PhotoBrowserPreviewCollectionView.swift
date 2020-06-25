@@ -12,6 +12,7 @@ public class PhotoBrowserPreviewCollectionView: UICollectionView {
 
     weak var photoDataSource: PhotoBrowserPreviewDataSource!
     weak var photoDelegate: PhotoBrowserPreviewDelegate!
+    var imageSize: CGSize!
     
     var selectedPhotoIndex: Int = 0 {
         didSet {
@@ -32,10 +33,11 @@ public class PhotoBrowserPreviewCollectionView: UICollectionView {
         }
     }
     
-    init(dataSource: PhotoBrowserPreviewDataSource, delegate: PhotoBrowserPreviewDelegate) {
+    init(dataSource: PhotoBrowserPreviewDataSource, delegate: PhotoBrowserPreviewDelegate, imageSize: CGSize = CGSize(width: 50, height: 50)) {
         super.init(frame: .zero, collectionViewLayout: PhotoBrowserPreviewCollectionView.layout())
         self.photoDataSource = dataSource
         self.photoDelegate = delegate
+        self.imageSize = imageSize
         self.delegate = self
         self.dataSource = self
         self.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
@@ -97,6 +99,6 @@ extension PhotoBrowserPreviewCollectionView: UICollectionViewDataSource, UIColle
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 50, height: 50)
+        return imageSize
     }
 }
