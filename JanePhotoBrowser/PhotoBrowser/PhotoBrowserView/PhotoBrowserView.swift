@@ -40,7 +40,7 @@ public class PhotoBrowserView: UIView {
     public var currentPhotoIndex: Int = 0
     
     /// The desired height of the preview collectionview
-    @IBInspectable public var previewCollectionViewHeight: CGFloat = 0
+    @IBInspectable public var previewCollectionViewHeight: CGFloat = 50.0
     
     /// Flag indicating if the preview thumbnails should show or not
     @IBInspectable public var showPreview: Bool = false {

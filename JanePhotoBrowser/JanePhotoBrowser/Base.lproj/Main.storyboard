@@ -26,6 +26,9 @@
                                     <constraint firstAttribute="width" secondItem="Lbv-d5-lmX" secondAttribute="height" multiplier="1:1" priority="999" id="0ii-6j-fXg"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="previewCollectionViewHeight">
+                                        <real key="value" value="100"/>
+                                    </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showPreview" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>

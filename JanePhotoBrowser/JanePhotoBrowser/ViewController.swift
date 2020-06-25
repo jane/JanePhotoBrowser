@@ -20,11 +20,9 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         //Set up data source and delegates
-        let height: CGFloat = 50
         self.photoBrowserView?.dataSource = self
         self.photoBrowserView?.delegate = self
-        self.photoBrowserView?.previewCollectionViewHeight = height
-        self.photoBrowserView?.showPreview = true
+        let height: CGFloat = self.photoBrowserView?.previewCollectionViewHeight ?? 0
         self.aspectContstraint.constant =  -(height + 8)
 
         //Get an array of images
