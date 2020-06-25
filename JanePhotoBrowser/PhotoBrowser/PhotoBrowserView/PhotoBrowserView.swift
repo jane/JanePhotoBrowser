@@ -39,6 +39,9 @@ public class PhotoBrowserView: UIView {
     /// The index of the current photo being shown
     public var currentPhotoIndex: Int = 0
     
+    /// The desired height of the preview collectionview
+    @IBInspectable public var previewCollectionViewHeight: CGFloat = 50.0
+    
     /// Flag indicating if the preview thumbnails should show or not
     @IBInspectable public var showPreview: Bool = false {
         didSet {
@@ -67,10 +70,11 @@ public class PhotoBrowserView: UIView {
     
     private var numberViewBottomConstraint: NSLayoutConstraint?
     private var pagedViewBottomConstraint: NSLayoutConstraint?
-    private var previewCollectionViewHeight: CGFloat = 58
+    private var shouldShowPreview: Bool {
+        return self.showPreview && self.previewCollectionViewHeight > 0
+    }
     
     //MARK: - UIView
-    
     override public init(frame: CGRect) {
         super.init(frame: frame)
         self.setup()
@@ -126,11 +130,11 @@ public class PhotoBrowserView: UIView {
     
     private func setupPreviewCollectionView() {
         self.updateBottomConstraintsForPreviewState()
-        guard self.showPreview, self.previewCollectionView == nil else { return }
-        let previewCollectionView = PhotoBrowserPreviewCollectionView(dataSource: self, delegate: self)
+        guard self.shouldShowPreview, self.previewCollectionView == nil else { return }
+        let previewCollectionView = PhotoBrowserPreviewCollectionView(dataSource: self, delegate: self, imageSize: CGSize(width: previewCollectionViewHeight, height: previewCollectionViewHeight))
         self.addSubview(previewCollectionView) {
             $0.edges(.left, .bottom, .right).pinToSuperview()
-            $0.height.set(50)
+            $0.height.set(previewCollectionViewHeight)
         }
         // Set photodatasource
         previewCollectionView.selectedPhotoIndex = self.currentPhotoIndex
@@ -138,7 +142,7 @@ public class PhotoBrowserView: UIView {
     }
     
     private func updateBottomConstraintsForPreviewState() {
-        let bottomModifier: CGFloat = self.showPreview ? -self.previewCollectionViewHeight : 0
+        let bottomModifier: CGFloat = self.shouldShowPreview ? -(self.previewCollectionViewHeight + 8) : 0
         self.pagedViewBottomConstraint?.constant = bottomModifier
         self.numberViewBottomConstraint?.constant = bottomModifier - 16
     }
