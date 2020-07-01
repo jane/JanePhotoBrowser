@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name          = "JanePhotoBrowser"
-  s.version       = "3.0.8"
+  s.version       = "3.0.9"
   s.summary       = "The Jane Photo Browser is a simple way to browse a group of photos"
   s.homepage      = "https://github.com/jane/JanePhotoBrowser"
   s.license       = 'MIT'
