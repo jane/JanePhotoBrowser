@@ -11,10 +11,10 @@ import UIKit
 class PhotoBrowserPreviewCell: UICollectionViewCell {
     public var imageView:UIImageView = UIImageView()
     
-    var isSelectedPhoto: Bool = false {
+    var isSelectedPhoto: Bool = false
+    {
         didSet {
-            self.imageView.alpha = self.isSelectedPhoto ? 0.3 : 1
-            self.contentView.layer.borderColor = UIColor(white: self.isSelectedPhoto ? 0.07 : 0.96, alpha: 1).cgColor
+            self.contentView.layer.borderColor = self.isSelectedPhoto ? UIColor.black.cgColor : UIColor.clear.cgColor
         }
     }
     
@@ -42,6 +42,6 @@ class PhotoBrowserPreviewCell: UICollectionViewCell {
         }
         self.contentView.layer.cornerRadius = 4
         self.contentView.layer.masksToBounds = true
-        self.contentView.layer.borderWidth = 1
+        self.contentView.layer.borderWidth = 2
     }
 }
