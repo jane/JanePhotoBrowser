@@ -13,6 +13,7 @@ public protocol PhotoBrowserDelegate: class {
     func photoBrowser(_ photoBrowser: PhotoBrowserView, photoViewedAtIndex index: Int, mode: PhotoBrowserMode)
     func photoBrowser(_ photoBrowser: PhotoBrowserView, thumbnailTappedAtIndex index: Int, mode: PhotoBrowserMode)
     func photoBrowser(_ photoBrowser: PhotoBrowserView, thumbnailViewedAtIndex index: Int, mode: PhotoBrowserMode)
+    func photoBrowser(_ photoBrowser: PhotoBrowserView, zoomAtIndex index: Int, mode: PhotoBrowserMode)
     func photoBrowserFullscreenWasDismissed()
 }
 
@@ -20,6 +21,7 @@ public extension PhotoBrowserDelegate {
     func photoBrowser(_ photoBrowser: PhotoBrowserView, photoViewedAtIndex index: Int, mode: PhotoBrowserMode) { }
     func photoBrowser(_ photoBrowser: PhotoBrowserView, thumbnailTappedAtIndex index: Int, mode: PhotoBrowserMode) { }
     func photoBrowser(_ photoBrowser: PhotoBrowserView, thumbnailViewedAtIndex index: Int, mode: PhotoBrowserMode) { }
+    func photoBrowser(_ photoBrowser: PhotoBrowserView, zoomAtIndex index: Int, mode: PhotoBrowserMode) { }
     func photoBrowserFullscreenWasDismissed() { }
 }
 

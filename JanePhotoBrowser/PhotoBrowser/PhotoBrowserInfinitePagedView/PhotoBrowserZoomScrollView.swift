@@ -16,6 +16,8 @@ class PhotoBrowserZoomScrollView: UIScrollView, UIScrollViewDelegate {
         }
     }
     
+    var willBeginZooming: (() -> Void)?
+    
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.isZoomEnabled ? self.imageView : nil
     }
@@ -31,5 +33,9 @@ class PhotoBrowserZoomScrollView: UIScrollView, UIScrollViewDelegate {
         self.minimumZoomScale = 1
         self.bouncesZoom = false
         self.zoomScale = 1
+    }
+    
+    func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
+        self.willBeginZooming?()
     }
 }
