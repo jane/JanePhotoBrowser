@@ -191,6 +191,10 @@ public class PhotoBrowserFullscreenViewController: UIViewController {
 }
 
 extension PhotoBrowserFullscreenViewController: PhotoBrowserInfinitePagedDataSource, PhotoBrowserInfinitePagedDelegate {
+    func photoBrowserInfinitePhotoZoom(at index: Int) {
+        self.delegate?.photoBrowserFullscreenPhotoZoom(index)
+    }
+    
     func photoBrowserInfinitePhotoViewed(at index: Int) {
         self.delegate?.photoBrowserFullscreenPhotoViewed(index)
         self.previewCollectionView?.selectedPhotoIndex = index

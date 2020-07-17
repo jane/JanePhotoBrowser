@@ -185,6 +185,10 @@ public class PhotoBrowserView: UIView {
 //MARK: - PhotoBrowserViewControllerDelegate
 
 extension PhotoBrowserView: PhotoBrowserInfinitePagedDataSource, PhotoBrowserInfinitePagedDelegate {
+    func photoBrowserInfinitePhotoZoom(at index: Int) {
+        self.delegate?.photoBrowser(self, zoomAtIndex: index, mode: .inline)
+    }
+    
     func photoBrowserInfinitePhotoViewed(at index: Int) {
         self.delegate?.photoBrowser(self, photoViewedAtIndex: index, mode: .inline)
         self.previewCollectionView?.selectedPhotoIndex = index
@@ -216,6 +220,10 @@ extension PhotoBrowserView: PhotoBrowserPreviewDataSource, PhotoBrowserPreviewDe
 }
 
 extension PhotoBrowserView: PhotoBrowserFullscreenDataSource, PhotoBrowserFullscreenDelegate {
+    func photoBrowserFullscreenPhotoZoom(_ index: Int) {
+        self.delegate?.photoBrowser(self, zoomAtIndex: index, mode: .fullscreen)
+    }
+    
     func photoBrowserFullscreenWillDismiss(selectedIndex: Int) {
         self.pagedView.reloadPhotos(at: selectedIndex)
         self.previewCollectionView?.selectedPhotoIndex = selectedIndex

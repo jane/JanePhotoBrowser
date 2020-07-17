@@ -103,6 +103,10 @@ public class PhotoBrowserInfinitePagedView: UIScrollView {
         self.updateImageViewLayout()
         
         self.zoomScrollView.setup(with: self.currentImageView)
+        self.zoomScrollView.willBeginZooming = { [weak self] in
+            guard let self = self else { return }
+            self.photoDelegate?.photoBrowserInfinitePhotoZoom(at: self.currentPage)
+        }
     }
     
     @objc func imageTapped(_ sender: UITapGestureRecognizer?) {

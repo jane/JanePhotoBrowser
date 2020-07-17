@@ -9,6 +9,7 @@
 import UIKit
 
 protocol PhotoBrowserFullscreenDelegate: class {
+    func photoBrowserFullscreenPhotoZoom(_ index: Int)
     func photoBrowserFullscreenPhotoTapped(_ index: Int)
     func photoBrowserFullscreenThumbnailTapped(_ index: Int)
     func photoBrowserFullscreenPhotoViewed(_ index: Int)

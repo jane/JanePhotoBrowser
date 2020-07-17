@@ -11,4 +11,5 @@ import UIKit
 protocol PhotoBrowserInfinitePagedDelegate: class {
     func photoBrowserInfinitePhotoViewed(at index: Int)
     func photoBrowserInfinitePhotoTapped(at index: Int)
+    func photoBrowserInfinitePhotoZoom(at index: Int)
 }

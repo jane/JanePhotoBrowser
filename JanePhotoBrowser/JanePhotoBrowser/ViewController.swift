@@ -79,5 +79,8 @@ extension ViewController: PhotoBrowserDataSource, PhotoBrowserDelegate {
     func photoBrowserFullscreenWasDismissed() {
         print("fullscreen dismissed")
     }
+    func photoBrowser(_ photoBrowser: PhotoBrowserView, zoomAtIndex index: Int, mode: PhotoBrowserMode) {
+        print("Zooming at \(index) in \(mode == .fullscreen ? "fullscreen" : "inline")")
+    }
 }
 
